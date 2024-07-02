@@ -6,7 +6,7 @@ const FullNavbar = () => {
 
   return (
     <div className="">
-      <nav className="flex justify-center drop-shadow-lg bg-titlebackground sticky top-0 max-md:justify-end">
+      <nav className="flex justify-start drop-shadow-lg bg-titlebackground sticky top-0">
         <Navbar
           className=""
           burgerOpen={burgerOpen}

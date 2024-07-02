@@ -9,10 +9,10 @@ export default {
       colors: {
         bgcolour: "#ac8968",
         titlebackground: "#865d36",
-        navbutt: "#ac8968",
+        navbutt: "#ff0000",
         navbuttpressed: "#ac8968",
         titletextbackground: "#93785b",
-        titletext: "#ac8968"
+        titletext: "#ff0000"
       },
       fontFamily: {
         main: ["BonaNovaSC-Regular"],

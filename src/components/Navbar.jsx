@@ -8,8 +8,8 @@ const navlinks = [
     link: "/",
   },
   {
-    title: "Vehicle Sales",
-    link: "carsales",
+    title: "Cleveland Artworks",
+    link: "/clartworks",
   },
   {
     title: "Repairs, MOT & Servicing",

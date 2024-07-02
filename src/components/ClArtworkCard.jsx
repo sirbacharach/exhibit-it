@@ -1,28 +1,21 @@
 import { Link } from "react-router-dom";
 
-const ClArtworkCard = ({ article }) => {
+const ClArtworkCard = ({ clArtwork }) => {
   return (
-    <li className="inner-container-colour article-card">
-
-      <Link
-        // to={`/clartworks/${clArtwork.clArtwork_id}`}
-        // className="all-artwork light-font-colour"
-        // style={{ textDecoration: "none" }}
-      >
-        {/* <h2 id="clArtwork-title">{clArtwork.title}</h2>
-        <p className="clArtwork-text-gap">Author: {clArtwork.author}</p>
-        <p className="clArtwork-text-gap">Topic: {clArtwork.topic}</p>
-        <p className="clArtwork-text-gap">Created: {clArtwork.created_at.slice(0, 10)}</p> */}
-
-        <img
-          // id="all-clArtwork-imgs"
-          // src={clArtwork.clArtwork}
-          // alt={`the artwork "${clArtwork.title}"`}
-        />
-      </Link>
+    <li className="inner-container-colour article-card min-w-72 max-w-72 m-2 list-none content-between bg-titletextbackground p-3 drop-shadow-md rounded-xl">
+      <img
+        className="w-auto"
+        src={clArtwork.images.web.url}
+        alt={`painting of "${clArtwork.title}"`}
+      />
+      <h1>{clArtwork.title}</h1>
+      <p>Id: {clArtwork.athena_id}</p>
+      <p>Creation Date: {clArtwork.creation_date}</p>
+      <p>Culture: {clArtwork.culture}</p>
+      <p>Type: {clArtwork.type}</p>
+      <p>Technique: {clArtwork.technique}</p>
     </li>
   );
-
 };
 
 export default ClArtworkCard;
