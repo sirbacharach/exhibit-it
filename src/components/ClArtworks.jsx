@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const ClArtworks = () => {
   const [clArtworks, setClArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [pageNo, setPageNo] = useState(0);
+  const [pageNo, setPageNo] = useState(3);
 
   const [apiError, setApiError] = useState("");
 
@@ -22,7 +22,15 @@ const ClArtworks = () => {
         setApiError(err);
         setIsLoading(false);
       });
-  }, []);
+  }, [pageNo]);
+
+  function handlePreviousPage() {
+    if (pageNo > 0) setPageNo(pageNo - 1);
+  }
+
+  function handleNextPage() {
+    setPageNo(pageNo + 1);
+  }
 
   if (isLoading) {
     return (
@@ -49,7 +57,24 @@ const ClArtworks = () => {
         })}
       </div>
       <br></br>
-      <p className="text-center">Page No: {pageNo + 1}</p>
+      <p className="text-center">
+        <Link
+          onClick={() => {
+            handlePreviousPage();
+          }}
+        >
+          &lt;&lt;{" "}
+        </Link>
+        Page No: {pageNo + 1}
+        <Link
+          onClick={() => {
+            handleNextPage();
+          }}
+        >
+          {" "}
+          &gt;&gt;
+        </Link>
+      </p>
     </>
   );
 };

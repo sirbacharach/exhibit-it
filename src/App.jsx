@@ -7,7 +7,7 @@ import ClArtworks from "./components/ClArtworks";
 
 function App() {
   return (
-    <div className="bg-bgcolour font-main max-w-screen-lg min-h-screen mx-auto flex flex-col p-3">
+    <div className="bg-bgcolour font-main max-w-screen-lg min-h-screen mx-auto flex flex-col p-2">
       <Header />
       <Routes>
       <Route path="/clartworks" element={<ClArtworks />} />
