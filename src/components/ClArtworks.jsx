@@ -41,7 +41,7 @@ const ClArtworks = () => {
 
   return (
     <>
-      <div className="flex flex-wrap justify-around">
+      <div className="flex flex-wrap place-content-evenly">
         {clArtworks.map((clArtwork) => {
           return (
             <ClArtworkCard clArtwork={clArtwork} key={clArtwork.athena_id} />
