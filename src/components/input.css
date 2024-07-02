@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+}
+
+@font-face {
+  font-family: "BonaNovaSC-Regular";
+  src: url("../fonts/BonaNovaSC-Regular.ttf");
+}
+
+@font-face {
+  font-family: "BonaNovaSC-Italic";
+  src: url("../fonts/BonaNovaSC-Italic.ttf");
+}
+
+@font-face {
+  font-family: "BonaNovaSC-Bold";
+  src: url("../fonts/BonaNovaSC-Bold.ttf");
+}
+
+#canv {
+  margin-left: auto;
+  margin-right: auto;
+}
