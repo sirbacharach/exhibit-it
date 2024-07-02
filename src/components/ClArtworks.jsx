@@ -6,14 +6,16 @@ import { Link } from "react-router-dom";
 const ClArtworks = () => {
   const [clArtworks, setClArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [pageNo, setPageNo] = useState(3);
+  const [pageNo, setPageNo] = useState(0);
+  const [maxRecords, setMaxRecords] = useState(0);
 
   const [apiError, setApiError] = useState("");
 
   useEffect(() => {
     getAllClArtworks(pageNo)
       .then((response) => {
-        setClArtworks(response);
+        setClArtworks(response[0]);
+        setMaxRecords(response[1]);
       })
       .then(() => {
         setIsLoading(false);
@@ -25,11 +27,15 @@ const ClArtworks = () => {
   }, [pageNo]);
 
   function handlePreviousPage() {
-    if (pageNo > 0) setPageNo(pageNo - 1);
+    if (pageNo > 0) {
+      setPageNo(pageNo - 1);
+      setIsLoading(true);
+    }
   }
 
   function handleNextPage() {
     setPageNo(pageNo + 1);
+    setIsLoading(true);
   }
 
   if (isLoading) {
@@ -56,8 +62,10 @@ const ClArtworks = () => {
           );
         })}
       </div>
-      <br></br>
-      <p className="text-center">
+
+      <div className="min-w-full max-w-screen-lg min-h-screen mx-auto relative">
+  <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
+  <p className="text-center m-2 text-white">
         <Link
           onClick={() => {
             handlePreviousPage();
@@ -65,7 +73,7 @@ const ClArtworks = () => {
         >
           &lt;&lt;{" "}
         </Link>
-        Page No: {pageNo + 1}
+        Page No: {pageNo + 1} of {Math.ceil(maxRecords / 10)}
         <Link
           onClick={() => {
             handleNextPage();
@@ -75,6 +83,8 @@ const ClArtworks = () => {
           &gt;&gt;
         </Link>
       </p>
+  </div>
+</div>
     </>
   );
 };

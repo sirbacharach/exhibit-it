@@ -9,14 +9,14 @@ const ClArtworkCard = ({ clArtwork }) => {
         src={clArtwork.images.web.url}
         alt={`painting of "${clArtwork.title}"`}
       /> : null}
-      <h1>{clArtwork.title}</h1>
+      <h1>{clArtwork?.title? clArtwork.title : "no title available"}</h1>
       {/* {/* <p>Id: {clArtwork.athena_id}</p> */}
       <p>Creation Date: {clArtwork.creation_date}</p>
       <p>Culture: {clArtwork.culture}</p>
       <p>Type: {clArtwork.type}</p>
       <p>Technique: {clArtwork.technique}</p>
     </li>
-    
+
   );
 };
 

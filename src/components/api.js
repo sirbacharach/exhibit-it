@@ -5,9 +5,10 @@ const api = axios.create({ baseURL: "https://openaccess-api.clevelandart.org/api
 // GET ALL ClArtworks
 const getAllClArtworks = (page) => {
   const skip = 10*page
+
   return api.get(`/artworks?skip=${skip}&limit=10&has_image=1`).then((response) => {
-      console.log(response.data.data)
-    return response.data.data;
+      console.log(response)
+    return [response.data.data, response.data.info.total]
   });
 };
 
