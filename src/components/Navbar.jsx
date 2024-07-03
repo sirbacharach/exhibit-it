@@ -12,8 +12,8 @@ const navlinks = [
     link: "/artworks",
   },
   {
-    title: "Repairs, MOT & Servicing",
-    link: "/repairsservice",
+    title: "Your temporary list",
+    link: "/artworks/artworkslist",
   },
   {
     title: "Contact",

@@ -16,7 +16,6 @@ const SingleClArtwork = () => {
   const [apiError, setApiError] = useState("");
 
   useEffect(() => {
-    console.log(clartwork_id);
     getSingleClArtwork(clartwork_id)
       .then((response) => {
         setClArtwork(response);
@@ -46,6 +45,7 @@ const SingleClArtwork = () => {
             className="w-full"
             src={clArtwork.images.web.url}
             alt={`painting of "${clArtwork.title}"`}
+            loading="lazy"
           />
         ) : null}
         <br></br>
@@ -59,15 +59,11 @@ const SingleClArtwork = () => {
         <p>{clArtwork.description}</p>
         <br></br>
         <div className="flex justify-center place-items-end grow">
-        <AddToListButton clArtwork={clArtwork} tempList={tempList} setTempList={setTempList} />
+        <AddToListButton clArtwork={clArtwork} tempList={tempList} setTempList={setTempList} selectedMuseum={"Cleveland"}/>
         <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
-          <p className="text-center m-1 text-white">
           <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
-        <p className="text-center m-1 text-white">
           <button onClick={handleGoBack}>Go Back</button>
-        </p>
       </div>
-          </p>
         </div>
     </div>
       </div>

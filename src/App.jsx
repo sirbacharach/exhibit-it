@@ -5,6 +5,7 @@ import Artworks from "./components/Artworks";
 import SingleClArtwork from "./components/SingleClArtwork";
 import Error from "./components/Error";
 import { UserListProvider } from "./components/ListContext";
+import TempListArtworks from "./components/TempListArtworks";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/artworks" element={<Artworks />} />
         <Route path="/artworks/:clartwork_id" element={<SingleClArtwork />} />
+        <Route path="/artworks/artworkslist" element={<TempListArtworks />} />
         <Route path="/*" element={<Error message="Route not found!" />} />
       </Routes>
     </div>
