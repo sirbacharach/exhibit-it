@@ -10,15 +10,7 @@ const Artworks = () => {
   const [apiError, setApiError] = useState("");
   const { tempList } = useContext(ListContext);
 
-  useEffect(() => {
-    getAllClArtworks(pageNo)
-      .then((response) => {
-        setMaxRecords(response[1]);
-      })
-      .catch((err) => {
-        setApiError(err);
-      });
-  }, [pageNo]);
+  
 
   function handlePreviousPage() {
     if (pageNo > 0) {
@@ -37,10 +29,10 @@ const Artworks = () => {
   return (
     <>
       <div className="min-w-full max-w-screen-lg mx-auto relative">
-        <ClArtworksRecords pageNo={pageNo} />
+        <ClArtworksRecords pageNo={pageNo} setPageNo = {setPageNo} setMaxRecords={setMaxRecords}/>
       </div>
-      <div className="fixed bottom-0 left-0 right-0 flex justify-center bg-titlebackground">
-        <div className="w-full max-w-screen-lg flex justify-between px-4 max-xs:text-xs text-white">
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center text-white">
+          <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full  max-w-screen-lg bg-titlebackground text-center flex justify-between">
           <div className="flex items-center text-left w-20">
             Total Items: {tempList.length}
           </div>
@@ -64,10 +56,10 @@ const Artworks = () => {
             </Link>
           </div>
           <div className="flex items-center justify-end text-right w-20">
-            &copy; {new Date().getFullYear()} Your Company
+            Exhibition Items
           </div>
-        </div>
       </div>
+        </div>
     </>
   );
 };

@@ -32,7 +32,7 @@ const SingleClArtwork = () => {
   };
 
   if (isLoading) {
-    return <p id="status-msg">Content Loading....</p>;
+    return <p>Content Loading....</p>;
   } else if (apiError) {
     return <Error message={apiError.message} />;
   }
