@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 const navlinks = [
   {
     title: "Home",
-    link: "/",
+    link: "/artworks",
   },
   {
-    title: "Cleveland Artworks",
-    link: "/clartworks",
+    title: "Gallery",
+    link: "/artworks",
   },
   {
     title: "Repairs, MOT & Servicing",
