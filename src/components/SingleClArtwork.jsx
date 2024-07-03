@@ -59,7 +59,7 @@ const SingleClArtwork = () => {
         <p>{clArtwork.description}</p>
         <br></br>
         <div className="flex justify-center place-items-end grow">
-        <AddToListButton clArtwork={clArtwork} tempList={tempList} setTempList={setTempList} selectedMuseum={"Cleveland"}/>
+        <AddToListButton clArtwork={clArtwork} tempList={tempList} setTempList={setTempList} selectedMuseum={"Cleveland Museum of Art"}/>
         <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
           <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
           <button onClick={handleGoBack}>Go Back</button>

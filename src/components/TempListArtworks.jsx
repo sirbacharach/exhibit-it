@@ -26,9 +26,9 @@ const TempListArtworks = () => {
       const promises = tempList.map(async (item) => {
         try {
           let artwork;
-          if (item.gallery === "Cleveland") {
+          if (item.gallery === "Cleveland Museum of Art") {
             artwork = await getSingleClArtwork(item.artworkId);
-          } else if (item.gallery === "Chicago") {
+          } else if (item.gallery === "Art Institute of Chicago") {
             artwork = await getSingleChicagoArtwork(item.artworkId);
           }
           return artwork;

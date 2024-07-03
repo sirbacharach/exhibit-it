@@ -69,6 +69,8 @@ const ArtworksRecords = ({ pageNo, setPageNo, setMaxRecords }) => {
 
   return (
     <>
+    <div className="max-w-screen-lg">
+      <div className="flex flex-wrap">
       <div className="flex justify-center mb-4">
         <label htmlFor="museumSelect" className="mr-2">
           Select Museum:
@@ -115,6 +117,7 @@ const ArtworksRecords = ({ pageNo, setPageNo, setMaxRecords }) => {
           ))}
         </select>
       </div>
+      </div>
       <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
         {selectedMuseum} Artworks
       </h2>
@@ -133,6 +136,7 @@ const ArtworksRecords = ({ pageNo, setPageNo, setMaxRecords }) => {
           There is no artwork available for this category.
         </h2>
       )}
+      </div>
     </>
   );
 };
