@@ -7,19 +7,19 @@ const TempListArtworks = () => {
   const [artworks, setArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
-  const [isEmpty, setIsEmpty] = useState(false); // State to track if artworks array is empty
+  const [isEmpty, setIsEmpty] = useState(false);
 
   const { tempList } = useContext(ListContext);
 
   useEffect(() => {
-    console.log(tempList)
+    console.log(tempList);
     setIsLoading(true);
     setApiError(null);
 
     const fetchArtworks = async () => {
       if (!Array.isArray(tempList) || tempList.length === 0) {
         setArtworks([]);
-        setIsEmpty(true); // Update isEmpty state when tempList is empty
+        setIsEmpty(true);
         setIsLoading(false);
         return;
       }
@@ -32,7 +32,7 @@ const TempListArtworks = () => {
           } else if (item.gallery === "Art Institute of Chicago") {
             artwork = await getSingleChicagoArtwork(item.artworkId);
           }
-          return artwork;
+          return artwork ? { ...artwork, gallery: item.gallery } : null;
         } catch (error) {
           console.error(`Error fetching artwork ${item.artworkId}:`, error);
           return null;
@@ -43,7 +43,7 @@ const TempListArtworks = () => {
         .then((artworks) => {
           const filteredArtworks = artworks.filter((artwork) => artwork !== null);
           setArtworks(filteredArtworks);
-          setIsEmpty(filteredArtworks.length === 0); // Update isEmpty state based on artworks length
+          setIsEmpty(filteredArtworks.length === 0);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -59,9 +59,9 @@ const TempListArtworks = () => {
   // Reset isLoading and artworks array when tempList is empty
   useEffect(() => {
     if (tempList.length === 0) {
-      setIsLoading(false); // Reset isLoading to false when tempList is empty
+      setIsLoading(false);
       setArtworks([]);
-      setIsEmpty(true); // Set isEmpty to true when tempList is empty
+      setIsEmpty(true);
     }
   }, [tempList]);
 
@@ -84,9 +84,12 @@ const TempListArtworks = () => {
 
   return (
     <>
-      {isEmpty ? ( // Check if artworks array is empty
+      {isEmpty ? (
         <div className="flex justify-center">
-          <h2 className="text-white font-bold font-headers text-2xl py-3" style={{ maxWidth: "50%", textAlign: "center" }}>
+          <h2
+            className="text-white font-bold font-headers text-2xl py-3"
+            style={{ maxWidth: "50%", textAlign: "center" }}
+          >
             There are currently no items in your list.
           </h2>
         </div>
@@ -95,18 +98,20 @@ const TempListArtworks = () => {
           <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
             Selected Artworks
           </h2>
-          <div className="flex flex-wrap place-content-evenly pb-10">
-            {artworks.map((artwork, index) => (
+          {artworks && (
+            <div className="flex flex-wrap place-content-evenly pb-10">
+              {artworks.map((artwork, index) => (
                 <ClArtworkCard
-                clArtwork={artwork}
-                key={artwork.athena_id}
-                selectedMuseum={tempList[index].gallery} // Adjust as per your data structure
-                needsConfirm={true}
-                needTempListButton={true}
-                needExhibitButton={true}
-              />
-            ))}
-          </div>
+                  clArtwork={artwork}
+                  key={artwork.athena_id}
+                  selectedMuseum={artwork.gallery} // Adjusted to use the gallery property in artwork
+                  needsConfirm={true}
+                  needTempListButton={true}
+                  needExhibitButton={true}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </>

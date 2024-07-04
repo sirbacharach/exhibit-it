@@ -7,7 +7,7 @@ const ExhibitList = () => {
   const [artworks, setArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
-  const [isEmpty, setIsEmpty] = useState(false); // State to track if artworks array is empty
+  const [isEmpty, setIsEmpty] = useState(false);
 
   const { finalList } = useContext(ListContext);
 
@@ -18,7 +18,7 @@ const ExhibitList = () => {
     const fetchArtworks = async () => {
       if (!Array.isArray(finalList) || finalList.length === 0) {
         setArtworks([]);
-        setIsEmpty(true); // Update isEmpty state when finalList is empty
+        setIsEmpty(true);
         setIsLoading(false);
         return;
       }
@@ -42,7 +42,7 @@ const ExhibitList = () => {
         .then((artworks) => {
           const filteredArtworks = artworks.filter((artwork) => artwork !== null);
           setArtworks(filteredArtworks);
-          setIsEmpty(filteredArtworks.length === 0); // Update isEmpty state based on artworks length
+          setIsEmpty(filteredArtworks.length === 0);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -55,12 +55,11 @@ const ExhibitList = () => {
     fetchArtworks();
   }, [finalList]);
 
-  // Reset isLoading and artworks array when finalList is empty
   useEffect(() => {
     if (finalList.length === 0) {
-      setIsLoading(false); // Reset isLoading to false when finalList is empty
+      setIsLoading(false);
       setArtworks([]);
-      setIsEmpty(true); // Set isEmpty to true when finalList is empty
+      setIsEmpty(true);
     }
   }, [finalList]);
 
@@ -83,9 +82,12 @@ const ExhibitList = () => {
 
   return (
     <>
-      {isEmpty ? ( // Check if artworks array is empty
+      {isEmpty ? (
         <div className="flex justify-center">
-          <h2 className="text-white font-bold font-headers text-2xl py-3" style={{ maxWidth: "50%", textAlign: "center" }}>
+          <h2
+            className="text-white font-bold font-headers text-2xl py-3"
+            style={{ maxWidth: "50%", textAlign: "center" }}
+          >
             There are currently no items in your list.
           </h2>
         </div>
@@ -95,16 +97,20 @@ const ExhibitList = () => {
             Selected Artworks
           </h2>
           <div className="flex flex-wrap place-content-evenly pb-10">
-            {artworks.map((artwork, index) => (
-              <ClArtworkCard
-                clArtwork={artwork}
-                key={artwork.athena_id}
-                selectedMuseum={finalList[index].gallery} // Adjust as per your data structure
-                needsConfirm={true}
-                needTempListButton={false}
-                needExhibitButton={true}
-              />
-            ))}
+            {artworks.map((artwork, index) => {
+              const listItem = finalList[index];
+              if (!listItem) return null; // Skip rendering if the listItem is undefined
+              return (
+                <ClArtworkCard
+                  clArtwork={artwork}
+                  key={artwork.athena_id}
+                  selectedMuseum={listItem.gallery}
+                  needsConfirm={true}
+                  needTempListButton={false}
+                  needExhibitButton={true}
+                />
+              );
+            })}
           </div>
         </div>
       )}
