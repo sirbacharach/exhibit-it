@@ -12,6 +12,7 @@ const TempListArtworks = () => {
   const { tempList } = useContext(ListContext);
 
   useEffect(() => {
+    console.log(tempList)
     setIsLoading(true);
     setApiError(null);
 
@@ -95,11 +96,11 @@ const TempListArtworks = () => {
             Selected Artworks
           </h2>
           <div className="flex flex-wrap place-content-evenly pb-10">
-            {artworks.map((artwork) => (
-              <ClArtworkCard
+            {artworks.map((artwork, index) => (
+                <ClArtworkCard
                 clArtwork={artwork}
                 key={artwork.athena_id}
-                selectedMuseum={artwork.gallery} // Adjust as per your data structure
+                selectedMuseum={tempList[index].gallery} // Adjust as per your data structure
                 needsConfirm={true}
               />
             ))}

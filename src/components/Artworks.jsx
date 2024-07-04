@@ -10,6 +10,7 @@ const Artworks = () => {
   const [maxRecords, setMaxRecords] = useState(0);
   const [apiError, setApiError] = useState("");
   const { tempList } = useContext(ListContext);
+  const { finalList } = useContext(ListContext)
 
   
 
@@ -58,7 +59,7 @@ const Artworks = () => {
             </Link>
           </div>
           <div className="flex items-center justify-end text-right w-20 pr-2">
-            Exhibition Items: 
+            Exhibition Items: {finalList.length}
           </div>
       </div>
         </div>

@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react';
 
-const AddToListButton = ({ clArtwork, tempList, setTempList, selectedMuseum, needsConfirm }) => {
+const AddToExhibitButton = ({ clArtwork, finalList, setFinalList, selectedMuseum, needsConfirm }) => {
   const [isInList, setIsInList] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false); // State to manage confirmation prompt
 
   useEffect(() => {
-    const isInList = tempList.some(item => item.artworkId === clArtwork.accession_number);
+    const isInList = finalList.some(item => item.artworkId === clArtwork.accession_number);
     setIsInList(isInList);
-  }, [tempList, clArtwork.accession_number]);
+  }, [finalList, clArtwork.accession_number]);
 
   const handleToggle = () => {
     if (isInList) {
       if (needsConfirm) {
         setShowConfirm(true); // Show confirmation prompt
       } else {
-        setTempList(prevList => prevList.filter(item => item.artworkId !== clArtwork.accession_number));
+        setFinalList(prevList => prevList.filter(item => item.artworkId !== clArtwork.accession_number));
       }
     } else {
-      setTempList(prevList => [...prevList, { artworkId: clArtwork.accession_number, gallery: selectedMuseum }]);
+      setFinalList(prevList => [...prevList, { artworkId: clArtwork.accession_number, gallery: selectedMuseum }]);
     }
   };
 
   const handleConfirmRemove = () => {
-    setTempList(prevList => prevList.filter(item => item.artworkId !== clArtwork.accession_number));
+    setFinalList(prevList => prevList.filter(item => item.artworkId !== clArtwork.accession_number));
     setShowConfirm(false); // Hide confirmation prompt after removal
   };
 
@@ -34,7 +34,7 @@ const AddToListButton = ({ clArtwork, tempList, setTempList, selectedMuseum, nee
     <>
       {showConfirm ? (
         <div className="confirm-remove">
-          <p className="bg-white p-1 pl-2 mb-2 rounded-lg">Are you sure you want to remove this artwork from your temporary list?</p>
+          <p className="bg-white p-1 pl-2 mb-2 rounded-lg">Are you sure you want to remove this artwork from your exhibition?</p>
           <button onClick={handleConfirmRemove} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
             Confirm
           </button>
@@ -56,4 +56,4 @@ const AddToListButton = ({ clArtwork, tempList, setTempList, selectedMuseum, nee
   );
 };
 
-export default AddToListButton;
+export default AddToExhibitButton;

@@ -15,10 +15,12 @@ const ExhibitList = () => {
     setIsLoading(true);
     setApiError(null);
 
+    console.log("Final List is: ", finalList)
+
     const fetchArtworks = async () => {
       if (!Array.isArray(finalList) || finalList.length === 0) {
         setArtworks([]);
-        setIsEmpty(true); // Update isEmpty state when tempList is empty
+        setIsEmpty(true); // Update isEmpty state when finalList is empty
         setIsLoading(false);
         return;
       }

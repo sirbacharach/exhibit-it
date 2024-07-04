@@ -16,8 +16,8 @@ const navlinks = [
     link: "/artworks/artworkslist",
   },
   {
-    title: "Contact",
-    link: "/contact",
+    title: "Your Exhibition",
+    link: "/artworks/exhibitList",
   },
 ];
 
