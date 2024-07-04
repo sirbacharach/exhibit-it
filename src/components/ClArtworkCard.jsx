@@ -11,7 +11,7 @@ const ClArtworkCard = ({
   selectedMuseum,
   needsConfirm,
   needTempListButton,
-  needExhibitButton
+  needExhibitButton,
 }) => {
   const { tempList, setTempList } = useContext(ListContext);
   const { finalList, setFinalList } = useContext(ListContext);
@@ -56,17 +56,17 @@ const ClArtworkCard = ({
         <br />
       </Link>
       <div className="flex flex-col justify-end place-items-end grow items-center">
-      {needTempListButton ? (
-        <div>
-          <AddToListButton
-            clArtwork={clArtwork}
-            tempList={tempList}
-            setTempList={setTempList}
-            selectedMuseum={selectedMuseum}
-            needsConfirm={needsConfirm}
-          />
-        </div>
-          ) : null}
+        {needTempListButton ? (
+          <div>
+            <AddToListButton
+              clArtwork={clArtwork}
+              tempList={tempList}
+              setTempList={setTempList}
+              selectedMuseum={selectedMuseum}
+              needsConfirm={needsConfirm}
+            />
+          </div>
+        ) : null}
         {needExhibitButton ? (
           <div>
             <AddToExhibitButton

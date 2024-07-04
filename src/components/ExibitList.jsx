@@ -9,7 +9,7 @@ const ExhibitList = () => {
   const [apiError, setApiError] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false);
 
-  const { finalList } = useContext(ListContext);
+  const { finalList, tempList } = useContext(ListContext);
 
   useEffect(() => {
     setIsLoading(true);
@@ -52,6 +52,7 @@ const ExhibitList = () => {
         });
     };
 
+    
     fetchArtworks();
   }, [finalList]);
 
@@ -62,6 +63,10 @@ const ExhibitList = () => {
       setIsEmpty(true);
     }
   }, [finalList]);
+
+  const handleGoBack = () => {
+    window.history.back(); // Navigate back to the previous page
+  };
 
   if (isLoading) {
     return (
@@ -114,6 +119,19 @@ const ExhibitList = () => {
           </div>
         </div>
       )}
+            <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center text-white">
+        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full  max-w-screen-lg bg-titlebackground text-center flex justify-between">
+          <div className="flex items-center text-left w-20 pl-2">
+            List Items: {tempList.length}
+          </div>
+          <div className="flex items-center justify-center w-60">
+          <button onClick={handleGoBack}>Go Back</button>
+          </div>
+          <div className="flex items-center justify-end text-right w-20 pr-2">
+            Exhibition Items: {finalList.length}
+          </div>
+        </div>
+      </div>
     </>
   );
 };

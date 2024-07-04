@@ -3,7 +3,7 @@ import { getAllClArtworks, getAllChicagoArtworks } from "./api";
 import ClArtworkCard from "./ClArtworkCard";
 import { types, departments } from "./Queries";
 
-const ArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxRecords }) => {
+const ClArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxRecords }) => {
   const [clArtworks, setClArtworks] = useState([]);
   const [clArtToDisplay, setClArtToDisplay] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -232,4 +232,4 @@ const ArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxRec
   );
 };
 
-export default ArtworksRecords;
+export default ClArtworksRecords;

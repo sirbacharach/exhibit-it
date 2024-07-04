@@ -9,7 +9,7 @@ const TempListArtworks = () => {
   const [apiError, setApiError] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false);
 
-  const { tempList } = useContext(ListContext);
+  const { tempList, finalList } = useContext(ListContext);
 
   useEffect(() => {
     console.log(tempList);
@@ -78,6 +78,10 @@ const TempListArtworks = () => {
     );
   }
 
+  const handleGoBack = () => {
+    window.history.back(); // Navigate back to the previous page
+  };
+
   if (apiError) {
     return <Error message={apiError.message} />;
   }
@@ -112,8 +116,22 @@ const TempListArtworks = () => {
               ))}
             </div>
           )}
+          
         </div>
       )}
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center text-white">
+        <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full  max-w-screen-lg bg-titlebackground text-center flex justify-between">
+          <div className="flex items-center text-left w-20 pl-2">
+            List Items: {tempList.length}
+          </div>
+          <div className="flex items-center justify-center w-60">
+          <button onClick={handleGoBack}>Go Back</button>
+          </div>
+          <div className="flex items-center justify-end text-right w-20 pr-2">
+            Exhibition Items: {finalList.length}
+          </div>
+        </div>
+      </div>
     </>
   );
 };
