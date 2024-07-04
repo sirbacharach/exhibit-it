@@ -102,6 +102,8 @@ const TempListArtworks = () => {
                 key={artwork.athena_id}
                 selectedMuseum={tempList[index].gallery} // Adjust as per your data structure
                 needsConfirm={true}
+                needTempListButton={true}
+                needExhibitButton={true}
               />
             ))}
           </div>

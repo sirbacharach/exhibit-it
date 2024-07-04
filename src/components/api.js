@@ -3,7 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "https://openaccess-api.clevelandart.org/api",
 });
-
+// &limit=${itemLimit}&skip=${skip}
 // GET ALL ClArtworks
 const getAllClArtworks = (page, itemLimit, type, department) => {
   const skip = itemLimit * page;
@@ -13,7 +13,7 @@ const getAllClArtworks = (page, itemLimit, type, department) => {
   if (department) departmentStr = `&department=${department}`
     if (type) typeStr = `&type=${type}`
   return api
-    .get(`/artworks?skip=${skip}&limit=${itemLimit}&has_image=1${typeStr}${departmentStr}`)
+    .get(`/artworks?has_image=1${typeStr}${departmentStr}`)
     .then((response) => {
       console.log("Getting All Cleveland Works");
       console.log(response);

@@ -5,6 +5,7 @@ import { types, departments } from "./Queries";
 
 const ArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxRecords }) => {
   const [clArtworks, setClArtworks] = useState([]);
+  const [clArtToDisplay, setClArtToDisplay] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
   const [selectedMuseum, setSelectedMuseum] = useState("Cleveland Museum of Art");
@@ -13,8 +14,16 @@ const ArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxRec
 
   useEffect(() => {
     setIsLoading(true);
+    let fetchFunction;
+
     if (selectedMuseum === "Cleveland Museum of Art") {
-      getAllClArtworks(pageNo, itemLimit, selectedType, selectedDepartment)
+      fetchFunction = getAllClArtworks;
+    } else if (selectedMuseum === "Art Institute of Chicago") {
+      fetchFunction = getAllChicagoArtworks;
+    }
+
+    if (fetchFunction) {
+      fetchFunction(pageNo, itemLimit, selectedType, selectedDepartment)
         .then((response) => {
           setClArtworks(response[0]);
           setMaxRecords(response[1]);
@@ -24,21 +33,20 @@ const ArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxRec
           setApiError(err);
           setIsLoading(false);
         });
-    } else if (selectedMuseum === "Art Institute of Chicago") {
-      getAllChicagoArtworks(pageNo, itemLimit, selectedType, selectedDepartment)
-        .then((response) => {
-          setClArtworks(response[0]);
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          setApiError(err);
-          setIsLoading(false);
-        });
     }
-  }, [pageNo, itemLimit, selectedMuseum, selectedType, selectedDepartment]);
+  }, [pageNo, itemLimit, selectedMuseum, selectedType, selectedDepartment, setMaxRecords]);
+
+  useEffect(() => {
+    const startIdx = (pageNo) * itemLimit;
+    const endIdx = startIdx + itemLimit;
+    // Update clArtToDisplay when clArtworks or pagination changes
+    const slicedArtworks = clArtworks.slice(startIdx, endIdx);
+    setClArtToDisplay(slicedArtworks);
+  }, [clArtworks, itemLimit]);
 
   function handleMuseumChange(event) {
     setSelectedMuseum(event.target.value);
+    setPageNo(0); // Reset pageNo when changing museum
   }
 
   function handleTypeChange(event) {
@@ -52,8 +60,11 @@ const ArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxRec
   }
 
   function handleItemLimitChange(event) {
-    setItemLimit(Number(event.target.value));
-    setPageNo(0);
+    const limit = Number(event.target.value);
+    setItemLimit(limit);
+    setPageNo(0); // Reset pageNo when changing itemLimit
+    const slicedArtworks = clArtworks.slice(0, limit);
+    setClArtToDisplay(slicedArtworks);
   }
 
   if (isLoading) {
@@ -145,14 +156,16 @@ const ArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxRec
         <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
           {selectedMuseum} Artworks
         </h2>
-        {clArtworks.length > 0 ? (
+        {clArtToDisplay.length > 0 ? (
           <div className="flex flex-wrap place-content-evenly pb-10">
-            {clArtworks.map((clArtwork) => (
+            {clArtToDisplay.map((clArtwork) => (
               <ClArtworkCard
                 clArtwork={clArtwork}
                 key={clArtwork.athena_id}
                 selectedMuseum={selectedMuseum} // Pass selected museum to ClArtworkCard
                 needsConfirm={false}
+                needTempListButton={true}
+                needExhibitButton={false}
               />
             ))}
           </div>

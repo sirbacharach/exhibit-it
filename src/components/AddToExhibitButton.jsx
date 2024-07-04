@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const AddToExhibitButton = ({ clArtwork, finalList, setFinalList, selectedMuseum, needsConfirm }) => {
+const AddToExhibitButton = ({ clArtwork, finalList, setFinalList, selectedMuseum, needsConfirm, isFromExhibit}) => {
   const [isInList, setIsInList] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false); // State to manage confirmation prompt
 
@@ -49,7 +49,7 @@ const AddToExhibitButton = ({ clArtwork, finalList, setFinalList, selectedMuseum
           } text-white`}
           onClick={handleToggle}
         >
-          {isInList ? 'Remove from List' : 'Add to List'}
+          {isInList ? 'Remove from Exhibition' : 'Add to Exhibition'}
         </button>
       )}
     </>

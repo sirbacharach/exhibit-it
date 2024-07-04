@@ -15,8 +15,6 @@ const ExhibitList = () => {
     setIsLoading(true);
     setApiError(null);
 
-    console.log("Final List is: ", finalList)
-
     const fetchArtworks = async () => {
       if (!Array.isArray(finalList) || finalList.length === 0) {
         setArtworks([]);
@@ -97,12 +95,14 @@ const ExhibitList = () => {
             Selected Artworks
           </h2>
           <div className="flex flex-wrap place-content-evenly pb-10">
-            {artworks.map((artwork) => (
+            {artworks.map((artwork, index) => (
               <ClArtworkCard
                 clArtwork={artwork}
                 key={artwork.athena_id}
-                selectedMuseum={artwork.gallery} // Adjust as per your data structure
+                selectedMuseum={finalList[index].gallery} // Adjust as per your data structure
                 needsConfirm={true}
+                needTempListButton={false}
+                needExhibitButton={true}
               />
             ))}
           </div>
