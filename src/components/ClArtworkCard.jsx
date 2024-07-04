@@ -3,6 +3,7 @@ import { ListContext } from "./ListContext";
 import { useContext, useEffect, useState } from "react";
 import AddToListButton from "./AddToListButton";
 import PlaceholderImage from '../assets/img/throbber.gif'; // Import a placeholder image
+// import LazyLoad from "react-lazyload";
 
 const ClArtworkCard = ({ clArtwork, selectedMuseum, needsConfirm }) => {
   const { tempList, setTempList } = useContext(ListContext);
@@ -33,6 +34,7 @@ const ClArtworkCard = ({ clArtwork, selectedMuseum, needsConfirm }) => {
                 className="w-1/2 ml-auto mr-auto"
                 src={PlaceholderImage}
                 alt="placeholder"
+                loading="lazy"
               />
             )}
           </>
