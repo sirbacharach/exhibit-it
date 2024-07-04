@@ -1,32 +1,31 @@
 import axios from "axios";
 
-const api = axios.create({
+const clevelandApi = axios.create({
   baseURL: "https://openaccess-api.clevelandart.org/api",
 });
+
+const chicagoApi = axios.create({
+  baseURL: "https://api.artic.edu/api/v1",
+});
+
 // &limit=${itemLimit}&skip=${skip}
 // GET ALL ClArtworks
 const getAllClArtworks = (page, itemLimit, type, department) => {
   const skip = itemLimit * page;
-  console.log("department =  ", department)
   let typeStr = ""
   let departmentStr = ""
   if (department) departmentStr = `&department=${department}`
     if (type) typeStr = `&type=${type}`
-  return api
+  return clevelandApi
     .get(`/artworks?has_image=1${typeStr}${departmentStr}`)
     .then((response) => {
-      console.log("Getting All Cleveland Works");
-      console.log(response);
       return [response.data.data, response.data.info.total];
     });
 };
 
 // GET SINGLE ClArtwork
 const getSingleClArtwork = (clartwork_id) => {
-  console.log(clartwork_id);
-  console.log(`/artworks/${clartwork_id}`);
-  return api.get(`/artworks/${clartwork_id}`).then((response) => {
-    console.log(response.data.data);
+  return clevelandApi.get(`/artworks/${clartwork_id}`).then((response) => {
     return response.data.data;
   });
 };
@@ -35,12 +34,11 @@ const getSingleClArtwork = (clartwork_id) => {
 const getAllChicagoArtworks = (page) => {
   const skip = 10 * page;
 
-  return api
-    .get(`/artworks?skip=${skip}&limit=10&has_image=1`)
+  return chicagoApi
+    .get(`/artworks?page=2&limit=10`)
     .then((response) => {
-      console.log("Getting All Chicago Works");
-      console.log(response);
-      return [response.data.data, response.data.info.total];
+      console.log(response)
+      return [response.data.data, response.data.pagination.total];
     });
 };
 
@@ -48,9 +46,9 @@ const getAllChicagoArtworks = (page) => {
 const getSingleChicagoArtwork = (clartwork_id) => {
   console.log(clartwork_id);
   console.log(`/artworks/${clartwork_id}`);
-  return api.get(`/artworks/${clartwork_id}`).then((response) => {
-    console.log(response.data.data);
-    return response.data.data;
+  return chicagoApi.get(`/artworks/${clartwork_id}`).then((response) => {
+    console.log(response);
+    return response;
   });
 };
 

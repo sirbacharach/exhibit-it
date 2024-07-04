@@ -13,6 +13,7 @@ const SingleClArtwork = () => {
   const { clartwork_id } = useParams();
   const [apiError, setApiError] = useState("");
 
+
   useEffect(() => {
     getSingleClArtwork(clartwork_id)
       .then((response) => {

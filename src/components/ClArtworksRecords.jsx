@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { getAllClArtworks, getAllChicagoArtworks } from "./api";
 import ClArtworkCard from "./ClArtworkCard";
+import ChicagoArtworkCard from "./ChicagoArtworkCard";
 import { types, departments } from "./Queries";
 
-const ClArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxRecords }) => {
+const ClArtworksRecords = ({
+  pageNo,
+  setPageNo,
+  itemLimit,
+  setItemLimit,
+  setMaxRecords,
+}) => {
   const [clArtworks, setClArtworks] = useState([]);
   const [clArtToDisplay, setClArtToDisplay] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -36,7 +43,14 @@ const ClArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxR
           setIsLoading(false);
         });
     }
-  }, [pageNo, itemLimit, selectedMuseum, selectedType, selectedDepartment, setMaxRecords]);
+  }, [
+    pageNo,
+    itemLimit,
+    selectedMuseum,
+    selectedType,
+    selectedDepartment,
+    setMaxRecords,
+  ]);
 
   useEffect(() => {
     let sortedArtworks = [...clArtworks];
@@ -107,7 +121,10 @@ const ClArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxR
         <div className="flex flex-col gap-4 mb-4">
           <div className="flex flex-wrap justify-center gap-4">
             <div className="flex flex-col items-center w-full sm:w-auto">
-              <label htmlFor="museumSelect" className="block sm:inline mr-2 mb-1 sm:mb-0">
+              <label
+                htmlFor="museumSelect"
+                className="block sm:inline mr-2 mb-1 sm:mb-0"
+              >
                 Select Museum:
               </label>
               <select
@@ -116,12 +133,19 @@ const ClArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxR
                 onChange={handleMuseumChange}
                 className="px-2 py-1 border border-gray-300 rounded w-full sm:w-auto"
               >
-                <option value="Cleveland Museum of Art">Cleveland Museum of Art</option>
-                <option value="Art Institute of Chicago">Art Institute of Chicago</option>
+                <option value="Cleveland Museum of Art">
+                  Cleveland Museum of Art
+                </option>
+                <option value="Art Institute of Chicago">
+                  Art Institute of Chicago
+                </option>
               </select>
             </div>
             <div className="flex flex-col items-center w-full sm:w-auto">
-              <label htmlFor="typeSelect" className="block sm:inline mr-2 mb-1 sm:mb-0">
+              <label
+                htmlFor="typeSelect"
+                className="block sm:inline mr-2 mb-1 sm:mb-0"
+              >
                 Type:
               </label>
               <select
@@ -139,7 +163,10 @@ const ClArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxR
               </select>
             </div>
             <div className="flex flex-col items-center w-full sm:w-auto">
-              <label htmlFor="departmentSelect" className="block sm:inline mr-2 mb-1 sm:mb-0">
+              <label
+                htmlFor="departmentSelect"
+                className="block sm:inline mr-2 mb-1 sm:mb-0"
+              >
                 Department:
               </label>
               <select
@@ -159,7 +186,10 @@ const ClArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxR
           </div>
           <div className="flex flex-wrap justify-center gap-4">
             <div className="flex flex-col items-center w-full sm:w-auto">
-              <label htmlFor="itemLimitSelect" className="block sm:inline mr-2 mb-1 sm:mb-0">
+              <label
+                htmlFor="itemLimitSelect"
+                className="block sm:inline mr-2 mb-1 sm:mb-0"
+              >
                 Items per page:
               </label>
               <select
@@ -177,7 +207,10 @@ const ClArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxR
               </select>
             </div>
             <div className="flex flex-col items-center w-full sm:w-auto">
-              <label htmlFor="sortCriteriaSelect" className="block sm:inline mr-2 mb-1 sm:mb-0">
+              <label
+                htmlFor="sortCriteriaSelect"
+                className="block sm:inline mr-2 mb-1 sm:mb-0"
+              >
                 Sort by:
               </label>
               <select
@@ -188,10 +221,15 @@ const ClArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxR
               >
                 <option value="">None</option>
                 <option value="creation_date">Creation Date</option>
+                <option value="type">Type</option>
+                <option value="technique">Technique</option>
               </select>
             </div>
             <div className="flex flex-col items-center w-full sm:w-auto">
-              <label htmlFor="sortOrderSelect" className="block sm:inline mr-2 mb-1 sm:mb-0">
+              <label
+                htmlFor="sortOrderSelect"
+                className="block sm:inline mr-2 mb-1 sm:mb-0"
+              >
                 Order:
               </label>
               <select
@@ -209,23 +247,51 @@ const ClArtworksRecords = ({ pageNo, setPageNo, itemLimit, setItemLimit, setMaxR
         <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
           {selectedMuseum} Artworks
         </h2>
-        {clArtToDisplay.length > 0 ? (
-          <div className="flex flex-wrap place-content-evenly pb-10">
-            {clArtToDisplay.map((clArtwork) => (
-              <ClArtworkCard
-                clArtwork={clArtwork}
-                key={clArtwork.athena_id}
-                selectedMuseum={selectedMuseum} // Pass selected museum to ClArtworkCard
-                needsConfirm={false}
-                needTempListButton={true}
-                needExhibitButton={false}
-              />
-            ))}
-          </div>
-        ) : (
-          <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1 flex flex-col">
-            There is no artwork available for this category.
-          </h2>
+        
+        {selectedMuseum === "Cleveland Museum of Art" && (
+          <>
+            {clArtToDisplay.length > 0 ? (
+              <div className="flex flex-wrap place-content-evenly pb-10">
+                {clArtToDisplay.map((clArtwork) => (
+                  <ClArtworkCard
+                    clArtwork={clArtwork}
+                    key={clArtwork.athena_id}
+                    selectedMuseum={selectedMuseum}
+                    needsConfirm={false}
+                    needTempListButton={true}
+                    needExhibitButton={false}
+                  />
+                ))}
+              </div>
+            ) : (
+              <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1 flex flex-col">
+                There is no artwork available for this category.
+              </h2>
+            )}
+          </>
+        )}
+
+        {selectedMuseum === "Art Institute of Chicago" && (
+          <>
+            {clArtToDisplay.length > 0 ? (
+              <div className="flex flex-wrap place-content-evenly pb-10">
+                {clArtToDisplay.map((clArtwork) => (
+                  <ChicagoArtworkCard
+                    clArtwork={clArtwork}
+                    key={clArtwork.id}
+                    selectedMuseum={selectedMuseum}
+                    needsConfirm={false}
+                    needTempListButton={true}
+                    needExhibitButton={false}
+                  />
+                ))}
+              </div>
+            ) : (
+              <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1 flex flex-col">
+                There is no artwork available for this category.
+              </h2>
+            )}
+          </>
         )}
       </div>
     </>

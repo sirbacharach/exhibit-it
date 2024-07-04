@@ -6,7 +6,7 @@ import PlaceholderImage from "../assets/img/throbber.gif"; // Import a placehold
 import AddToExhibitButton from "./AddToExhibitButton";
 // import LazyLoad from "react-lazyload";
 
-const ClArtworkCard = ({
+const ChicagoArtworkCard = ({
   clArtwork,
   selectedMuseum,
   needsConfirm,
@@ -18,9 +18,9 @@ const ClArtworkCard = ({
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    console.log("artwirj ub ClArtworkCard")
   }, [tempList]);
 
+  
   return (
     <li className="inner-container-colour article-card min-w-72 max-w-72 m-2 list-none content-between bg-titletextbackground p-3 drop-shadow-md rounded-xl flex flex-col">
       <Link
@@ -28,15 +28,17 @@ const ClArtworkCard = ({
         className="all-articles light-font-colour"
         style={{ textDecoration: "none" }}
       >
-        {clArtwork?.images?.web?.url ? (
+        {clArtwork?.thumbnail?.lqip? (
           <>
-            <img
-              className={`w-auto ${isLoaded ? "block" : "hidden"}`}
-              src={clArtwork.images.web.url}
-              srcSet={`${clArtwork.images.web.url} 1x, ${clArtwork.images.web.url} 2x`}
-              alt={`painting of "${clArtwork.title}"`}
-              onLoad={() => setIsLoaded(true)}
-            />
+    <div>
+      <img
+        className={`w-auto ${isLoaded ? "block" : "hidden"}`}
+        src={`https://www.artic.edu/iiif/2/${clArtwork.image_id}/full/843,/0/default.jpg`}
+        alt="Base64 Image"
+        onLoad={() => setIsLoaded(true)}
+      />
+      {!isLoaded && <div>Loading...</div>}
+    </div>
             {!isLoaded && (
               <img
                 className="w-1/2 ml-auto mr-auto"
@@ -48,10 +50,11 @@ const ClArtworkCard = ({
           </>
         ) : null}
         <h1>{clArtwork?.title ? clArtwork.title : "no title available"}</h1>
-        <p>Creation Date: {clArtwork.creation_date}</p>
+        <p>Creation Date: {clArtwork.date_end}</p>
+        <p>Artist: {clArtwork.artist_dtitle}</p>
         <p>Culture: {clArtwork.culture}</p>
-        <p>Type: {clArtwork.type}</p>
-        <p>Technique: {clArtwork.technique}</p>
+        {clArtwork.classification_title? <p>Type: {clArtwork.classification_title}</p> : null}
+        {clArtwork.technique_titles ? <p>Technique: {clArtwork.technique_titles[0]}</p> : null }
         <p>Gallery: {selectedMuseum}</p>
         <br />
       </Link>
@@ -83,4 +86,4 @@ const ClArtworkCard = ({
   );
 };
 
-export default ClArtworkCard;
+export default ChicagoArtworkCard;
