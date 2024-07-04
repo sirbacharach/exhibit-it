@@ -6,6 +6,7 @@ import { ListContext } from "./ListContext";
 
 const Artworks = () => {
   const [pageNo, setPageNo] = useState(0);
+  const [itemLimit, setItemLimit] = useState(5)
   const [maxRecords, setMaxRecords] = useState(0);
   const [apiError, setApiError] = useState("");
   const { tempList } = useContext(ListContext);
@@ -19,6 +20,7 @@ const Artworks = () => {
   }
 
   function handleNextPage() {
+    if(pageNo < Math.ceil((maxRecords / itemLimit))-1)
     setPageNo(pageNo + 1);
   }
 
@@ -29,12 +31,12 @@ const Artworks = () => {
   return (
     <>
       <div className="min-w-full max-w-screen-lg mx-auto relative">
-        <ClArtworksRecords pageNo={pageNo} setPageNo = {setPageNo} setMaxRecords={setMaxRecords}/>
+        <ClArtworksRecords pageNo={pageNo} setPageNo = {setPageNo} itemLimit={itemLimit} setItemLimit={setItemLimit} setMaxRecords={setMaxRecords}/>
       </div>
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center text-white">
           <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full  max-w-screen-lg bg-titlebackground text-center flex justify-between">
-          <div className="flex items-center text-left w-20">
-            Total Items: {tempList.length}
+          <div className="flex items-center text-left w-20 pl-2">
+            List Items: {tempList.length}
           </div>
           <div className="flex items-center justify-center w-60">
             <Link
@@ -45,7 +47,7 @@ const Artworks = () => {
             >
               &lt;&lt;
             </Link>
-            Page No: {pageNo + 1} of {Math.ceil(maxRecords / 10)}
+            Page No: {pageNo + 1} of {Math.ceil(maxRecords / itemLimit)}
             <Link
               onClick={() => {
                 handleNextPage();
@@ -55,8 +57,8 @@ const Artworks = () => {
               &gt;&gt;
             </Link>
           </div>
-          <div className="flex items-center justify-end text-right w-20">
-            Exhibition Items
+          <div className="flex items-center justify-end text-right w-20 pr-2">
+            Exhibition Items: 
           </div>
       </div>
         </div>

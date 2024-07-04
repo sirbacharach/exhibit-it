@@ -5,15 +5,15 @@ const api = axios.create({
 });
 
 // GET ALL ClArtworks
-const getAllClArtworks = (page, type, department) => {
-  const skip = 10 * page;
+const getAllClArtworks = (page, itemLimit, type, department) => {
+  const skip = itemLimit * page;
   console.log("department =  ", department)
   let typeStr = ""
   let departmentStr = ""
   if (department) departmentStr = `&department=${department}`
     if (type) typeStr = `&type=${type}`
   return api
-    .get(`/artworks?skip=${skip}&limit=10&has_image=1${typeStr}${departmentStr}`)
+    .get(`/artworks?skip=${skip}&limit=${itemLimit}&has_image=1${typeStr}${departmentStr}`)
     .then((response) => {
       console.log("Getting All Cleveland Works");
       console.log(response);

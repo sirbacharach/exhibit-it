@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import AddToListButton from "./AddToListButton";
 import PlaceholderImage from '../assets/img/throbber.gif'; // Import a placeholder image
 
-const ClArtworkCard = ({ clArtwork, selectedMuseum }) => {
+const ClArtworkCard = ({ clArtwork, selectedMuseum, needsConfirm }) => {
   const { tempList, setTempList } = useContext(ListContext);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -50,6 +50,7 @@ const ClArtworkCard = ({ clArtwork, selectedMuseum }) => {
           tempList={tempList}
           setTempList={setTempList}
           selectedMuseum={selectedMuseum}
+          needsConfirm={needsConfirm}
         />
       </div>
     </li>
