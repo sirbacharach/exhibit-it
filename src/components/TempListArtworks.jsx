@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { getSingleClArtwork, getSingleChicagoArtwork } from "./api";
 import ClArtworkCard from "./ClArtworkCard";
+import ChicagoArtworkCard from "./ChicagoArtworkCard";
 import { ListContext } from "./ListContext";
 import { types, departments } from "./Queries";
 import { Link } from "react-router-dom";
@@ -54,6 +55,8 @@ const TempListArtworks = () => {
         setIsLoading(false);
       }
     };
+
+    console.log(tempList)
 
     fetchArtworks();
   }, [tempList, selectedType, selectedDepartment, itemLimit, sortCriteria, sortOrder, pageNo]);
@@ -223,12 +226,13 @@ const TempListArtworks = () => {
       </h2>
 
       <div className="max-w-screen-lg mx-auto">
+        <p>templist item[0] = { tempList[0].gallery }</p>
         <div className="flex flex-wrap place-content-evenly pb-10">
           {tempListToDisplay.map((artwork, index) => (
-                  <ChicagoArtworkCard
-                  artwork={chicagoArtwork}
-                  key={chicagoArtwork.id}
-                  selectedMuseum={selectedMuseum}
+                  <ClArtworkCard
+                  artwork={artwork}
+                  key={artwork.athena_id}
+                  selectedMuseum={ tempList[index].gallery }
                   needsConfirm={false}
                   needTempListButton={true}
                   needExhibitButton={false}
