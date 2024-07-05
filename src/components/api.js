@@ -17,8 +17,9 @@ const getAllClArtworks = (page, itemLimit, type, department) => {
   if (department) departmentStr = `&department=${department}`
     if (type) typeStr = `&type=${type}`
   return clevelandApi
-    .get(`/artworks?has_image=1${typeStr}${departmentStr}`)
+    .get(`/artworks?has_image=1${typeStr}${departmentStr}&page=2&limit=${itemLimit}&skip=${skip}`)
     .then((response) => {
+      console.log(response.data.data)
       return [response.data.data, response.data.info.total];
     });
 };
@@ -31,11 +32,13 @@ const getSingleClArtwork = (clartwork_id) => {
 };
 
 // GET ALL ChicagoArtworks
-const getAllChicagoArtworks = (page) => {
-  const skip = 10 * page;
+const getAllChicagoArtworks = (page, itemLimit, type, department) => {
+  const skip = itemLimit * page;
+  let typeStr = ""
+  let departmentStr = ""
 
   return chicagoApi
-    .get(`/artworks?page=2&limit=10`)
+    .get(`/artworks?page=${page+1}&limit=${itemLimit}`)
     .then((response) => {
       console.log(response)
       return [response.data.data, response.data.pagination.total];

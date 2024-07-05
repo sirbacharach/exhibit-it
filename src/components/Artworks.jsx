@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { getAllClArtworks } from "./api";
-import ClArtworksRecords from "./ClArtworksRecords";
+import ArtworksRecords from "./ArtworksRecords";
 import { Link } from "react-router-dom";
 import { ListContext } from "./ListContext";
 
@@ -29,7 +29,7 @@ const Artworks = () => {
   return (
     <>
       <div className="min-w-full max-w-screen-lg mx-auto relative">
-        <ClArtworksRecords
+        <ArtworksRecords
           pageNo={pageNo}
           setPageNo={setPageNo}
           itemLimit={itemLimit}

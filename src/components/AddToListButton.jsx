@@ -1,33 +1,59 @@
 import React, { useEffect, useState } from 'react';
 
-const AddToListButton = ({ clArtwork, tempList, setTempList, selectedMuseum, needsConfirm }) => {
+const AddToListButton = ({ artwork, tempList, setTempList, selectedMuseum, needsConfirm }) => {
   const [isInList, setIsInList] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false); // State to manage confirmation prompt
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
-    const isInList = tempList.some(item => item.artworkId === clArtwork.accession_number);
-    setIsInList(isInList);
-  }, [tempList, clArtwork.accession_number]);
+    if (selectedMuseum === "Cleveland Museum of Art") {
+      const isInList = tempList.some(item => item.artworkId === artwork.accession_number);
+      setIsInList(isInList);
+    } else if (selectedMuseum === "Art Institute of Chicago") {
+      const isInList = tempList.some(item => item.artworkId === artwork.id);
+      setIsInList(isInList);
+    }
+  }, [tempList, artwork.accession_number, artwork.id, selectedMuseum]);
 
   const handleToggle = () => {
     if (isInList) {
       if (needsConfirm) {
-        setShowConfirm(true); // Show confirmation prompt
+        setShowConfirm(true);
       } else {
-        setTempList(prevList => prevList.filter(item => item.artworkId !== clArtwork.accession_number));
+        setTempList(prevList => {
+          if (selectedMuseum === "Cleveland Museum of Art") {
+            return prevList.filter(item => item.artworkId !== artwork.accession_number);
+          } else if (selectedMuseum === "Art Institute of Chicago") {
+            return prevList.filter(item => item.artworkId !== artwork.id);
+          }
+          return prevList;
+        });
       }
     } else {
-      setTempList(prevList => [...prevList, { artworkId: clArtwork.accession_number, gallery: selectedMuseum }]);
+      setTempList(prevList => {
+        if (selectedMuseum === "Cleveland Museum of Art") {
+          return [...prevList, { artworkId: artwork.accession_number, gallery: selectedMuseum }];
+        } else if (selectedMuseum === "Art Institute of Chicago") {
+          return [...prevList, { artworkId: artwork.id, gallery: selectedMuseum }];
+        }
+        return prevList;
+      });
     }
   };
 
   const handleConfirmRemove = () => {
-    setTempList(prevList => prevList.filter(item => item.artworkId !== clArtwork.accession_number));
-    setShowConfirm(false); // Hide confirmation prompt after removal
+    setTempList(prevList => {
+      if (selectedMuseum === "Cleveland Museum of Art") {
+        return prevList.filter(item => item.artworkId !== artwork.accession_number);
+      } else if (selectedMuseum === "Art Institute of Chicago") {
+        return prevList.filter(item => item.artworkId !== artwork.id);
+      }
+      return prevList;
+    });
+    setShowConfirm(false);
   };
 
   const handleCancelRemove = () => {
-    setShowConfirm(false); // Hide confirmation prompt without removing
+    setShowConfirm(false);
   };
 
   return (

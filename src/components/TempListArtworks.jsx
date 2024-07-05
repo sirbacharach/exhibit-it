@@ -225,13 +225,13 @@ const TempListArtworks = () => {
       <div className="max-w-screen-lg mx-auto">
         <div className="flex flex-wrap place-content-evenly pb-10">
           {tempListToDisplay.map((artwork, index) => (
-            <ClArtworkCard
-              clArtwork={artwork}
-              key={artwork.athena_id}
-              selectedMuseum={artwork.gallery} // Adjusted to use the gallery property in artwork
-              needsConfirm={true}
-              needTempListButton={true}
-              needExhibitButton={true}
+                  <ChicagoArtworkCard
+                  artwork={chicagoArtwork}
+                  key={chicagoArtwork.id}
+                  selectedMuseum={selectedMuseum}
+                  needsConfirm={false}
+                  needTempListButton={true}
+                  needExhibitButton={false}
             />
           ))}
         </div>

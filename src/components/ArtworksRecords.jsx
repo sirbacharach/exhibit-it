@@ -4,15 +4,14 @@ import ClArtworkCard from "./ClArtworkCard";
 import ChicagoArtworkCard from "./ChicagoArtworkCard";
 import { types, departments } from "./Queries";
 
-const ClArtworksRecords = ({
+const ArtworksRecords = ({
   pageNo,
   setPageNo,
   itemLimit,
   setItemLimit,
   setMaxRecords,
 }) => {
-  const [clArtworks, setClArtworks] = useState([]);
-  const [clArtToDisplay, setClArtToDisplay] = useState([]);
+  const [artworks, setArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
   const [selectedMuseum, setSelectedMuseum] = useState("Cleveland Museum of Art");
@@ -34,7 +33,7 @@ const ClArtworksRecords = ({
     if (fetchFunction) {
       fetchFunction(pageNo, itemLimit, selectedType, selectedDepartment)
         .then((response) => {
-          setClArtworks(response[0]);
+          setArtworks(response[0]);
           setMaxRecords(response[1]);
           setIsLoading(false);
         })
@@ -53,7 +52,7 @@ const ClArtworksRecords = ({
   ]);
 
   useEffect(() => {
-    let sortedArtworks = [...clArtworks];
+    let sortedArtworks = [...artworks];
 
     if (sortCriteria) {
       sortedArtworks.sort((a, b) => {
@@ -65,11 +64,7 @@ const ClArtworksRecords = ({
       });
     }
 
-    const startIdx = pageNo * itemLimit;
-    const endIdx = startIdx + itemLimit;
-    const slicedArtworks = sortedArtworks.slice(startIdx, endIdx);
-    setClArtToDisplay(slicedArtworks);
-  }, [clArtworks, pageNo, itemLimit, sortCriteria, sortOrder]);
+  }, [artworks, pageNo, itemLimit, sortCriteria, sortOrder]);
 
   function handleMuseumChange(event) {
     setSelectedMuseum(event.target.value);
@@ -250,11 +245,11 @@ const ClArtworksRecords = ({
         
         {selectedMuseum === "Cleveland Museum of Art" && (
           <>
-            {clArtToDisplay.length > 0 ? (
+            {artworks.length > 0 ? (
               <div className="flex flex-wrap place-content-evenly pb-10">
-                {clArtToDisplay.map((clArtwork) => (
+                {artworks.map((clArtwork) => (
                   <ClArtworkCard
-                    clArtwork={clArtwork}
+                    artwork={clArtwork}
                     key={clArtwork.athena_id}
                     selectedMuseum={selectedMuseum}
                     needsConfirm={false}
@@ -273,12 +268,12 @@ const ClArtworksRecords = ({
 
         {selectedMuseum === "Art Institute of Chicago" && (
           <>
-            {clArtToDisplay.length > 0 ? (
+            {artworks.length > 0 ? (
               <div className="flex flex-wrap place-content-evenly pb-10">
-                {clArtToDisplay.map((clArtwork) => (
+                {artworks.map((chicagoArtwork) => (
                   <ChicagoArtworkCard
-                    clArtwork={clArtwork}
-                    key={clArtwork.id}
+                    artwork={chicagoArtwork}
+                    key={chicagoArtwork.id}
                     selectedMuseum={selectedMuseum}
                     needsConfirm={false}
                     needTempListButton={true}
@@ -298,4 +293,4 @@ const ClArtworksRecords = ({
   );
 };
 
-export default ClArtworksRecords;
+export default ArtworksRecords;
