@@ -8,6 +8,7 @@ import { UserListProvider } from "./components/ListContext";
 import TempListArtworks from "./components/TempListArtworks";
 import ExhibitList from "./components/ExibitList";
 import Home from "./components/Home";
+import SingleChicagoArtwork from "./components/SingleChicagoArtwork";
 
 function App() {
   return (
@@ -17,7 +18,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/artworks" element={<Artworks />} />
-        <Route path="/artworks/:clartwork_id" element={<SingleClArtwork />} />
+        <Route path="/artworks/clevelandartwork/:clartwork_id" element={<SingleClArtwork />} />
+        <Route path="/artworks/chicagoartwork/:chicagoartwork_id" element={<SingleChicagoArtwork/>}/>
         <Route path="/artworks/artworkslist" element={<TempListArtworks />} />
         <Route path="/artworks/exhibitList" element={<ExhibitList />} />
         <Route path="/*" element={<Error message="Route not found!" />} />

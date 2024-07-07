@@ -46,8 +46,8 @@ const getAllChicagoArtworks = (page, itemLimit, type, department) => {
 };
 
 // GET SINGLE ChicagoArtwork
-const getSingleChicagoArtwork = (clartwork_id) => {
-  console.log(clartwork_id);
+const getSingleChicagoArtwork = (chicagoArtwork_id) => {
+  console.log(chicagoArtwork_id);
   console.log(`/artworks/${clartwork_id}`);
   return chicagoApi.get(`/artworks/${clartwork_id}`).then((response) => {
     console.log("single artwork response, Chicago", response.data.data);

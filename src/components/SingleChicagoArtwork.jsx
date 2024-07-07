@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { getSingleClArtwork } from "./api";
+import { getSingleChicagoArtwork } from "./api";
 import AddToListButton from "./AddToListButton";
 import AddToExhibitButton from "./AddToExhibitButton";
 import { ListContext } from "./ListContext";
@@ -8,30 +8,31 @@ import Error from "./Error"; // Uncomment or import Error if not imported
 
 const SingleChicagoArtwork = () => {
   const { tempList, setTempList, finalList, setFinalList } = useContext(ListContext);
-  const [clArtwork, setClArtwork] = useState({});
+  const [chicagoArtwork, setChicagoArtwork] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const { clartwork_id } = useParams();
+  const { chicagoArtwork_id } = useParams();
   const [apiError, setApiError] = useState("");
 
 
   useEffect(() => {
-    getSingleClArtwork(clartwork_id)
+    console.log(chicagoArtwork_id)
+    getSingleChicagoArtwork(chicagoArtwork_id)
       .then((response) => {
-        setClArtwork(response);
+        setChicagoArtwork(response);
         setIsLoading(false);
       })
       .catch((err) => {
         setApiError(err);
         setIsLoading(false);
       });
-  }, [clartwork_id]);
+  }, [chicagoArtwork]);
 
   const handleGoBack = () => {
     window.history.back(); // Navigate back to the previous page
   };
 
-  const isInTempList = tempList.some((item) => item.artworkId === clartwork_id);
-  const isInFinalList = finalList.some((item) => item.artworkId === clartwork_id);
+  const isInTempList = tempList.some((item) => item.artworkId === chicagoArtwork);
+  const isInFinalList = finalList.some((item) => item.artworkId === chicagoArtwork);
 
   if (isLoading) {
     return <p>Content Loading....</p>;
@@ -42,29 +43,29 @@ const SingleChicagoArtwork = () => {
   return (
     <>
       <div className="relative flex flex-col max-w-4xl mx-auto pb-10 pt-5 mb-4">
-        {clArtwork?.images?.web?.url ? (
+        {chicagoArtwork?.images?.web?.url ? (
           <img
             className="w-full"
-            src={clArtwork.images.web.url}
-            alt={`painting of "${clArtwork.title}"`}
+            src={chicagoArtwork.images.web.url}
+            alt={`painting of "${chicagoArtwork.title}"`}
             loading="lazy"
           />
         ) : null}
         <br />
-        <h1>Title: {clArtwork?.title ? clArtwork.title : "no title available"}</h1>
-        <p>Id: {clArtwork.athena_id}</p>
-        <p>Creation Date: {clArtwork.creation_date}</p>
-        <p>Culture: {clArtwork.culture}</p>
-        <p>Type: {clArtwork.type}</p>
-        <p>Technique: {clArtwork.technique}</p>
+        <h1>Title: {chicagoArtwork?.title ? chicagoArtwork.title : "no title available"}</h1>
+        <p>Id: {chicagoArtwork.athena_id}</p>
+        <p>Creation Date: {chicagoArtwork.creation_date}</p>
+        <p>Culture: {chicagoArtwork.culture}</p>
+        <p>Type: {clArtchicagoArtworkwork.type}</p>
+        <p>Technique: {chicagoArtwork.technique}</p>
         <br />
-        <p>{clArtwork.description}</p>
+        <p>{chicagoArtwork.description}</p>
         <br />
         <div className="flex justify-center place-items-end grow">
           <div className="flex flex-col justify-end place-items-end grow items-center">
               <div>
                 <AddToListButton
-            artwork={clArtwork}
+            artwork={chicagoArtwork}
             selectedMuseum={"Cleveland Museum of Art"}
             needsConfirm={true}
                 />
@@ -72,7 +73,7 @@ const SingleChicagoArtwork = () => {
               {isInTempList || isInFinalList ? (
   <div>
     <AddToExhibitButton
-            artwork={clArtwork}
+            artwork={chicagoArtwork}
             selectedMuseum={"Cleveland Museum of Art"}
             needsConfirm={true}
     />
