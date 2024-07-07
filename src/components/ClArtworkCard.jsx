@@ -12,7 +12,7 @@ const ClArtworkCard = ({
   needTempListButton,
   needExhibitButton,
 }) => {
-  const { tempList, setTempList, finalList, setFinalList } = useContext(ListContext);
+  const { tempList } = useContext(ListContext);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -57,8 +57,6 @@ const ClArtworkCard = ({
         {needTempListButton && (
           <AddToListButton
             artwork={artwork}
-            tempList={tempList}
-            setTempList={setTempList}
             selectedMuseum={selectedMuseum}
             needsConfirm={needsConfirm}
           />
@@ -66,8 +64,6 @@ const ClArtworkCard = ({
         {needExhibitButton && (
           <AddToExhibitButton
             artwork={artwork}
-            finalList={finalList}
-            setFinalList={setFinalList}
             selectedMuseum={selectedMuseum}
             needsConfirm={needsConfirm}
           />

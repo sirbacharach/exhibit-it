@@ -270,7 +270,7 @@ const TempListArtworks = () => {
               selectedMuseum={artwork.gallery} // Fixed the access to gallery
               needsConfirm={false}
               needTempListButton={true}
-              needExhibitButton={false}
+              needExhibitButton={true}
             />
           ))}
         </div>
