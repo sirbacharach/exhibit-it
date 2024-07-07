@@ -61,6 +61,7 @@ const FinalListArtworks = () => {
     };
 
     fetchArtworks();
+
   }, [
     finalList,
     selectedType,
@@ -263,16 +264,33 @@ const FinalListArtworks = () => {
 
       <div className="max-w-screen-lg mx-auto">
         <div className="flex flex-wrap place-content-evenly pb-10">
-          {finalListToDisplay.map((artwork) => (
-            <ClArtworkCard
-              artwork={artwork}
-              key={artwork.athena_id}
-              selectedMuseum={artwork.gallery} // Fixed the access to gallery
-              needsConfirm={false}
-              needTempListButton={false}
-              needExhibitButton={true}
-            />
-          ))}
+          {finalListToDisplay.map((artwork) =>
+            artwork.gallery === "Cleveland Museum of Art" ? (
+              <ClArtworkCard
+                artwork={artwork}
+                key={artwork.athena_id}
+                selectedMuseum={artwork.gallery}
+                needsConfirm={true}
+                needTempListButton={true}
+                needExhibitButton={true}
+              />
+            ) : null
+          )}
+        </div>
+
+        <div className="flex flex-wrap place-content-evenly pb-10">
+          {finalListToDisplay.map((artwork) =>
+            artwork.gallery === "Art Institute of Chicago" ? (
+              <ChicagoArtworkCard
+                artwork={artwork}
+                key={artwork.id}
+                selectedMuseum={artwork.gallery}
+                needsConfirm={true}
+                needTempListButton={true}
+                needExhibitButton={true}
+              />
+            ) : null
+          )}
         </div>
       </div>
 
