@@ -34,6 +34,10 @@ const TempListArtworks = () => {
       try {
         const artworks = await Promise.all(
           tempList.map(async (item) => {
+            if (!item || !item.gallery || !item.artworkId) {
+              return null; // Handle case where item or required properties are undefined
+            }
+
             let artwork;
             if (item.gallery === "Cleveland Museum of Art") {
               artwork = await getSingleClArtwork(item.artworkId);
@@ -56,19 +60,29 @@ const TempListArtworks = () => {
       }
     };
 
-    console.log(tempList)
-
     fetchArtworks();
-  }, [tempList, selectedType, selectedDepartment, itemLimit, sortCriteria, sortOrder, pageNo]);
+  }, [
+    tempList,
+    selectedType,
+    selectedDepartment,
+    itemLimit,
+    sortCriteria,
+    sortOrder,
+    pageNo,
+  ]);
 
   const applyFiltersAndSort = (artworks) => {
     let filteredArtworks = artworks;
 
     if (selectedType !== "") {
-      filteredArtworks = filteredArtworks.filter((artwork) => artwork.type === selectedType);
+      filteredArtworks = filteredArtworks.filter(
+        (artwork) => artwork.type === selectedType
+      );
     }
     if (selectedDepartment !== "") {
-      filteredArtworks = filteredArtworks.filter((artwork) => artwork.department === selectedDepartment);
+      filteredArtworks = filteredArtworks.filter(
+        (artwork) => artwork.department === selectedDepartment
+      );
     }
 
     if (sortCriteria) {
@@ -87,9 +101,13 @@ const TempListArtworks = () => {
   };
 
   const handleTypeChange = (event) => setSelectedType(event.target.value);
+
   const handleDepartmentChange = (event) => setSelectedDepartment(event.target.value);
+
   const handleItemLimitChange = (event) => setItemLimit(Number(event.target.value));
+
   const handleSortCriteriaChange = (event) => setSortCriteria(event.target.value);
+
   const handleSortOrderChange = (event) => setSortOrder(event.target.value);
 
   const handlePreviousPage = () => {
@@ -121,7 +139,10 @@ const TempListArtworks = () => {
   if (isEmpty) {
     return (
       <div className="flex justify-center">
-        <h2 className="text-white font-bold font-headers text-2xl py-3" style={{ maxWidth: "50%", textAlign: "center" }}>
+        <h2
+          className="text-white font-bold font-headers text-2xl py-3"
+          style={{ maxWidth: "50%", textAlign: "center" }}
+        >
           There are currently no items in your list.
         </h2>
       </div>
@@ -134,7 +155,10 @@ const TempListArtworks = () => {
         <div className="flex flex-col gap-4 mb-4">
           <div className="flex flex-wrap justify-center gap-4">
             <div className="flex flex-col items-center w-full sm:w-auto">
-              <label htmlFor="typeSelect" className="block sm:inline mr-2 mb-1 sm:mb-0">
+              <label
+                htmlFor="typeSelect"
+                className="block sm:inline mr-2 mb-1 sm:mb-0"
+              >
                 Type:
               </label>
               <select
@@ -152,7 +176,10 @@ const TempListArtworks = () => {
               </select>
             </div>
             <div className="flex flex-col items-center w-full sm:w-auto">
-              <label htmlFor="departmentSelect" className="block sm:inline mr-2 mb-1 sm:mb-0">
+              <label
+                htmlFor="departmentSelect"
+                className="block sm:inline mr-2 mb-1 sm:mb-0"
+              >
                 Department:
               </label>
               <select
@@ -170,7 +197,10 @@ const TempListArtworks = () => {
               </select>
             </div>
             <div className="flex flex-col items-center w-full sm:w-auto">
-              <label htmlFor="itemLimitSelect" className="block sm:inline mr-2 mb-1 sm:mb-0">
+              <label
+                htmlFor="itemLimitSelect"
+                className="block sm:inline mr-2 mb-1 sm:mb-0"
+              >
                 Items per page:
               </label>
               <select
@@ -188,7 +218,10 @@ const TempListArtworks = () => {
               </select>
             </div>
             <div className="flex flex-col items-center w-full sm:w-auto">
-              <label htmlFor="sortCriteriaSelect" className="block sm:inline mr-2 mb-1 sm:mb-0">
+              <label
+                htmlFor="sortCriteriaSelect"
+                className="block sm:inline mr-2 mb-1 sm:mb-0"
+              >
                 Sort by:
               </label>
               <select
@@ -204,7 +237,10 @@ const TempListArtworks = () => {
               </select>
             </div>
             <div className="flex flex-col items-center w-full sm:w-auto">
-              <label htmlFor="sortOrderSelect" className="block sm:inline mr-2 mb-1 sm:mb-0">
+              <label
+                htmlFor="sortOrderSelect"
+                className="block sm:inline mr-2 mb-1 sm:mb-0"
+              >
                 Order:
               </label>
               <select
@@ -226,16 +262,15 @@ const TempListArtworks = () => {
       </h2>
 
       <div className="max-w-screen-lg mx-auto">
-        <p>templist item[0] = { tempList[0].gallery }</p>
         <div className="flex flex-wrap place-content-evenly pb-10">
-          {tempListToDisplay.map((artwork, index) => (
-                  <ClArtworkCard
-                  artwork={artwork}
-                  key={artwork.athena_id}
-                  selectedMuseum={ tempList[index].gallery }
-                  needsConfirm={false}
-                  needTempListButton={true}
-                  needExhibitButton={false}
+          {tempListToDisplay.map((artwork) => (
+            <ClArtworkCard
+              artwork={artwork}
+              key={artwork.athena_id}
+              selectedMuseum={artwork.gallery} // Fixed the access to gallery
+              needsConfirm={false}
+              needTempListButton={true}
+              needExhibitButton={false}
             />
           ))}
         </div>
@@ -243,7 +278,9 @@ const TempListArtworks = () => {
 
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center text-white">
         <div className="flex items-center justify-between p-2">
-          <div className="flex items-center text-left w-20 pl-2">List Items: {tempList.length}</div>
+          <div className="flex items-center text-left w-20 pl-2">
+            List Items: {tempList.length}
+          </div>
           <div className="flex items-center justify-center w-60">
             <Link onClick={handlePreviousPage} className="mx-2">
               &lt;&lt;

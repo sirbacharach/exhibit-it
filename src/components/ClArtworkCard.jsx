@@ -16,7 +16,7 @@ const ClArtworkCard = ({
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    console.log("artwork in ClARtworkCard", artwork)
+    // console.log("artwork in ClARtworkCard", artwork)
   }, [tempList]);
 
   return (
