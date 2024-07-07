@@ -20,31 +20,14 @@ export default {
         headers: ["BonaNovaSC-Bold"],
         body: ["BonaNovaSC-Regular"]
       },
-      backgroundImage: {
-        "Facebook-Logo": "url('../assets/img/Facebook_Logo_Primary.png')",
-      },
-      bannerImage: {
-        "Banner-Purple": "url('../assets/img/purple-banner.png')",
-      },
-      animation: {
-        "loop-scroll": "loop-scroll 60s linear infinite",
-        "loop-scroll2": "loop-scroll 30s linear infinite",
-      },
-      keyframes: {
-        "loop-scroll": {
-          from: { transform: "translateX(0)" },
-          to: { transform: "translateX(-100%)" },
-        },
-        "loop-scroll2": {
-          from: { transform: "translateX(0)" },
-          to: { transform: "translateX(-100%)" },
-        },
-      },
       screens: {
         "2xs": "352px",
         "xs": "449px",
         "md2": "898px",
       },
+      backgroundImage: {
+        'easel-background': "url('./assets/img/easelBG.png')",
+      }
     },
   },
   plugins: [],

@@ -7,6 +7,7 @@ import Error from "./components/Error";
 import { UserListProvider } from "./components/ListContext";
 import TempListArtworks from "./components/TempListArtworks";
 import ExhibitList from "./components/ExibitList";
+import Home from "./components/Home";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
     <div className="bg-bgcolour font-main max-w-screen-lg min-h-screen mx-auto p-2">
       <Header />
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/artworks" element={<Artworks />} />
         <Route path="/artworks/:clartwork_id" element={<SingleClArtwork />} />
         <Route path="/artworks/artworkslist" element={<TempListArtworks />} />
