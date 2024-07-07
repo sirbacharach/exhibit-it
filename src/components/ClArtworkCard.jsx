@@ -1,9 +1,9 @@
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ListContext } from "./ListContext";
-import { useContext, useEffect, useState } from "react";
 import AddToListButton from "./AddToListButton";
 import PlaceholderImage from "../assets/img/throbber.gif";
 import AddToExhibitButton from "./AddToExhibitButton";
+import { ListContext } from "./ListContext";
 
 const ClArtworkCard = ({
   artwork,
@@ -16,7 +16,7 @@ const ClArtworkCard = ({
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // console.log("artwork in ClARtworkCard", artwork)
+    console.log("artwork in ClArtworkCard", artwork);
   }, [tempList]);
 
   return (
@@ -54,14 +54,14 @@ const ClArtworkCard = ({
         <br />
       </Link>
       <div className="flex flex-col justify-end place-items-end grow items-center">
-        {needTempListButton && (
+        {needTempListButton && artwork && (
           <AddToListButton
             artwork={artwork}
             selectedMuseum={selectedMuseum}
             needsConfirm={needsConfirm}
           />
         )}
-        {needExhibitButton && (
+        {needExhibitButton && artwork && (
           <AddToExhibitButton
             artwork={artwork}
             selectedMuseum={selectedMuseum}

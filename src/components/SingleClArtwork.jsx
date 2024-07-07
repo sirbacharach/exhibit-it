@@ -64,19 +64,17 @@ const SingleClArtwork = () => {
           <div className="flex flex-col justify-end place-items-end grow items-center">
               <div>
                 <AddToListButton
-                  clArtwork={clArtwork}
-                  tempList={tempList}
-                  setTempList={setTempList}
-                  selectedMuseum="Cleveland Museum of Art"
+            artwork={clArtwork}
+            selectedMuseum={"Cleveland Museum of Art"}
+            needsConfirm={true}
                 />
               </div>
               {isInTempList || isInFinalList ? (
   <div>
     <AddToExhibitButton
-      clArtwork={clArtwork}
-      finalList={finalList}
-      setFinalList={setFinalList}
-      selectedMuseum="Cleveland Museum of Art"
+            artwork={clArtwork}
+            selectedMuseum={"Cleveland Museum of Art"}
+            needsConfirm={true}
     />
   </div>
 ) : null}
