@@ -16,8 +16,8 @@ const ChicagoArtworkCard = ({
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    console.log("tempList within ChicagoArtworkCard", tempList);
-    console.log("artwork within ChicagoArtworkCard", artwork);
+    // console.log("tempList within ChicagoArtworkCard", tempList);
+    // console.log("artwork within ChicagoArtworkCard", artwork);
   }, [tempList]);
 
   return (
