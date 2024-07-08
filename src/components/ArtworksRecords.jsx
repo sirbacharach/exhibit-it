@@ -14,10 +14,12 @@ const ArtworksRecords = ({
   const [artworks, setArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
-  const [selectedMuseum, setSelectedMuseum] = useState("Cleveland Museum of Art");
+  const [selectedMuseum, setSelectedMuseum] = useState(
+    "Cleveland Museum of Art"
+  );
   const [selectedType, setSelectedType] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
-  const [sortCriteria, setSortCriteria] = useState("");
+  const [sortCriteria, setSortCriteria] = useState("date_end");
   const [sortOrder, setSortOrder] = useState("ascending");
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const ArtworksRecords = ({
     }
 
     if (fetchFunction) {
-      fetchFunction(pageNo, itemLimit, selectedType, selectedDepartment)
+      fetchFunction(pageNo, itemLimit, selectedType, selectedDepartment, sortCriteria, sortOrder)
         .then((response) => {
           setArtworks(response[0]);
           setMaxRecords(response[1]);
@@ -63,7 +65,7 @@ const ArtworksRecords = ({
         }
       });
     }
-
+    console.log(artworks)
   }, [artworks, pageNo, itemLimit, sortCriteria, sortOrder]);
 
   function handleMuseumChange(event) {
@@ -113,136 +115,120 @@ const ArtworksRecords = ({
   return (
     <>
       <div className="max-w-screen-lg mx-auto">
-        <div className="flex flex-col gap-4 mb-4">
-          <div className="flex flex-wrap justify-center gap-4">
-            <div className="flex flex-col items-center w-full sm:w-auto">
-              <label
-                htmlFor="museumSelect"
-                className="block sm:inline mr-2 mb-1 sm:mb-0"
-              >
-                Select Museum:
-              </label>
-              <select
-                id="museumSelect"
-                value={selectedMuseum}
-                onChange={handleMuseumChange}
-                className="px-2 py-1 border border-gray-300 rounded w-full sm:w-auto"
-              >
-                <option value="Cleveland Museum of Art">
-                  Cleveland Museum of Art
-                </option>
-                <option value="Art Institute of Chicago">
-                  Art Institute of Chicago
-                </option>
-              </select>
-            </div>
-            <div className="flex flex-col items-center w-full sm:w-auto">
-              <label
-                htmlFor="typeSelect"
-                className="block sm:inline mr-2 mb-1 sm:mb-0"
-              >
-                Type:
-              </label>
-              <select
-                id="typeSelect"
-                value={selectedType}
-                onChange={handleTypeChange}
-                className="px-2 py-1 border border-gray-300 rounded w-full sm:w-auto"
-              >
-                <option value="">All</option>
-                {types.map((type, index) => (
-                  <option key={index} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col items-center w-full sm:w-auto">
-              <label
-                htmlFor="departmentSelect"
-                className="block sm:inline mr-2 mb-1 sm:mb-0"
-              >
-                Department:
-              </label>
-              <select
-                id="departmentSelect"
-                value={selectedDepartment}
-                onChange={handleDepartmentChange}
-                className="px-2 py-1 border border-gray-300 rounded w-full sm:w-auto"
-              >
-                <option value="">All</option>
-                {departments.map((department, index) => (
-                  <option key={index} value={department}>
-                    {department}
-                  </option>
-                ))}
-              </select>
-            </div>
+        <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-col items-center  w-auto">
+            <label htmlFor="museumSelect" className="block mb-1 text-center">
+              Select Museum:
+            </label>
+            <select
+              id="museumSelect"
+              value={selectedMuseum}
+              onChange={handleMuseumChange}
+              className="px-2 py-1 border border-gray-300 rounded w-auto"
+            >
+              <option value="Cleveland Museum of Art">
+                Cleveland Museum of Art
+              </option>
+              <option value="Art Institute of Chicago">
+                Art Institute of Chicago
+              </option>
+            </select>
           </div>
-          <div className="flex flex-wrap justify-center gap-4">
-            <div className="flex flex-col items-center w-full sm:w-auto">
-              <label
-                htmlFor="itemLimitSelect"
-                className="block sm:inline mr-2 mb-1 sm:mb-0"
-              >
-                Items per page:
-              </label>
-              <select
-                id="itemLimitSelect"
-                value={itemLimit}
-                onChange={handleItemLimitChange}
-                className="px-2 py-1 border border-gray-300 rounded w-full sm:w-auto"
-              >
-                <option value={5}>5</option>
-                <option value={10}>10</option>
-                <option value={20}>20</option>
-                <option value={40}>40</option>
-                <option value={80}>80</option>
-                <option value={100}>100</option>
-              </select>
-            </div>
-            <div className="flex flex-col items-center w-full sm:w-auto">
-              <label
-                htmlFor="sortCriteriaSelect"
-                className="block sm:inline mr-2 mb-1 sm:mb-0"
-              >
-                Sort by:
-              </label>
-              <select
-                id="sortCriteriaSelect"
-                value={sortCriteria}
-                onChange={handleSortCriteriaChange}
-                className="px-2 py-1 border border-gray-300 rounded w-full sm:w-auto"
-              >
-                <option value="">None</option>
-                <option value="creation_date">Creation Date</option>
-                <option value="type">Type</option>
-                <option value="technique">Technique</option>
-              </select>
-            </div>
-            <div className="flex flex-col items-center w-full sm:w-auto">
-              <label
-                htmlFor="sortOrderSelect"
-                className="block sm:inline mr-2 mb-1 sm:mb-0"
-              >
-                Order:
-              </label>
-              <select
-                id="sortOrderSelect"
-                value={sortOrder}
-                onChange={handleSortOrderChange}
-                className="px-2 py-1 border border-gray-300 rounded w-full sm:w-auto"
-              >
-                <option value="ascending">Ascending</option>
-                <option value="descending">Descending</option>
-              </select>
-            </div>
+          <div className="flex flex-col items-center w-auto">
+            <label htmlFor="typeSelect" className="block mb-1 text-center">
+              Type:
+            </label>
+            <select
+              id="typeSelect"
+              value={selectedType}
+              onChange={handleTypeChange}
+              className="px-2 py-1 border border-gray-300 rounded w-auto"
+            >
+              <option value="">All</option>
+              {types.map((type, index) => (
+                <option key={index} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col items-center w-auto">
+            <label
+              htmlFor="departmentSelect"
+              className="block mb-1 text-center"
+            >
+              Department:
+            </label>
+            <select
+              id="departmentSelect"
+              value={selectedDepartment}
+              onChange={handleDepartmentChange}
+              className="px-2 py-1 border border-gray-300 rounded w-auto"
+            >
+              <option value="">All</option>
+              {departments.map((department, index) => (
+                <option key={index} value={department}>
+                  {department}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col items-center w-auto">
+            <label htmlFor="itemLimitSelect" className="block mb-1 text-center">
+              Items per page:
+            </label>
+            <select
+              id="itemLimitSelect"
+              value={itemLimit}
+              onChange={handleItemLimitChange}
+              className="px-2 py-1 border border-gray-300 rounded w-auto"
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={40}>40</option>
+              <option value={80}>80</option>
+              <option value={100}>100</option>
+            </select>
+          </div>
+          <div className="flex flex-col items-center  w-auto">
+            <label
+              htmlFor="sortCriteriaSelect"
+              className="block mb-1 text-center"
+            >
+              Sort by:
+            </label>
+            <select
+              id="sortCriteriaSelect"
+              value={sortCriteria}
+              onChange={handleSortCriteriaChange}
+              className="px-2 py-1 border border-gray-300 rounded w-auto"
+            >
+              <option value="">None</option>
+              <option value="creation_date">Creation Date</option>
+              <option value="type">Type</option>
+              <option value="technique">Technique</option>
+            </select>
+          </div>
+          <div className="flex flex-col items-center  w-auto">
+            <label htmlFor="sortOrderSelect" className="block mb-1 text-center">
+              Order:
+            </label>
+            <select
+              id="sortOrderSelect"
+              value={sortOrder}
+              onChange={handleSortOrderChange}
+              className="px-2 py-1 border border-gray-300 rounded w-auto"
+            >
+              <option value="ascending">Ascending</option>
+              <option value="descending">Descending</option>
+            </select>
           </div>
         </div>
         <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
           {selectedMuseum} Artworks
         </h2>
-        
+
         {selectedMuseum === "Cleveland Museum of Art" && (
           <>
             {artworks.length > 0 ? (

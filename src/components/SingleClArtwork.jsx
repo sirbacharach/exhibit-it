@@ -7,12 +7,12 @@ import { useParams } from "react-router-dom";
 import Error from "./Error"; // Uncomment or import Error if not imported
 
 const SingleClArtwork = () => {
-  const { tempList, setTempList, finalList, setFinalList } = useContext(ListContext);
+  const { tempList, setTempList, finalList, setFinalList } =
+    useContext(ListContext);
   const [clArtwork, setClArtwork] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { clartwork_id } = useParams();
   const [apiError, setApiError] = useState("");
-
 
   useEffect(() => {
     getSingleClArtwork(clartwork_id)
@@ -30,8 +30,9 @@ const SingleClArtwork = () => {
     window.history.back(); // Navigate back to the previous page
   };
 
-  const isInTempList = tempList.some((item) => item.artworkId === clartwork_id);
-  const isInFinalList = finalList.some((item) => item.artworkId === clartwork_id);
+  const isInTempList = tempList.some((item) => item.artworkId.toString() === clartwork_id);
+  const isInFinalList = finalList.some((item) => item.artworkId.toString() === clartwork_id
+  );
 
   if (isLoading) {
     return <p>Content Loading....</p>;
@@ -51,7 +52,9 @@ const SingleClArtwork = () => {
           />
         ) : null}
         <br />
-        <h1>Title: {clArtwork?.title ? clArtwork.title : "no title available"}</h1>
+        <h1>
+          Title: {clArtwork?.title ? clArtwork.title : "no title available"}
+        </h1>
         <p>Id: {clArtwork.athena_id}</p>
         <p>Creation Date: {clArtwork.creation_date}</p>
         <p>Culture: {clArtwork.culture}</p>
@@ -62,22 +65,22 @@ const SingleClArtwork = () => {
         <br />
         <div className="flex justify-center place-items-end grow">
           <div className="flex flex-col justify-end place-items-end grow items-center">
+            <div>
+              <AddToListButton
+                artwork={clArtwork}
+                selectedMuseum={"Cleveland Museum of Art"}
+                needsConfirm={true}
+              />
+            </div>
+            {isInTempList || isInFinalList ? (
               <div>
-                <AddToListButton
-            artwork={clArtwork}
-            selectedMuseum={"Cleveland Museum of Art"}
-            needsConfirm={true}
+                <AddToExhibitButton
+                  artwork={clArtwork}
+                  selectedMuseum={"Cleveland Museum of Art"}
+                  needsConfirm={true}
                 />
               </div>
-              {isInTempList || isInFinalList ? (
-  <div>
-    <AddToExhibitButton
-            artwork={clArtwork}
-            selectedMuseum={"Cleveland Museum of Art"}
-            needsConfirm={true}
-    />
-  </div>
-) : null}
+            ) : null}
           </div>
           <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
             <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center text-white">
