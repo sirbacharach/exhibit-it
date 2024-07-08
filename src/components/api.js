@@ -5,7 +5,7 @@ const clevelandApi = axios.create({
 });
 
 const chicagoApi = axios.create({
-  baseURL: "https://api.artic.edu/api/v1",
+  baseURL: "https://api.harvardartmuseums.org",
 });
 
 // &limit=${itemLimit}&skip=${skip}
@@ -38,18 +38,18 @@ const getAllChicagoArtworks = (page, itemLimit, type, department) => {
   let departmentStr = ""
 
   return chicagoApi
-    .get(`/artworks?page=${page+1}&limit=${itemLimit}`)
+    .get(`/object?hasimage=true&size=30&page=1&apikey=placeholder_key`)
     .then((response) => {
-      console.log("all artworks response, Chicago", response.data.data)
-      return [response.data.data, response.data.pagination.total];
+      console.log(response.data)
+      return [response.data.records, response.data.info.totalrecords];
     });
 };
 
 // GET SINGLE ChicagoArtwork
-const getSingleChicagoArtwork = (chicagoArtwork_id) => {
-  console.log(chicagoArtwork_id);
-  console.log(`/artworks/${clartwork_id}`);
-  return chicagoApi.get(`/artworks/${clartwork_id}`).then((response) => {
+const getSingleChicagoArtwork = (chicagoartwork_id) => {
+  console.log(chicagoartwork_id);
+  console.log(`/artworks/${chicagoartwork_id}`);
+  return chicagoApi.get(`/artworks/${chicagoartwork_id}`).then((response) => {
     console.log("single artwork response, Chicago", response.data.data);
     return response.data.data;
   });
