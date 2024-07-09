@@ -21,12 +21,12 @@ const ArtworksRecords = ({
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [sortCriteria, setSortCriteria] = useState("");
   const [sortOrder, setSortOrder] = useState("ascending");
-  const [principalMaker, setPrincipalMaker] = useState("ascending");
-  const [type, setType] = useState("ascending");
-  const [datingPeriod, setDatingPeriod] = useState("ascending");
-  const [place, setPlace] = useState("ascending");
-  const [material, setMaterial] = useState("ascending");
-  const [technique, setTechnique] = useState("ascending");
+  const [principalMaker, setPrincipalMaker] = useState("");
+  const [type, setType] = useState("");
+  const [datingPeriod, setDatingPeriod] = useState("");
+  const [place, setPlace] = useState("");
+  const [material, setMaterial] = useState("");
+  const [technique, setTechnique] = useState("");
 
   useEffect(() => {
     setIsLoading(true);
@@ -51,7 +51,7 @@ const ArtworksRecords = ({
           setIsLoading(false);
         });
     }
-    console.log("sortCriteria in ArtworksRecords = ",sortCriteria)
+    console.log("sortCriteria in ArtworksRecords = ", sortCriteria);
   }, [pageNo, itemLimit, selectedMuseum, selectedType, selectedDepartment, sortCriteria, sortOrder, setMaxRecords]);
 
   function handleMuseumChange(event) {
@@ -76,7 +76,7 @@ const ArtworksRecords = ({
   }
 
   function handleSortCriteriaChange(event) {
-    console.log("menu item selected ",event.target.value)
+    console.log("menu item selected ", event.target.value);
     setSortCriteria(event.target.value);
     setPageNo(0);
   }
@@ -84,6 +84,30 @@ const ArtworksRecords = ({
   function handleSortOrderChange(event) {
     setSortOrder(event.target.value);
     setPageNo(0);
+  }
+
+  function handlePrincipalMakerChange(event) {
+    setPrincipalMaker(event.target.value);
+  }
+
+  function handleTypeFilterChange(event) {
+    setType(event.target.value);
+  }
+
+  function handleDatingPeriodChange(event) {
+    setDatingPeriod(event.target.value);
+  }
+
+  function handlePlaceChange(event) {
+    setPlace(event.target.value);
+  }
+
+  function handleMaterialChange(event) {
+    setMaterial(event.target.value);
+  }
+
+  function handleTechniqueChange(event) {
+    setTechnique(event.target.value);
   }
 
   const renderSortOptions = () => {
@@ -109,6 +133,167 @@ const ArtworksRecords = ({
     }
   };
 
+  const renderMuseumSpecificFilters = () => {
+    if (selectedMuseum === "Cleveland Museum of Art") {
+      return (
+        <>
+          <div className="flex flex-col items-center w-auto">
+            <label htmlFor="typeSelect" className="block mb-1 text-center">
+              Type:
+            </label>
+            <select
+              id="typeSelect"
+              value={selectedType}
+              onChange={handleTypeChange}
+              className="px-2 py-1 border border-gray-300 rounded w-auto"
+            >
+              <option value="">All</option>
+              {types.map((type, index) => (
+                <option key={index} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col items-center w-auto">
+            <label htmlFor="departmentSelect" className="block mb-1 text-center">
+              Department:
+            </label>
+            <select
+              id="departmentSelect"
+              value={selectedDepartment}
+              onChange={handleDepartmentChange}
+              className="px-2 py-1 border border-gray-300 rounded w-auto"
+            >
+              <option value="">All</option>
+              {departments.map((department, index) => (
+                <option key={index} value={department}>
+                  {department}
+                </option>
+              ))}
+            </select>
+          </div>
+        </>
+      );
+    } else {
+      if (Array.isArray(searchCriteria) && searchCriteria.length > 0) {
+        return (
+          <>
+            <div className="flex flex-col items-center w-auto">
+              <label htmlFor="principalMakerSelect" className="block mb-1 text-center">
+                Principal Maker:
+              </label>
+              <select
+                id="principalMakerSelect"
+                value={principalMaker}
+                onChange={handlePrincipalMakerChange}
+                className="px-2 py-1 border border-gray-300 rounded w-auto"
+              >
+                <option value="">All</option>
+                {Object.entries(searchCriteria[0]).map(([key, value]) => (
+                  <option key={key} value={value}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col items-center w-auto">
+              <label htmlFor="typeFilterSelect" className="block mb-1 text-center">
+                Type:
+              </label>
+              <select
+                id="typeFilterSelect"
+                value={type}
+                onChange={handleTypeFilterChange}
+                className="px-2 py-1 border border-gray-300 rounded w-auto"
+              >
+                <option value="">All</option>
+                {Object.entries(searchCriteria[1]).map(([key, value]) => (
+                  <option key={key} value={value}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col items-center w-auto">
+              <label htmlFor="datingPeriodSelect" className="block mb-1 text-center">
+                Dating Period:
+              </label>
+              <select
+                id="datingPeriodSelect"
+                value={datingPeriod}
+                onChange={handleDatingPeriodChange}
+                className="px-2 py-1 border border-gray-300 rounded w-auto"
+              >
+                <option value="">All</option>
+                {Object.entries(searchCriteria[2]).map(([key, value]) => (
+                  <option key={key} value={value}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col items-center w-auto">
+              <label htmlFor="placeSelect" className="block mb-1 text-center">
+                Place:
+              </label>
+              <select
+                id="placeSelect"
+                value={place}
+                onChange={handlePlaceChange}
+                className="px-2 py-1 border border-gray-300 rounded w-auto"
+              >
+                <option value="">All</option>
+                {Object.entries(searchCriteria[3]).map(([key, value]) => (
+                  <option key={key} value={value}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col items-center w-auto">
+              <label htmlFor="materialSelect" className="block mb-1 text-center">
+                Material:
+              </label>
+              <select
+                id="materialSelect"
+                value={material}
+                onChange={handleMaterialChange}
+                className="px-2 py-1 border border-gray-300 rounded w-auto"
+              >
+                <option value="">All</option>
+                {Object.entries(searchCriteria[4]).map(([key, value]) => (
+                  <option key={key} value={value}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col items-center w-auto">
+              <label htmlFor="techniqueSelect" className="block mb-1 text-center">
+                Technique:
+              </label>
+              <select
+                id="techniqueSelect"
+                value={technique}
+                onChange={handleTechniqueChange}
+                className="px-2 py-1 border border-gray-300 rounded w-auto"
+              >
+                <option value="">All</option>
+                {Object.entries(searchCriteria[5]).map(([key, value]) => (
+                  <option key={key} value={value}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </>
+        );
+      }
+      return null;
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
@@ -125,7 +310,7 @@ const ArtworksRecords = ({
   return (
     <div className="max-w-screen-lg mx-auto">
       <div className="flex flex-wrap justify-center gap-4">
-        <div className="flex flex-col items-center  w-auto">
+        <div className="flex flex-col items-center w-auto">
           <label htmlFor="museumSelect" className="block mb-1 text-center">
             Select Museum:
           </label>
@@ -143,45 +328,7 @@ const ArtworksRecords = ({
             </option>
           </select>
         </div>
-        <div className="flex flex-col items-center w-auto">
-          <label htmlFor="typeSelect" className="block mb-1 text-center">
-            Type:
-          </label>
-          <select
-            id="typeSelect"
-            value={selectedType}
-            onChange={handleTypeChange}
-            className="px-2 py-1 border border-gray-300 rounded w-auto"
-          >
-            <option value="">All</option>
-            {types.map((type, index) => (
-              <option key={index} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-col items-center w-auto">
-          <label
-            htmlFor="departmentSelect"
-            className="block mb-1 text-center"
-          >
-            Department:
-          </label>
-          <select
-            id="departmentSelect"
-            value={selectedDepartment}
-            onChange={handleDepartmentChange}
-            className="px-2 py-1 border border-gray-300 rounded w-auto"
-          >
-            <option value="">All</option>
-            {departments.map((department, index) => (
-              <option key={index} value={department}>
-                {department}
-              </option>
-            ))}
-          </select>
-        </div>
+        {renderMuseumSpecificFilters()}
         <div className="flex flex-col items-center w-auto">
           <label htmlFor="itemLimitSelect" className="block mb-1 text-center">
             Items per page:
@@ -201,10 +348,7 @@ const ArtworksRecords = ({
           </select>
         </div>
         <div className="flex flex-col items-center  w-auto">
-          <label
-            htmlFor="sortCriteriaSelect"
-            className="block mb-1 text-center"
-          >
+          <label htmlFor="sortCriteriaSelect" className="block mb-1 text-center">
             Sort by:
           </label>
           <select
