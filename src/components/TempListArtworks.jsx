@@ -62,6 +62,8 @@ const TempListArtworks = () => {
 
     fetchArtworks();
 
+console.log(tempList)
+
   }, [
     tempList,
     selectedType,
@@ -283,7 +285,7 @@ const TempListArtworks = () => {
             artwork.gallery === "Art Institute of Chicago" ? (
               <ChicagoArtworkCard
                 artwork={artwork}
-                key={artwork.id}
+                key={artwork.objectNumber}
                 selectedMuseum={artwork.gallery}
                 needsConfirm={true}
                 needTempListButton={true}

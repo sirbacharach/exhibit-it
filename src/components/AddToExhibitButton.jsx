@@ -10,10 +10,10 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
     const isInList = finalList.some((item) =>
       selectedMuseum === "Cleveland Museum of Art"
         ? item.artworkId === artwork.accession_number
-        : item.artworkId === artwork.id
+        : item.artworkId === artwork.objectNumber
     );
     setIsInList(isInList);
-  }, [finalList, artwork.accession_number, artwork.id, selectedMuseum]);
+  }, [finalList, artwork.accession_number, artwork.objectNumber, selectedMuseum]);
 
   const handleToggle = () => {
     if (isInList) {
@@ -25,7 +25,7 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
             ? prevList.filter(
                 (item) => item.artworkId !== artwork.accession_number
               )
-            : prevList.filter((item) => item.artworkId !== artwork.id)
+            : prevList.filter((item) => item.artworkId !== artwork.objectNumber)
         );
       }
     } else {
@@ -35,7 +35,7 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
               ...prevList,
               { artworkId: artwork.accession_number, gallery: selectedMuseum },
             ]
-          : [...prevList, { artworkId: artwork.id, gallery: selectedMuseum }]
+          : [...prevList, { artworkId: artwork.objectNumber, gallery: selectedMuseum }]
       );
     }
     setIsInList(!isInList); // Toggle state
@@ -45,7 +45,7 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
     setFinalList((prevList) =>
       selectedMuseum === "Cleveland Museum of Art"
         ? prevList.filter((item) => item.artworkId !== artwork.accession_number)
-        : prevList.filter((item) => item.artworkId !== artwork.id)
+        : prevList.filter((item) => item.artworkId !== artwork.objectNumber)
     );
     setShowConfirm(false);
   };
