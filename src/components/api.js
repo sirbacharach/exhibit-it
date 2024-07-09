@@ -53,7 +53,6 @@ const getAllChicagoArtworks = ( pageNo, itemLimit, selectedType, selectedDepartm
   return chicagoApi
     .get(`/collection?key=25T7NCOQ&imgonly=true&ps=${itemLimit}&p=${pageNo + 1}&culture=en${sort}`)
     .then((response) => {
-      console.log (response)
       const artObjects = response.data.artObjects;
       const promises = artObjects.map((artwork) => {
         return getSingleChicagoArtwork(artwork.objectNumber);
@@ -61,7 +60,7 @@ const getAllChicagoArtworks = ( pageNo, itemLimit, selectedType, selectedDepartm
 
       return Promise.all(promises)
         .then((singleArtworks) => {
-          return [singleArtworks, response.data.count];
+          return [singleArtworks, response.data.count, response.data.facets];
         })
         .catch((error) => {
           console.error("Error fetching single artworks:", error);

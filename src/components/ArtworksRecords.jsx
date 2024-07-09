@@ -10,17 +10,23 @@ const ArtworksRecords = ({
   itemLimit,
   setItemLimit,
   setMaxRecords,
+  searchCriteria,
+  setSearchCriteria
 }) => {
   const [artworks, setArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
-  const [selectedMuseum, setSelectedMuseum] = useState(
-    "Cleveland Museum of Art"
-  );
+  const [selectedMuseum, setSelectedMuseum] = useState("Cleveland Museum of Art");
   const [selectedType, setSelectedType] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [sortCriteria, setSortCriteria] = useState("");
   const [sortOrder, setSortOrder] = useState("ascending");
+  const [principalMaker, setPrincipalMaker] = useState("ascending");
+  const [type, setType] = useState("ascending");
+  const [datingPeriod, setDatingPeriod] = useState("ascending");
+  const [place, setPlace] = useState("ascending");
+  const [material, setMaterial] = useState("ascending");
+  const [technique, setTechnique] = useState("ascending");
 
   useEffect(() => {
     setIsLoading(true);
@@ -37,6 +43,7 @@ const ArtworksRecords = ({
         .then((response) => {
           setArtworks(response[0]);
           setMaxRecords(response[1]);
+          setSearchCriteria(response[2])
           setIsLoading(false);
         })
         .catch((err) => {
