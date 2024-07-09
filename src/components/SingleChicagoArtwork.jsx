@@ -17,7 +17,6 @@ const SingleChicagoArtwork = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    console.log(chicagoartwork_id);
     getSingleChicagoArtwork(chicagoartwork_id)
       .then((response) => {
         setChicagoArtwork(response);
@@ -35,10 +34,7 @@ const SingleChicagoArtwork = () => {
 
   const isInTempList = tempList.some((item) => item.artworkId.toString() === chicagoartwork_id);
   const isInFinalList = finalList.some((item) => item.artworkId.toString() === chicagoartwork_id);
-console.log(tempList)
-console.log(chicagoartwork_id)
-console.log(isInTempList)
-console.log(isInFinalList)
+
 
   if (isLoading) {
     return <p>Content Loading....</p>;
@@ -49,14 +45,14 @@ console.log(isInFinalList)
   return (
     <>
       <div className="relative flex flex-col max-w-4xl mx-auto pb-10 pt-5 mb-4">
-        {chicagoArtwork?.thumbnail?.lqip ? (
+      {chicagoArtwork?.webImage?.url ? (
           <div className="flex justify-center items-center">
             <div>
               <img
                 className={`w-auto ${isLoaded ? "block" : "hidden"}`}
-                src={`https://www.artic.edu/iiif/2/${chicagoArtwork.image_id}/full/843,/0/default.jpg`}
-                alt="Base64 Image"
+                src={chicagoArtwork.webImage.url}
                 onLoad={() => setIsLoaded(true)}
+                alt={`Painting of ${chicagoArtwork.title}`}
               />
               {!isLoaded && <div>Loading...</div>}
             </div>
@@ -64,25 +60,49 @@ console.log(isInFinalList)
               <img
                 className="w-1/2 ml-auto mr-auto"
                 src={PlaceholderImage}
-                alt="placeholder"
+                alt="No Image loaded or available"
                 loading="lazy"
               />
             )}
           </div>
-        ) : null}
-        <h1>
+        ) : (
+          <p>No Image Available</p>
+        )}
+ <h1 className="font-bold">
           {chicagoArtwork?.title ? chicagoArtwork.title : "no title available"}
         </h1>
-        <p>Creation Date: {chicagoArtwork.date_end}</p>
-        <p>Artist: {chicagoArtwork.artist_dtitle}</p>
-        <p>Culture: {chicagoArtwork.culture}</p>
-        {chicagoArtwork.classification_title ? (
-          <p>Type: {chicagoArtwork.classification_title}</p>
-        ) : null}
-        {chicagoArtwork.technique_titles ? (
-          <p>Technique: {chicagoArtwork.technique_titles[0]}</p>
-        ) : null}
-        <p>Gallery: Art Institute of Chicago</p>
+        <div className="border-b-titlebackground border-b-2"></div>
+        <p>Id: {chicagoArtwork.objectNumber}</p>
+        <div className="border-b-titlebackground border-b-2"></div>
+        {chicagoArtwork.dating?.presentingDate ? (
+          <p>Creation Date: {chicagoArtwork.dating.presentingDate}</p>
+        ) : (
+          <p>Creation Date: Unavailable</p>
+        )}
+        <div className="border-b-titlebackground border-b-2"></div>
+        {chicagoArtwork.principalOrFirstMaker? (
+  <p>Artist: {chicagoArtwork.principalOrFirstMaker}</p>
+) : (
+  <p>Artist: Unavailable</p>
+)}
+        <div className="border-b-titlebackground border-b-2"></div>
+        {chicagoArtwork.productionPlaces && chicagoArtwork.productionPlaces.length > 0? (
+          <p>Culture: {chicagoArtwork.productionPlaces[0]}</p>
+        ) : (
+          <p>Culture: Unavailable</p>
+        )}
+        <div className="border-b-titlebackground border-b-2"></div>
+        {chicagoArtwork.objectTypes ? (
+          <p>Type: {chicagoArtwork.objectTypes}</p>
+        ) : (
+          <p>Type: Unavailable</p>
+        )}
+        <div className="border-b-titlebackground border-b-2"></div>
+        {chicagoArtwork.description? (
+          <p>Description: {chicagoArtwork.description}</p>
+        ) : (
+          <p>Description: Unavailable</p>
+        )}
         <br />
         <div className="flex justify-center place-items-end grow">
           <div className="flex flex-col justify-end place-items-end grow items-center">

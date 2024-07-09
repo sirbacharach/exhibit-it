@@ -63,14 +63,14 @@ const ChicagoArtworkCard = ({
           <p>Creation Date: Unavailable</p>
         )}
         <div className="border-b-titlebackground border-b-2"></div>
-        {artwork.makers && artwork.makers.length > 0 ? (
-  <p>Artist: {artwork.makers[0].name}</p>
+        {artwork.principalOrFirstMaker? (
+  <p>Artist: {artwork.principalOrFirstMaker}</p>
 ) : (
   <p>Artist: Unavailable</p>
 )}
         <div className="border-b-titlebackground border-b-2"></div>
         {artwork.productionPlaces && artwork.productionPlaces.length > 0? (
-          <p>Culture: {artwork.productionPlaces}</p>
+          <p>Culture: {artwork.productionPlaces[0]}</p>
         ) : (
           <p>Culture: Unavailable</p>
         )}

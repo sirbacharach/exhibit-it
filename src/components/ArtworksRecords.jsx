@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllClArtworks, getAllChicagoArtworks } from "./api";
+import { getAllClArtworks, getAllChicagoArtworks, getChicagoFacets } from "./api";
 import ClArtworkCard from "./ClArtworkCard";
 import ChicagoArtworkCard from "./ChicagoArtworkCard";
 import { types, departments } from "./Queries";
@@ -11,12 +11,14 @@ const ArtworksRecords = ({
   setItemLimit,
   setMaxRecords,
   searchCriteria,
-  setSearchCriteria
+  setSearchCriteria,
 }) => {
   const [artworks, setArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
-  const [selectedMuseum, setSelectedMuseum] = useState("Cleveland Museum of Art");
+  const [selectedMuseum, setSelectedMuseum] = useState(
+    "Cleveland Museum of Art"
+  );
   const [selectedType, setSelectedType] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const [sortCriteria, setSortCriteria] = useState("");
@@ -27,6 +29,13 @@ const ArtworksRecords = ({
   const [place, setPlace] = useState("");
   const [material, setMaterial] = useState("");
   const [technique, setTechnique] = useState("");
+
+useEffect(()=>{
+  getChicagoFacets()
+  .then((facets)=>{
+    setSearchCriteria(facets);
+  })
+})
 
   useEffect(() => {
     setIsLoading(true);
@@ -39,11 +48,10 @@ const ArtworksRecords = ({
     }
 
     if (fetchFunction) {
-      fetchFunction(pageNo, itemLimit, selectedType, selectedDepartment, sortCriteria, sortOrder)
+      fetchFunction( pageNo, itemLimit, selectedType, selectedDepartment, sortCriteria, sortOrder, principalMaker, type, datingPeriod, place, material, technique )
         .then((response) => {
           setArtworks(response[0]);
           setMaxRecords(response[1]);
-          setSearchCriteria(response[2])
           setIsLoading(false);
         })
         .catch((err) => {
@@ -51,8 +59,24 @@ const ArtworksRecords = ({
           setIsLoading(false);
         });
     }
+    console.log(artworks)
     console.log("sortCriteria in ArtworksRecords = ", sortCriteria);
-  }, [pageNo, itemLimit, selectedMuseum, selectedType, selectedDepartment, sortCriteria, sortOrder, setMaxRecords]);
+  }, [
+    pageNo,
+    itemLimit,
+    selectedMuseum,
+    selectedType,
+    selectedDepartment,
+    sortCriteria,
+    sortOrder,
+    setMaxRecords,
+    principalMaker,
+    type,
+    datingPeriod,
+    place,
+    material,
+    technique
+  ]);
 
   function handleMuseumChange(event) {
     setSelectedMuseum(event.target.value);
@@ -88,26 +112,33 @@ const ArtworksRecords = ({
 
   function handlePrincipalMakerChange(event) {
     setPrincipalMaker(event.target.value);
+    setSortCriteria("artist");
+    setPageNo(0)
   }
 
   function handleTypeFilterChange(event) {
     setType(event.target.value);
+    setSortCriteria("");
   }
 
   function handleDatingPeriodChange(event) {
     setDatingPeriod(event.target.value);
+    setSortCriteria("");
   }
 
   function handlePlaceChange(event) {
     setPlace(event.target.value);
+    setSortCriteria("");
   }
 
   function handleMaterialChange(event) {
     setMaterial(event.target.value);
+    setSortCriteria("");
   }
 
   function handleTechniqueChange(event) {
     setTechnique(event.target.value);
+    setSortCriteria("");
   }
 
   const renderSortOptions = () => {
@@ -156,7 +187,10 @@ const ArtworksRecords = ({
             </select>
           </div>
           <div className="flex flex-col items-center w-auto">
-            <label htmlFor="departmentSelect" className="block mb-1 text-center">
+            <label
+              htmlFor="departmentSelect"
+              className="block mb-1 text-center"
+            >
               Department:
             </label>
             <select
@@ -180,7 +214,10 @@ const ArtworksRecords = ({
         return (
           <>
             <div className="flex flex-col items-center w-auto">
-              <label htmlFor="principalMakerSelect" className="block mb-1 text-center">
+              <label
+                htmlFor="principalMakerSelect"
+                className="block mb-1 text-center"
+              >
                 Principal Maker:
               </label>
               <select
@@ -190,15 +227,18 @@ const ArtworksRecords = ({
                 className="px-2 py-1 border border-gray-300 rounded w-auto"
               >
                 <option value="">All</option>
-                {Object.entries(searchCriteria[0]).map(([key, value]) => (
-                  <option key={key} value={value}>
-                    {key}
+                {searchCriteria[0].facets.map((facet, index) => (
+                  <option key={index} value={facet.key}>
+                    {facet.key}
                   </option>
                 ))}
               </select>
             </div>
             <div className="flex flex-col items-center w-auto">
-              <label htmlFor="typeFilterSelect" className="block mb-1 text-center">
+              <label
+                htmlFor="typeFilterSelect"
+                className="block mb-1 text-center"
+              >
                 Type:
               </label>
               <select
@@ -208,15 +248,18 @@ const ArtworksRecords = ({
                 className="px-2 py-1 border border-gray-300 rounded w-auto"
               >
                 <option value="">All</option>
-                {Object.entries(searchCriteria[1]).map(([key, value]) => (
-                  <option key={key} value={value}>
-                    {key}
+                {searchCriteria[1].facets.map((facet, index) => (
+                  <option key={index} value={facet.key}>
+                    {facet.key}
                   </option>
                 ))}
               </select>
             </div>
             <div className="flex flex-col items-center w-auto">
-              <label htmlFor="datingPeriodSelect" className="block mb-1 text-center">
+              <label
+                htmlFor="datingPeriodSelect"
+                className="block mb-1 text-center"
+              >
                 Dating Period:
               </label>
               <select
@@ -226,9 +269,9 @@ const ArtworksRecords = ({
                 className="px-2 py-1 border border-gray-300 rounded w-auto"
               >
                 <option value="">All</option>
-                {Object.entries(searchCriteria[2]).map(([key, value]) => (
-                  <option key={key} value={value}>
-                    {key}
+                {searchCriteria[2].facets.map((facet, index) => (
+                  <option key={index} value={facet.key}>
+                    {facet.key}
                   </option>
                 ))}
               </select>
@@ -244,15 +287,18 @@ const ArtworksRecords = ({
                 className="px-2 py-1 border border-gray-300 rounded w-auto"
               >
                 <option value="">All</option>
-                {Object.entries(searchCriteria[3]).map(([key, value]) => (
-                  <option key={key} value={value}>
-                    {key}
+                {searchCriteria[3].facets.map((facet, index) => (
+                  <option key={index} value={facet.key}>
+                    {facet.key}
                   </option>
                 ))}
               </select>
             </div>
             <div className="flex flex-col items-center w-auto">
-              <label htmlFor="materialSelect" className="block mb-1 text-center">
+              <label
+                htmlFor="materialSelect"
+                className="block mb-1 text-center"
+              >
                 Material:
               </label>
               <select
@@ -262,15 +308,18 @@ const ArtworksRecords = ({
                 className="px-2 py-1 border border-gray-300 rounded w-auto"
               >
                 <option value="">All</option>
-                {Object.entries(searchCriteria[4]).map(([key, value]) => (
-                  <option key={key} value={value}>
-                    {key}
+                {searchCriteria[4].facets.map((facet, index) => (
+                  <option key={index} value={facet.key}>
+                    {facet.key}
                   </option>
                 ))}
               </select>
             </div>
             <div className="flex flex-col items-center w-auto">
-              <label htmlFor="techniqueSelect" className="block mb-1 text-center">
+              <label
+                htmlFor="techniqueSelect"
+                className="block mb-1 text-center"
+              >
                 Technique:
               </label>
               <select
@@ -280,9 +329,9 @@ const ArtworksRecords = ({
                 className="px-2 py-1 border border-gray-300 rounded w-auto"
               >
                 <option value="">All</option>
-                {Object.entries(searchCriteria[5]).map(([key, value]) => (
-                  <option key={key} value={value}>
-                    {key}
+                {searchCriteria[5].facets.map((facet, index) => (
+                  <option key={index} value={facet.key}>
+                    {facet.key}
                   </option>
                 ))}
               </select>
@@ -348,7 +397,10 @@ const ArtworksRecords = ({
           </select>
         </div>
         <div className="flex flex-col items-center  w-auto">
-          <label htmlFor="sortCriteriaSelect" className="block mb-1 text-center">
+          <label
+            htmlFor="sortCriteriaSelect"
+            className="block mb-1 text-center"
+          >
             Sort by:
           </label>
           <select
@@ -378,6 +430,12 @@ const ArtworksRecords = ({
       <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
         {selectedMuseum} Artworks
       </h2>
+      {selectedMuseum === "Art Institute of Chicago" && (
+  <h3 className="text-center text-white font-bold font-headers text-md pt-2 pb-1">
+    This page is displayed in Dutch, please feel free to use your browser translation if you prefer another language.
+  </h3>
+)}
+
 
       {selectedMuseum === "Cleveland Museum of Art" && (
         <>

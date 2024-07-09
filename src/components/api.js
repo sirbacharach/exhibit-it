@@ -33,7 +33,7 @@ const getSingleClArtwork = (clartwork_id) => {
   });
 };
 
-const getAllChicagoArtworks = ( pageNo, itemLimit, selectedType, selectedDepartment, sortCriteria, sortOrder ) => {
+const getAllChicagoArtworks = ( pageNo, itemLimit, selectedType, selectedDepartment, sortCriteria, sortOrder, principalMaker, type, datingPeriod, place, material, technique ) => {
   
   let sort=""
   if(sortCriteria === "relevance")
@@ -50,8 +50,39 @@ const getAllChicagoArtworks = ( pageNo, itemLimit, selectedType, selectedDepartm
     } else { sort = "&s=artistdesc"}
   }
 
+let makerString = ""
+let typeString = ""
+let periodString = ""
+let placeString = ""
+let materialString = ""
+let techniqueString = ""
+
+if(principalMaker) {
+  makerString=`&involvedMaker=${principalMaker.split(" ").join("+")}`
+}
+
+if (type) {
+typeString=`&type=${type.split(" ").join("+")}`
+}
+
+if (datingPeriod) {
+  periodString=`&f.dating.period=${datingPeriod}`
+  }
+
+  if (place) {
+    placeString=`&place=${place.split(" ").join("+")}`
+    }
+
+    if (material) {
+      materialString=`&material=${material.split(" ").join("+")}`
+      }
+
+      if (technique) {
+        techniqueString=`&technique=${technique.split(" ").join("+")}`
+        }
+
   return chicagoApi
-    .get(`/collection?key=25T7NCOQ&imgonly=true&ps=${itemLimit}&p=${pageNo + 1}&culture=en${sort}`)
+    .get(`/collection?key=25T7NCOQ&imgonly=true&ps=${itemLimit}&p=${pageNo + 1}&culture=en${sort}${makerString}${typeString}${periodString}${placeString}${materialString}${techniqueString}`)
     .then((response) => {
       const artObjects = response.data.artObjects;
       const promises = artObjects.map((artwork) => {
@@ -89,9 +120,20 @@ const getSingleChicagoArtwork = (chicagoartwork_id) => {
     });
 };
 
+// GET Chicago facets.
+
+const getChicagoFacets = () => {
+return chicagoApi
+.get(`https://www.rijksmuseum.nl/api/nl/collection?key=25T7NCOQ&imgonly=true&ps10&culture=en&p=1&s=achronologic`)
+.then((response) => {
+  return response.data.facets
+})
+}
+
 export {
   getAllClArtworks,
   getSingleClArtwork,
   getAllChicagoArtworks,
   getSingleChicagoArtwork,
+  getChicagoFacets
 };
