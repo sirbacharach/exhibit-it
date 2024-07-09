@@ -8,6 +8,7 @@ const Artworks = () => {
   const [pageNo, setPageNo] = useState(0);
   const [itemLimit, setItemLimit] = useState(5);
   const [maxRecords, setMaxRecords] = useState(0);
+  const [searchCriteria, setSearchCriteria] = useState("")
   const [apiError, setApiError] = useState("");
   const { tempList } = useContext(ListContext);
   const { finalList } = useContext(ListContext);
@@ -35,6 +36,8 @@ const Artworks = () => {
           itemLimit={itemLimit}
           setItemLimit={setItemLimit}
           setMaxRecords={setMaxRecords}
+          searchCriteria={searchCriteria}
+          setSearchCriteria={setSearchCriteria}
         />
       </div>
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center text-white">
