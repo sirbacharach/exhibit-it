@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { ListContext } from "./ListContext";
 
 const Artworks = () => {
-  const [pageNo, setPageNo] = useState(1);
+  const [pageNo, setPageNo] = useState(0);
   const [itemLimit, setItemLimit] = useState(5);
   const [maxRecords, setMaxRecords] = useState(0);
   const [apiError, setApiError] = useState("");
