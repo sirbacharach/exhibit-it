@@ -84,18 +84,18 @@ const getAllChicagoArtworks = async (
 
   try {
     const response = await chicagoApi.get(
-      `/collection?key=25T7NCOQ&imgonly=true&ps=${itemLimit}&p=${
-        pageNo + 1
-      }&culture=en${sort}${makerString}${typeString}${periodString}${placeString}${materialString}${techniqueString}`
+      `/collection?key=25T7NCOQ&imgonly=true&ps=${itemLimit}&p=${pageNo + 1}&culture=en${sort}${makerString}${typeString}${periodString}${placeString}${materialString}${techniqueString}`
     );
 
     const artObjects = response.data.artObjects;
+    console.log(artObjects)
     const promises = artObjects.map((artwork) =>
       getSingleChicagoArtwork(artwork.objectNumber)
     );
 
     const singleArtworks = await Promise.all(promises);
-    return [singleArtworks, response.data.count, response.data.facets];
+    console.log(singleArtworks)
+    return [singleArtworks, response.data.count];
   } catch (error) {
     console.error("Error fetching Chicago artworks:", error);
     throw error;

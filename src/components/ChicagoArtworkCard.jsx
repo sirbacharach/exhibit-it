@@ -1,6 +1,6 @@
+import React, { useContext, useEffect, useState, memo } from "react";
 import { Link } from "react-router-dom";
 import { ListContext } from "./ListContext";
-import { useContext, useEffect, useState } from "react";
 import AddToListButton from "./AddToListButton";
 import PlaceholderImage from "../assets/img/throbber.gif";
 import AddToExhibitButton from "./AddToExhibitButton";
@@ -12,78 +12,40 @@ const ChicagoArtworkCard = ({
   needTempListButton,
   needExhibitButton,
 }) => {
-  const { tempList, setTempList, finalList, setFinalList } =
-    useContext(ListContext);
+  const { tempList, setTempList, finalList, setFinalList } = useContext(ListContext);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // console.log("tempList within ChicagoArtworkCard", tempList);
-    // console.log("artwork within ChicagoArtworkCard", artwork);
+    // Side effect logic if needed
   }, [tempList]);
 
   return (
     <li className="inner-container-colour article-card min-w-72 max-w-72 m-2 list-none content-between bg-titletextbackground p-3 drop-shadow-md rounded-xl flex flex-col">
-      <Link
-        to={`/artworks/chicagoartwork/${artwork.objectNumber}`}
-        style={{ textDecoration: "none" }}
-      >
-        {artwork?.webImage?.url ? (
-          <div className="flex justify-center items-center">
-            <div>
+      <Link to={`/artworks/chicagoartwork/${artwork.objectNumber}`} style={{ textDecoration: "none" }}>
+        <div className="flex justify-center items-center">
+          {artwork?.webImage?.url ? (
+            <>
               <img
                 className={`w-auto ${isLoaded ? "block" : "hidden"} mb-2`}
                 src={artwork.webImage.url}
                 onLoad={() => setIsLoaded(true)}
                 alt={artwork.title}
               />
-              {!isLoaded && <div>Loading...</div>}
-            </div>
-            {!isLoaded && (
-              <img
-                className="w-1/2 ml-auto mr-auto"
-                src={PlaceholderImage}
-                alt="No Image loaded or available"
-                loading="lazy"
-              />
-            )}
-          </div>
-        ) : (
-          <p>No Image Available</p>
-        )}
+              {!isLoaded && <img className="w-1/2 ml-auto mr-auto" src={PlaceholderImage} alt="Loading..." />}
+            </>
+          ) : (
+            <p>No Image Available</p>
+          )}
+        </div>
         <h1 className="font-bold">
-          {artwork?.title ? artwork.title : "no title available"}
+          {artwork?.title ? artwork.title : "No title available"}
         </h1>
-
         <p>Id: {artwork.objectNumber}</p>
-
-        {artwork.dating?.presentingDate ? (
-          <p>Creation Date: {artwork.dating.presentingDate}</p>
-        ) : (
-          <p>Creation Date: Unavailable</p>
-        )}
-
-        {artwork.principalOrFirstMaker? (
-  <p>Artist: {artwork.principalOrFirstMaker}</p>
-) : (
-  <p>Artist: Unavailable</p>
-)}
-
-        {artwork.productionPlaces && artwork.productionPlaces.length > 0? (
-          <p>Culture: {artwork.productionPlaces[0]}</p>
-        ) : (
-          <p>Culture: Unavailable</p>
-        )}
-
-        {artwork.objectTypes ? (
-          <p>Type: {artwork.objectTypes}</p>
-        ) : (
-          <p>Type: Unavailable</p>
-        )}
-
-        {artwork.techniques && artwork.techniques.length > 0 ? (
-          <p>Technique: {artwork.techniques}</p>
-        ) : <p>Technique: Unavailable</p>}
-
+        <p>Creation Date: {artwork.dating?.presentingDate ? artwork.dating.presentingDate : "Unavailable"}</p>
+        <p>Artist: {artwork.principalOrFirstMaker ? artwork.principalOrFirstMaker : "Unavailable"}</p>
+        <p>Culture: {artwork.productionPlaces && artwork.productionPlaces.length > 0 ? artwork.productionPlaces[0] : "Unavailable"}</p>
+        <p>Type: {artwork.objectTypes ? artwork.objectTypes.join(", ") : "Unavailable"}</p>
+        <p>Technique: {artwork.techniques && artwork.techniques.length > 0 ? artwork.techniques.join(", ") : "Unavailable"}</p>
         <p>Gallery: {selectedMuseum}</p>
         <br />
       </Link>
@@ -111,4 +73,4 @@ const ChicagoArtworkCard = ({
   );
 };
 
-export default ChicagoArtworkCard;
+export default memo(ChicagoArtworkCard);
