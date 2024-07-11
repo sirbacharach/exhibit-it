@@ -1,11 +1,11 @@
 const Home = () => {
   return (
     <>
-      <div className="text-center mt-6 text-white font-bold text-3xl pt-4 pb-2 max-w-[94%] mx-auto shadow-lg border border-gray-300 bg-titlebackground p-4 rounded-lg">
+      <div className="text-center mt-6  font-bold text-3xl pt-4 pb-2 max-w-[94%] mx-auto shadow-lg border border-gray-300 bg-titlebackground p-4 rounded-lg">
         <h1 className="py-3">Welcome to Exhib-it!</h1>
       </div>
 
-      <div className="max-w-[94%] mx-auto mt-6 p-5 bg-titlebackground text-white rounded-lg shadow-md border border-gray-400">
+      <div className="max-w-[94%] mx-auto mt-6 p-5 bg-titlebackground rounded-lg shadow-md border border-gray-400">
         <div className="text-lg font-main font-normal text-center">
           <p>
             Create your own exhibition from artwork taken from two different
@@ -19,8 +19,8 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="max-w-[94%] mx-auto mt-6 p-5 bg-titletextbackground text-white rounded-lg shadow-md border border-gray-400">
-        <div className="text-left text-white font-bold font-headers text-2xl mb-4">
+      <div className="max-w-[94%] mx-auto mt-6 p-5 bg-titletextbackground rounded-lg shadow-md border border-gray-400">
+        <div className="text-left  font-bold font-headers text-2xl mb-4">
           <h1>Instructions:</h1>
         </div>
 
@@ -59,15 +59,15 @@ const Home = () => {
           </p>
         </div>
       </div>
-        <div className="max-w-[94%] text-xs mx-auto mt-6 p-5 bg-titlebackground text-white rounded-lg shadow-md border border-gray-400">
+        <div className="max-w-[94%] text-xs mx-auto mt-6 p-5 bg-titlebackground rounded-lg shadow-md border border-gray-400">
           <div className="text-sm font-main font-normal text-left">
             <p className="font-bold">Credits:</p>
-            <p>
+            <p className="pt-4 pb-2">
               <a href="https://www.clevelandart.org/">
                 The Cleveland Museum of Art (API)
               </a>
             </p>
-            <p>
+            <p className="pt-2">
               <a href="https://www.artic.edu/">The Art Institute of Chicago (API)</a>
             </p>
           </div>

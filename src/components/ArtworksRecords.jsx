@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getAllClArtworks, getAllChicagoArtworks, getChicagoFacets } from "./api";
+import {
+  getAllClArtworks,
+  getAllChicagoArtworks,
+  getChicagoFacets,
+} from "./api";
 import ClArtworkCard from "./ClArtworkCard";
 import ChicagoArtworkCard from "./ChicagoArtworkCard";
 import { types, departments } from "./Queries";
@@ -29,13 +33,15 @@ const ArtworksRecords = ({
   const [place, setPlace] = useState("");
   const [material, setMaterial] = useState("");
   const [technique, setTechnique] = useState("");
+  const [hasImage, setHasImage] = useState(""); // State for image filter
 
-useEffect(()=>{
-  getChicagoFacets()
-  .then((facets)=>{
-    setSearchCriteria(facets);
-  })
-})
+  useEffect(() => {
+    if (selectedMuseum === "Art Institute of Chicago") {
+      getChicagoFacets().then((facets) => {
+        setSearchCriteria(facets);
+      });
+    }
+  }, [selectedMuseum, setSearchCriteria]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -48,7 +54,20 @@ useEffect(()=>{
     }
 
     if (fetchFunction) {
-      fetchFunction( pageNo, itemLimit, selectedType, selectedDepartment, sortCriteria, sortOrder, principalMaker, type, datingPeriod, place, material, technique )
+      fetchFunction(
+        pageNo,
+        itemLimit,
+        selectedType,
+        selectedDepartment,
+        sortCriteria,
+        sortOrder,
+        principalMaker,
+        type,
+        datingPeriod,
+        place,
+        material,
+        technique
+      )
         .then((response) => {
           setArtworks(response[0]);
           setMaxRecords(response[1]);
@@ -59,8 +78,6 @@ useEffect(()=>{
           setIsLoading(false);
         });
     }
-    console.log(artworks)
-    console.log("sortCriteria in ArtworksRecords = ", sortCriteria);
   }, [
     pageNo,
     itemLimit,
@@ -75,7 +92,7 @@ useEffect(()=>{
     datingPeriod,
     place,
     material,
-    technique
+    technique,
   ]);
 
   function handleMuseumChange(event) {
@@ -100,7 +117,6 @@ useEffect(()=>{
   }
 
   function handleSortCriteriaChange(event) {
-    console.log("menu item selected ", event.target.value);
     setSortCriteria(event.target.value);
     setPageNo(0);
   }
@@ -113,7 +129,7 @@ useEffect(()=>{
   function handlePrincipalMakerChange(event) {
     setPrincipalMaker(event.target.value);
     setSortCriteria("artist");
-    setPageNo(0)
+    setPageNo(0);
   }
 
   function handleTypeFilterChange(event) {
@@ -139,6 +155,13 @@ useEffect(()=>{
   function handleTechniqueChange(event) {
     setTechnique(event.target.value);
     setSortCriteria("");
+  }
+
+  function handleHasImageChange(event) {
+    const value = event.target.value;
+    setHasImage(value);
+    setItemLimit(40)
+    setPageNo(0);
   }
 
   const renderSortOptions = () => {
@@ -169,14 +192,14 @@ useEffect(()=>{
       return (
         <>
           <div className="flex flex-col items-center w-auto">
-            <label htmlFor="typeSelect" className="block mb-1 text-center">
+            <label htmlFor="typeSelect" className="block mb-1 text-centere">
               Type:
             </label>
             <select
               id="typeSelect"
               value={selectedType}
               onChange={handleTypeChange}
-              className="px-2 py-1 border border-gray-300 rounded w-auto"
+              className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
             >
               <option value="">All</option>
               {types.map((type, index) => (
@@ -197,7 +220,7 @@ useEffect(()=>{
               id="departmentSelect"
               value={selectedDepartment}
               onChange={handleDepartmentChange}
-              className="px-2 py-1 border border-gray-300 rounded w-auto"
+              className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
             >
               <option value="">All</option>
               {departments.map((department, index) => (
@@ -205,6 +228,23 @@ useEffect(()=>{
                   {department}
                 </option>
               ))}
+            </select>
+          </div>
+          <div className="flex flex-col items-center w-auto">
+            <label
+              htmlFor="hasImageSelect"
+              className="block mb-1 text-center"
+            >
+              Records with images:
+            </label>
+            <select
+              id="hasImageSelect"
+              value={hasImage}
+              onChange={handleHasImageChange}
+              className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
+            >
+              <option value="">All</option>
+              <option value="true">With images only</option>
             </select>
           </div>
         </>
@@ -224,7 +264,7 @@ useEffect(()=>{
                 id="principalMakerSelect"
                 value={principalMaker}
                 onChange={handlePrincipalMakerChange}
-                className="px-2 py-1 border border-gray-300 rounded w-auto"
+                className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
               >
                 <option value="">All</option>
                 {searchCriteria[0].facets.map((facet, index) => (
@@ -245,7 +285,7 @@ useEffect(()=>{
                 id="typeFilterSelect"
                 value={type}
                 onChange={handleTypeFilterChange}
-                className="px-2 py-1 border border-gray-300 rounded w-auto"
+                className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
               >
                 <option value="">All</option>
                 {searchCriteria[1].facets.map((facet, index) => (
@@ -266,7 +306,7 @@ useEffect(()=>{
                 id="datingPeriodSelect"
                 value={datingPeriod}
                 onChange={handleDatingPeriodChange}
-                className="px-2 py-1 border border-gray-300 rounded w-auto"
+                className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
               >
                 <option value="">All</option>
                 {searchCriteria[2].facets.map((facet, index) => (
@@ -284,7 +324,7 @@ useEffect(()=>{
                 id="placeSelect"
                 value={place}
                 onChange={handlePlaceChange}
-                className="px-2 py-1 border border-gray-300 rounded w-auto"
+                className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
               >
                 <option value="">All</option>
                 {searchCriteria[3].facets.map((facet, index) => (
@@ -305,7 +345,7 @@ useEffect(()=>{
                 id="materialSelect"
                 value={material}
                 onChange={handleMaterialChange}
-                className="px-2 py-1 border border-gray-300 rounded w-auto"
+                className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
               >
                 <option value="">All</option>
                 {searchCriteria[4].facets.map((facet, index) => (
@@ -326,7 +366,7 @@ useEffect(()=>{
                 id="techniqueSelect"
                 value={technique}
                 onChange={handleTechniqueChange}
-                className="px-2 py-1 border border-gray-300 rounded w-auto"
+                className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
               >
                 <option value="">All</option>
                 {searchCriteria[5].facets.map((facet, index) => (
@@ -356,18 +396,25 @@ useEffect(()=>{
     return <div>Error: {apiError.message}</div>;
   }
 
+  const filteredArtworks = hasImage
+    ? artworks.filter((artwork) => artwork.images.length > 0)
+    : artworks;
+
   return (
     <div className="max-w-screen-lg mx-auto">
       <div className="flex flex-wrap justify-center gap-4">
         <div className="flex flex-col items-center w-auto">
-          <label htmlFor="museumSelect" className="block mb-1 text-center">
+          <label
+            htmlFor="museumSelect"
+            className="block mb-1 text-center text-white"
+          >
             Select Museum:
           </label>
           <select
             id="museumSelect"
             value={selectedMuseum}
             onChange={handleMuseumChange}
-            className="px-2 py-1 border border-gray-300 rounded w-auto"
+            className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
           >
             <option value="Cleveland Museum of Art">
               Cleveland Museum of Art
@@ -379,14 +426,17 @@ useEffect(()=>{
         </div>
         {renderMuseumSpecificFilters()}
         <div className="flex flex-col items-center w-auto">
-          <label htmlFor="itemLimitSelect" className="block mb-1 text-center">
-            Items per page:
+          <label
+            htmlFor="itemLimitSelect"
+            className="block mb-1 text-center text-white"
+          >
+            Max items/page:
           </label>
           <select
             id="itemLimitSelect"
             value={itemLimit}
             onChange={handleItemLimitChange}
-            className="px-2 py-1 border border-gray-300 rounded w-auto"
+            className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
           >
             <option value={5}>5</option>
             <option value={10}>10</option>
@@ -399,7 +449,7 @@ useEffect(()=>{
         <div className="flex flex-col items-center  w-auto">
           <label
             htmlFor="sortCriteriaSelect"
-            className="block mb-1 text-center"
+            className="block mb-1 text-center text-white"
           >
             Sort by:
           </label>
@@ -407,20 +457,23 @@ useEffect(()=>{
             id="sortCriteriaSelect"
             value={sortCriteria}
             onChange={handleSortCriteriaChange}
-            className="px-2 py-1 border border-gray-300 rounded w-auto"
+            className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
           >
             {renderSortOptions()}
           </select>
         </div>
         <div className="flex flex-col items-center  w-auto">
-          <label htmlFor="sortOrderSelect" className="block mb-1 text-center">
+          <label
+            htmlFor="sortOrderSelect"
+            className="block mb-1 text-center text-white"
+          >
             Order:
           </label>
           <select
             id="sortOrderSelect"
             value={sortOrder}
             onChange={handleSortOrderChange}
-            className="px-2 py-1 border border-gray-300 rounded w-auto"
+            className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
           >
             <option value="ascending">Ascending</option>
             <option value="descending">Descending</option>
@@ -430,57 +483,47 @@ useEffect(()=>{
       <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
         {selectedMuseum} Artworks
       </h2>
-      {selectedMuseum === "Art Institute of Chicago" && (
-  <h3 className="text-center text-white font-bold font-headers text-md pt-2 pb-1">
-    This page is displayed in Dutch, please feel free to use your browser translation if you prefer another language.
-  </h3>
-)}
-
 
       {selectedMuseum === "Cleveland Museum of Art" && (
-        <>
-          {artworks.length > 0 ? (
-            <div className="flex flex-wrap place-content-evenly pb-10">
-              {artworks.map((clArtwork, index) => (
-                <ClArtworkCard
-                  artwork={clArtwork}
-                  key={clArtwork.accession_number + index.toString()}
-                  selectedMuseum={selectedMuseum}
-                  needsConfirm={false}
-                  needTempListButton={true}
-                  needExhibitButton={false}
-                />
-              ))}
-            </div>
+        <ul className="flex flex-wrap place-content-evenly pb-10">
+          {filteredArtworks.length > 0 ? (
+            filteredArtworks.map((clArtwork, index) => (
+              <ClArtworkCard
+                artwork={clArtwork}
+                key={clArtwork.accession_number + index.toString()}
+                selectedMuseum={selectedMuseum}
+                needsConfirm={false}
+                needTempListButton={true}
+                needExhibitButton={false}
+              />
+            ))
           ) : (
             <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1 flex flex-col">
-              There is no artwork available for this category.
+              There are no artworks available for this category.
             </h2>
           )}
-        </>
+        </ul>
       )}
 
       {selectedMuseum === "Art Institute of Chicago" && (
-        <>
-          {artworks.length > 0 ? (
-            <div className="flex flex-wrap place-content-evenly pb-10">
-              {artworks.map((chicagoArtwork) => (
-                <ChicagoArtworkCard
-                  artwork={chicagoArtwork}
-                  key={chicagoArtwork.id}
-                  selectedMuseum={selectedMuseum}
-                  needsConfirm={false}
-                  needTempListButton={true}
-                  needExhibitButton={false}
-                />
-              ))}
-            </div>
+        <ul className="flex flex-wrap place-content-evenly pb-10">
+          {filteredArtworks.length > 0 ? (
+            filteredArtworks.map((chicagoArtwork, index) => (
+              <ChicagoArtworkCard
+                artwork={chicagoArtwork}
+                key={chicagoArtwork.id + index.toString()}
+                selectedMuseum={selectedMuseum}
+                needsConfirm={false}
+                needTempListButton={true}
+                needExhibitButton={false}
+              />
+            ))
           ) : (
             <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1 flex flex-col">
-              There is no artwork available for this category.
+              There are no artworks available for this category.
             </h2>
           )}
-        </>
+        </ul>
       )}
     </div>
   );

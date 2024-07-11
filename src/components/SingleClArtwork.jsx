@@ -5,6 +5,7 @@ import AddToExhibitButton from "./AddToExhibitButton";
 import { ListContext } from "./ListContext";
 import { useParams } from "react-router-dom";
 import Error from "./Error"; // Uncomment or import Error if not imported
+import PlaceholderImage from "../assets/img/throbber.gif";
 
 const SingleClArtwork = () => {
   const { tempList, setTempList, finalList, setFinalList } =
@@ -13,6 +14,7 @@ const SingleClArtwork = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { clartwork_id } = useParams();
   const [apiError, setApiError] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     getSingleClArtwork(clartwork_id)
@@ -30,8 +32,11 @@ const SingleClArtwork = () => {
     window.history.back(); // Navigate back to the previous page
   };
 
-  const isInTempList = tempList.some((item) => item.artworkId.toString() === clartwork_id);
-  const isInFinalList = finalList.some((item) => item.artworkId.toString() === clartwork_id
+  const isInTempList = tempList.some(
+    (item) => item.artworkId.toString() === clartwork_id
+  );
+  const isInFinalList = finalList.some(
+    (item) => item.artworkId.toString() === clartwork_id
   );
 
   if (isLoading) {
@@ -44,13 +49,29 @@ const SingleClArtwork = () => {
     <>
       <div className="relative flex flex-col max-w-4xl mx-auto pb-10 pt-5 mb-4">
         {clArtwork?.images?.web?.url ? (
-          <img
-            className="w-full"
-            src={clArtwork.images.web.url}
-            alt={`painting of "${clArtwork.title}"`}
-            loading="lazy"
-          />
-        ) : null}
+          <div className="flex justify-center items-center">
+            <div>
+              <img
+                className="w-full "
+                src={clArtwork.images.web.url}
+                onLoad={() => setIsLoaded(true)}
+                alt={clArtwork.title}
+              />
+              {!isLoaded && <div>Loading...</div>}
+            </div>
+            {!isLoaded && (
+              <img
+                className="w-1/2 ml-auto mr-auto"
+                src={PlaceholderImage}
+                alt="No Image loaded or available"
+                loading="lazy"
+              />
+            )}
+          </div>
+        ) : (
+          <p>No Image Available</p>
+        )}
+
         <br />
         <h1>
           Title: {clArtwork?.title ? clArtwork.title : "no title available"}
@@ -83,7 +104,7 @@ const SingleClArtwork = () => {
             ) : null}
           </div>
           <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
-            <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center text-white">
+            <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
               <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center flex justify-between">
                 <div className="flex items-center text-left w-20 pl-2">
                   List Items: {tempList.length}

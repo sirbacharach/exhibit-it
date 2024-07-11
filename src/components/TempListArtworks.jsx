@@ -143,7 +143,7 @@ console.log(tempList)
     return (
       <div className="flex justify-center">
         <h2
-          className="text-white font-bold font-headers text-2xl py-3"
+          className="font-bold font-headers text-2xl py-3"
           style={{ maxWidth: "50%", textAlign: "center" }}
         >
           There are currently no items in your list.
@@ -260,7 +260,7 @@ console.log(tempList)
         </div>
       </div>
 
-      <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
+      <h2 className="text-center font-bold font-headers text-2xl pt-2 pb-1">
         Selected Artworks
       </h2>
 
@@ -296,7 +296,7 @@ console.log(tempList)
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center text-white">
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
         <div className="flex items-center justify-between p-2">
           <div className="flex items-center text-left w-20 pl-2">
             List Items: {tempList.length}

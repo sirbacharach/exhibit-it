@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const clevelandApi = axios.create({
-  baseURL: "https://openaccess-api.clevelandart.org/api",
+  baseURL: "https://api.harvardartmuseums.org",
 });
 
 const chicagoApi = axios.create({
@@ -10,130 +10,132 @@ const chicagoApi = axios.create({
 
 // &limit=${itemLimit}&skip=${skip}
 // GET ALL ClArtworks
-const getAllClArtworks = (page, itemLimit, type, department) => {
+const getAllClArtworks = async (page, itemLimit, type, department) => {
   const skip = itemLimit * page;
   let typeStr = "";
   let departmentStr = "";
   if (department) departmentStr = `&department=${department}`;
   if (type) typeStr = `&type=${type}`;
-  return clevelandApi
-    .get(
-      `/artworks?has_image=1${typeStr}${departmentStr}&page=2&limit=${itemLimit}&skip=${skip}`
-    )
-    .then((response) => {
-      // console.log(response.data.data)
-      return [response.data.data, response.data.info.total];
-    });
+
+  try {
+    const response = await clevelandApi.get(
+      `/object?apikey=placeholder_key&hasimage=1&sort=id&size=${itemLimit}&page=${page+1}`
+    );
+    console.log("this is what you get", response.data)
+    return [response.data.records, response.data.info.totalrecords];
+  } catch (error) {
+    console.error("Error fetching Cleveland artworks:", error);
+    throw error;
+  }
 };
 
 // GET SINGLE ClArtwork
-const getSingleClArtwork = (clartwork_id) => {
-  return clevelandApi.get(`/artworks/${clartwork_id}`).then((response) => {
+const getSingleClArtwork = async (clartwork_id) => {
+  try {
+    const response = await clevelandApi.get(`/artworks/${clartwork_id}`);
     return response.data.data;
-  });
+  } catch (error) {
+    console.error(`Error fetching Cleveland artwork ${clartwork_id}:`, error);
+    throw error;
+  }
 };
 
-const getAllChicagoArtworks = ( pageNo, itemLimit, selectedType, selectedDepartment, sortCriteria, sortOrder, principalMaker, type, datingPeriod, place, material, technique ) => {
-  
-  let sort=""
-  if(sortCriteria === "relevance")
-    {sort = "&s=relevance"}
-  else if (sortCriteria === "objecttype") {
-    sort = "&s=objecttype"
+const getAllChicagoArtworks = async (
+  pageNo,
+  itemLimit,
+  selectedType,
+  selectedDepartment,
+  sortCriteria,
+  sortOrder,
+  principalMaker,
+  type,
+  datingPeriod,
+  place,
+  material,
+  technique
+) => {
+  let sort = "";
+  if (sortCriteria === "relevance") {
+    sort = "&s=relevance";
+  } else if (sortCriteria === "objecttype") {
+    sort = "&s=objecttype";
   } else if (sortCriteria === "chronologic") {
     if (sortOrder === "ascending") {
-      sort = "&s=chronologic"
-    } else { sort = "&s=achronologic"}
+      sort = "&s=chronologic";
+    } else {
+      sort = "&s=achronologic";
+    }
   } else if (sortCriteria === "artist") {
     if (sortOrder === "ascending") {
-      sort = "&s=artist"
-    } else { sort = "&s=artistdesc"}
-  }
-
-let makerString = ""
-let typeString = ""
-let periodString = ""
-let placeString = ""
-let materialString = ""
-let techniqueString = ""
-
-if(principalMaker) {
-  makerString=`&involvedMaker=${principalMaker.split(" ").join("+")}`
-}
-
-if (type) {
-typeString=`&type=${type.split(" ").join("+")}`
-}
-
-if (datingPeriod) {
-  periodString=`&f.dating.period=${datingPeriod}`
-  }
-
-  if (place) {
-    placeString=`&place=${place.split(" ").join("+")}`
+      sort = "&s=artist";
+    } else {
+      sort = "&s=artistdesc";
     }
+  }
 
-    if (material) {
-      materialString=`&material=${material.split(" ").join("+")}`
-      }
+  let makerString = principalMaker
+    ? `&involvedMaker=${principalMaker.split(" ").join("+")}`
+    : "";
+  let typeString = type ? `&type=${type.split(" ").join("+")}` : "";
+  let periodString = datingPeriod ? `&f.dating.period=${datingPeriod}` : "";
+  let placeString = place ? `&place=${place.split(" ").join("+")}` : "";
+  let materialString = material ? `&material=${material.split(" ").join("+")}` : "";
+  let techniqueString = technique ? `&technique=${technique.split(" ").join("+")}` : "";
 
-      if (technique) {
-        techniqueString=`&technique=${technique.split(" ").join("+")}`
-        }
+  try {
+    const response = await chicagoApi.get(
+      `/collection?key=25T7NCOQ&imgonly=true&ps=${itemLimit}&p=${
+        pageNo + 1
+      }&culture=en${sort}${makerString}${typeString}${periodString}${placeString}${materialString}${techniqueString}`
+    );
 
-  return chicagoApi
-    .get(`/collection?key=25T7NCOQ&imgonly=true&ps=${itemLimit}&p=${pageNo + 1}&culture=en${sort}${makerString}${typeString}${periodString}${placeString}${materialString}${techniqueString}`)
-    .then((response) => {
-      const artObjects = response.data.artObjects;
-      const promises = artObjects.map((artwork) => {
-        return getSingleChicagoArtwork(artwork.objectNumber);
-      });
+    const artObjects = response.data.artObjects;
+    const promises = artObjects.map((artwork) =>
+      getSingleChicagoArtwork(artwork.objectNumber)
+    );
 
-      return Promise.all(promises)
-        .then((singleArtworks) => {
-          return [singleArtworks, response.data.count, response.data.facets];
-        })
-        .catch((error) => {
-          console.error("Error fetching single artworks:", error);
-          throw error;
-        });
-    })
-    .catch((error) => {
-      console.error("Error fetching Chicago artworks:", error);
-      throw error;
-    });
+    const singleArtworks = await Promise.all(promises);
+    return [singleArtworks, response.data.count, response.data.facets];
+  } catch (error) {
+    console.error("Error fetching Chicago artworks:", error);
+    throw error;
+  }
 };
 
 // GET SINGLE ChicagoArtwork
-const getSingleChicagoArtwork = (chicagoartwork_id) => {
-  return chicagoApi
-    .get(`/collection/${chicagoartwork_id}?key=25T7NCOQ&culture=en`)
-    .then((response) => {
-      return response.data.artObject;
-    })
-    .catch((error) => {
-      console.error(
-        `Error fetching Chicago artwork ${chicagoartwork_id}:`,
-        error
-      );
-      throw error;
-    });
+const getSingleChicagoArtwork = async (chicagoartwork_id) => {
+  try {
+    const response = await chicagoApi.get(
+      `/collection/${chicagoartwork_id}?key=25T7NCOQ&culture=en`
+    );
+    return response.data.artObject;
+  } catch (error) {
+    console.error(
+      `Error fetching Chicago artwork ${chicagoartwork_id}:`,
+      error
+    );
+    throw error;
+  }
 };
 
 // GET Chicago facets.
+const getChicagoFacets = async () => {
+  try {
+    const response = await chicagoApi.get(
+      `https://www.rijksmuseum.nl/api/nl/collection?key=25T7NCOQ&ps1&p=1`
+    );
+    return response.data.facets;
+  } catch (error) {
+    console.error("Error fetching Chicago facets:", error);
+    throw error;
+  }
+};
 
-const getChicagoFacets = () => {
-return chicagoApi
-.get(`https://www.rijksmuseum.nl/api/nl/collection?key=25T7NCOQ&imgonly=true&ps10&culture=en&p=1&s=achronologic`)
-.then((response) => {
-  return response.data.facets
-})
-}
 
 export {
   getAllClArtworks,
   getSingleClArtwork,
   getAllChicagoArtworks,
   getSingleChicagoArtwork,
-  getChicagoFacets
+  getChicagoFacets,
 };
