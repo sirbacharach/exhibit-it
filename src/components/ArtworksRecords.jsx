@@ -33,19 +33,19 @@ const ArtworksRecords = ({
   const [place, setPlace] = useState("");
   const [material, setMaterial] = useState("");
   const [technique, setTechnique] = useState("");
-  const [hasImage, setHasImage] = useState(""); // State for image filter
+  const [hasImage, setHasImage] = useState("true"); // State for image filter
+  const [filteredArtworks, setFilteredArtworks ] = useState([]);
 
+  
   useEffect(() => {
+    setIsLoading(true);
+    let fetchFunction;
+
     if (selectedMuseum === "Art Institute of Chicago") {
       getChicagoFacets().then((facets) => {
         setSearchCriteria(facets);
       });
     }
-  }, [selectedMuseum, setSearchCriteria]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    let fetchFunction;
 
     if (selectedMuseum === "Cleveland Museum of Art") {
       fetchFunction = getAllClArtworks;
@@ -69,8 +69,14 @@ const ArtworksRecords = ({
         technique
       )
         .then((response) => {
-          setArtworks(response[0]);
+          const artworksData = response[0];
+          setArtworks(artworksData);
           setMaxRecords(response[1]);
+
+          if (selectedMuseum === "Cleveland Museum of Art") {
+            const filtered = hasImage ? artworksData.filter((artwork) => artwork.images.length > 0) : artworksData;
+            setFilteredArtworks(filtered);
+          }
           setIsLoading(false);
         })
         .catch((err) => {
@@ -93,9 +99,10 @@ const ArtworksRecords = ({
     place,
     material,
     technique,
+    hasImage,
   ]);
-
   function handleMuseumChange(event) {
+    console.log("museum changed to: ", event.target.value)
     setSelectedMuseum(event.target.value);
     setPageNo(0); // Reset pageNo when changing museum
   }
@@ -160,7 +167,6 @@ const ArtworksRecords = ({
   function handleHasImageChange(event) {
     const value = event.target.value;
     setHasImage(value);
-    setItemLimit(40)
     setPageNo(0);
   }
 
@@ -396,9 +402,6 @@ const ArtworksRecords = ({
     return <div>Error: {apiError.message}</div>;
   }
 
-  const filteredArtworks = hasImage
-    ? artworks.filter((artwork) => artwork.images.length > 0)
-    : artworks;
 
   return (
     <div className="max-w-screen-lg mx-auto">
@@ -507,8 +510,8 @@ const ArtworksRecords = ({
 
       {selectedMuseum === "Art Institute of Chicago" && (
         <ul className="flex flex-wrap place-content-evenly pb-10">
-          {filteredArtworks.length > 0 ? (
-            filteredArtworks.map((chicagoArtwork, index) => (
+          {artworks.length > 0 ? (
+            artworks.map((chicagoArtwork, index) => (
               <ChicagoArtworkCard
                 artwork={chicagoArtwork}
                 key={chicagoArtwork.id + index.toString()}
