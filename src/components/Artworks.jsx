@@ -40,7 +40,7 @@ const Artworks = () => {
           setSearchCriteria={setSearchCriteria}
         />
       </div>
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center text-white">
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
         <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full  max-w-screen-lg bg-titlebackground text-center flex justify-between">
           <div className="flex items-center text-left w-20 pl-2">
             List Items: {tempList.length}

@@ -18,7 +18,7 @@ function App() {
   return (
     <UserProvider>
       <UserListProvider>
-        <div className="bg-bgcolour font-main max-w-screen-lg min-h-screen mx-auto p-2">
+        <div className="bg-bgcolour font-main max-w-screen-lg min-h-screen mx-auto p-2 text-white">
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />

@@ -64,13 +64,13 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
           </p>
           <button
             onClick={handleConfirmRemove}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-red-700 hover:bg-red-900 ont-bold py-2 px-4 rounded"
           >
             Confirm
           </button>
           <button
             onClick={handleCancelRemove}
-            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-gray-500 hover:bg-gray-700 font-bold py-2 px-4 rounded"
           >
             Cancel
           </button>
@@ -79,9 +79,9 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
         <button
           className={`font-bold py-2 px-4 rounded ${
             isInList
-              ? "bg-red-500 hover:bg-red-700"
-              : "bg-blue-500 hover:bg-blue-700"
-          } text-white`}
+              ? "bg-red-700 hover:bg-red-900"
+              : "bg-blue-700 hover:bg-blue-900"
+          }`}
           onClick={handleToggle}
         >
           {isInList ? "Remove from Exhibition" : "Add to Exhibition"}
