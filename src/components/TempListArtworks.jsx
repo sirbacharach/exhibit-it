@@ -116,7 +116,7 @@ const TempListArtworks = () => {
             .map(item => (
               <ClArtworkCard
                 artwork={item[1]}
-                key={item[0].artworkId}
+                key={item[1].systemNumber}
                 selectedMuseum={item[0].gallery}
                 needsConfirm={true}
                 needTempListButton={true}

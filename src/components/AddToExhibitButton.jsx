@@ -1,19 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ListContext } from "./ListContext";
 
-const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
+const AddToExhibitButton = ({ artwork, selectedMuseum, needsConfirm }) => {
   const [isInList, setIsInList] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const { finalList, setFinalList } = useContext(ListContext);
 
   useEffect(() => {
-    const isInList = finalList.some((item) =>
+    const isInList = finalList && Array.isArray(finalList) && finalList.some((item) =>
       selectedMuseum === "Cleveland Museum of Art"
-        ? item.artworkId === artwork.accession_number
-        : item.artworkId === artwork.objectNumber
+        ? item[0].artworkId === artwork.systemNumber
+        : item[0].artworkId === artwork.objectNumber
     );
     setIsInList(isInList);
-  }, [finalList, artwork.accession_number, artwork.objectNumber, selectedMuseum]);
+  }, [finalList, artwork.systemNumber, artwork.objectNumber, selectedMuseum]);
 
   const handleToggle = () => {
     if (isInList) {
@@ -21,31 +21,37 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
         setShowConfirm(true);
       } else {
         setFinalList((prevList) =>
-          selectedMuseum === "Cleveland Museum of Art"
-            ? prevList.filter(
-                (item) => item.artworkId !== artwork.accession_number
-              )
-            : prevList.filter((item) => item.artworkId !== artwork.objectNumber)
+          prevList.filter((item) =>
+            selectedMuseum === "Cleveland Museum of Art"
+              ? item[0].artworkId !== artwork.systemNumber
+              : item[0].artworkId !== artwork.objectNumber
+          )
         );
       }
     } else {
-      setFinalList((prevList) =>
-        selectedMuseum === "Cleveland Museum of Art"
-          ? [
-              ...prevList,
-              { artworkId: artwork.accession_number, gallery: selectedMuseum },
-            ]
-          : [...prevList, { artworkId: artwork.objectNumber, gallery: selectedMuseum }]
-      );
+      setFinalList((prevList) => [
+        ...prevList,
+        [
+          {
+            artworkId: selectedMuseum === "Cleveland Museum of Art"
+              ? artwork.systemNumber
+              : artwork.objectNumber,
+            gallery: selectedMuseum,
+          },
+          artwork, // Artwork object as item 1
+        ],
+      ]);
     }
     setIsInList(!isInList); // Toggle state
   };
 
   const handleConfirmRemove = () => {
     setFinalList((prevList) =>
-      selectedMuseum === "Cleveland Museum of Art"
-        ? prevList.filter((item) => item.artworkId !== artwork.accession_number)
-        : prevList.filter((item) => item.artworkId !== artwork.objectNumber)
+      prevList.filter((item) =>
+        selectedMuseum === "Cleveland Museum of Art"
+          ? item[0].artworkId !== artwork.systemNumber
+          : item[0].artworkId !== artwork.objectNumber
+      )
     );
     setShowConfirm(false);
   };
@@ -64,7 +70,7 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
           </p>
           <button
             onClick={handleConfirmRemove}
-            className="bg-red-700 hover:bg-red-900 ont-bold py-2 px-4 rounded"
+            className="bg-red-700 hover:bg-red-900 font-bold py-2 px-4 rounded"
           >
             Confirm
           </button>
@@ -91,4 +97,4 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
   );
 };
 
-export default AddToListButton;
+export default AddToExhibitButton;
