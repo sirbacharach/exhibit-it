@@ -9,11 +9,11 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
   useEffect(() => {
     const isInList = tempList.some((item) =>
       selectedMuseum === "Cleveland Museum of Art"
-        ? item.artworkId === artwork.accession_number
-        : item.artworkId === artwork.objectNumber
+        ? item[0].artworkId === artwork.systemNumber
+        : item[0].artworkId === artwork.objectNumber
     );
     setIsInList(isInList);
-  }, [tempList, artwork.accession_number, artwork.objectNumber, selectedMuseum]);
+  }, [tempList, artwork.systemNumber, artwork.objectNumber, selectedMuseum]);
 
   const handleToggle = () => {
     if (isInList) {
@@ -21,31 +21,37 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
         setShowConfirm(true);
       } else {
         setTempList((prevList) =>
-          selectedMuseum === "Cleveland Museum of Art"
-            ? prevList.filter(
-                (item) => item.artworkId !== artwork.accession_number
-              )
-            : prevList.filter((item) => item.artworkId !== artwork.objectNumber)
+          prevList.filter((item) =>
+            selectedMuseum === "Cleveland Museum of Art"
+              ? item[0].artworkId !== artwork.systemNumber
+              : item[0].artworkId !== artwork.objectNumber
+          )
         );
       }
     } else {
-      setTempList((prevList) =>
-        selectedMuseum === "Cleveland Museum of Art"
-          ? [
-              ...prevList,
-              { artworkId: artwork.accession_number, gallery: selectedMuseum },
-            ]
-          : [...prevList, { artworkId: artwork.objectNumber, gallery: selectedMuseum }]
-      );
+      setTempList((prevList) => [
+        ...prevList,
+        [
+          {
+            artworkId: selectedMuseum === "Cleveland Museum of Art"
+              ? artwork.systemNumber
+              : artwork.objectNumber,
+            gallery: selectedMuseum,
+          },
+          artwork, // Artwork array as item 1
+        ],
+      ]);
     }
     setIsInList(!isInList); // Toggle state
   };
 
   const handleConfirmRemove = () => {
     setTempList((prevList) =>
-      selectedMuseum === "Cleveland Museum of Art"
-        ? prevList.filter((item) => item.artworkId !== artwork.accession_number)
-        : prevList.filter((item) => item.artworkId !== artwork.objectNumber)
+      prevList.filter((item) =>
+        selectedMuseum === "Cleveland Museum of Art"
+          ? item[0].artworkId !== artwork.systemNumber
+          : item[0].artworkId !== artwork.objectNumber
+      )
     );
     setShowConfirm(false);
   };
@@ -59,8 +65,7 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
       {showConfirm ? (
         <div className="confirm-remove">
           <p className="bg-white p-1 pl-2 mb-2 rounded-lg">
-            Are you sure you want to remove this artwork from your temporary
-            list?
+            Are you sure you want to remove this artwork from your temporary list?
           </p>
           <button
             onClick={handleConfirmRemove}
