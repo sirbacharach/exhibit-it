@@ -16,7 +16,6 @@ const ClArtworkCard = ({
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-console.log(artwork)
 
   }, [tempList]);
 
