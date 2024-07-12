@@ -523,7 +523,7 @@ const ArtworksRecords = ({
             artworks.map((clArtwork, index) => (
               <ClArtworkCard
                 artwork={clArtwork}
-                key={clArtwork.accession_number + index.toString()}
+                key={clArtwork.systemNumber + index.toString()}
                 selectedMuseum={selectedMuseum}
                 needsConfirm={false}
                 needTempListButton={true}

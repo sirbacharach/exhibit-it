@@ -17,6 +17,7 @@ const TempListArtworks = () => {
   const [tempListToDisplay, setTempListToDisplay] = useState([]);
 
   useEffect(() => {
+    console.log("templist", tempList)
     setIsLoading(true);
     setApiError(null);
 
