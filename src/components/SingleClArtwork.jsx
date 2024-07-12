@@ -48,41 +48,62 @@ const SingleClArtwork = () => {
   return (
     <>
       <div className="relative flex flex-col max-w-4xl mx-auto pb-10 pt-5 mb-4">
-        {clArtwork?.images?.web?.url ? (
+        {clArtwork?.images[0] ? (
           <div className="flex justify-center items-center">
-            <div>
+            <>
               <img
-                className="w-full "
-                src={clArtwork.images.web.url}
+                className={`w-auto ${
+                  isLoaded ? "block mx-auto" : "hidden"
+                } mb-2`}
+                src={`https://framemark.vam.ac.uk/collections/${clArtwork.images[0]}/full/full/0/default.jpg`}
+                alt={clArtwork._primaryTitle}
                 onLoad={() => setIsLoaded(true)}
-                alt={clArtwork.title}
               />
-              {!isLoaded && <div>Loading...</div>}
-            </div>
-            {!isLoaded && (
-              <img
-                className="w-1/2 ml-auto mr-auto"
-                src={PlaceholderImage}
-                alt="No Image loaded or available"
-                loading="lazy"
-              />
-            )}
+              {!isLoaded && (
+                <img
+                  className="w-1/2 mx-auto"
+                  src={PlaceholderImage}
+                  alt="placeholder"
+                  loading="lazy"
+                />
+              )}
+            </>
           </div>
         ) : (
-          <p>No Image Available</p>
+          <div className="text-center bg-titlebackground m-6 font-bold">
+            <br></br>
+            <p>Image Unavailable</p>
+            <br></br>
+          </div>
         )}
 
         <br />
-        <h1>
-          Title: {clArtwork?.title ? clArtwork.title : "no title available"}
+        <h1 className="font-bold">
+          Title: {clArtwork?.titles[0]? clArtwork.titles[0].title : "no title available"}
         </h1>
-        <p>Id: {clArtwork.athena_id}</p>
-        <p>Creation Date: {clArtwork.creation_date}</p>
-        <p>Culture: {clArtwork.culture}</p>
-        <p>Type: {clArtwork.type}</p>
-        <p>Technique: {clArtwork.technique}</p>
-        <br />
-        <p>{clArtwork.description}</p>
+        {clArtwork?.artistMakerPerson?.length > 0 ? (
+  <p>
+    Artist: {clArtwork.artistMakerPerson.map((artist, index) => (
+      <span key={artist.name.text}>
+        {artist.name.text}{index < clArtwork.artistMakerPerson.length - 1 ? ' | ' : ''}
+      </span>
+    ))}
+  </p>
+) : (
+  <p>Artist: Unknown</p>
+)}
+<p>Id: {clArtwork.accessionNumber || "Id: Unavailable"}</p>
+<p>Type: {clArtwork.objectType || "Type: Unavailable"}</p>
+<p>
+  Materials and Techniques: {Array.isArray(clArtwork.materialsAndTechniques) && clArtwork.materialsAndTechniques.length > 0
+    ? clArtwork.materialsAndTechniques.join(', ')
+    : "Materials and Techniques: Unavailable"}
+</p>
+<br />
+<p>
+  {clArtwork.briefDescription ? clArtwork.briefDescription.replace(/<i>|<\/i>/g, '') : "Unavailable"}
+</p>
+
         <br />
         <div className="flex justify-center place-items-end grow">
           <div className="flex flex-col justify-end place-items-end grow items-center">

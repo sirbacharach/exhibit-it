@@ -6,7 +6,7 @@ import { ListContext } from "./ListContext";
 
 const Artworks = () => {
   const [pageNo, setPageNo] = useState(0);
-  const [itemLimit, setItemLimit] = useState(40);
+  const [itemLimit, setItemLimit] = useState(10);
   const [maxRecords, setMaxRecords] = useState(0);
   const [searchCriteria, setSearchCriteria] = useState([])
   const [apiError, setApiError] = useState("");

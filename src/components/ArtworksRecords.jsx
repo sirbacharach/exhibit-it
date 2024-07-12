@@ -6,7 +6,7 @@ import {
 } from "./api";
 import ClArtworkCard from "./ClArtworkCard";
 import ChicagoArtworkCard from "./ChicagoArtworkCard";
-import { types, departments } from "./Queries";
+import { museum1Materials, museum1Places, museum1People } from "./Queries";
 
 const ArtworksRecords = ({
   pageNo,
@@ -23,20 +23,18 @@ const ArtworksRecords = ({
   const [selectedMuseum, setSelectedMuseum] = useState(
     "Cleveland Museum of Art"
   );
-  const [selectedType, setSelectedType] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState("");
   const [sortCriteria, setSortCriteria] = useState("");
-  const [sortOrder, setSortOrder] = useState("ascending");
+  const [sortOrder, setSortOrder] = useState("asc");
   const [principalMaker, setPrincipalMaker] = useState("");
   const [type, setType] = useState("");
   const [datingPeriod, setDatingPeriod] = useState("");
-  const [place, setPlace] = useState("");
-  const [material, setMaterial] = useState("");
+  const [selectedPlace, setSelectedPlace] = useState("");
+  const [selectedMaterial, setSelectedMaterial] = useState("");
+  const [selectedPerson, setSelectedPerson] = useState("");
   const [technique, setTechnique] = useState("");
-  const [hasImage, setHasImage] = useState("true"); // State for image filter
-  const [filteredArtworks, setFilteredArtworks ] = useState([]);
+  const [userSearch, setUserSearch] = useState(""); // New state for user search
+  const [tempUserSearch, setTempUserSearch] = useState(""); // New state for temporary search input
 
-  
   useEffect(() => {
     setIsLoading(true);
     let fetchFunction;
@@ -57,26 +55,21 @@ const ArtworksRecords = ({
       fetchFunction(
         pageNo,
         itemLimit,
-        selectedType,
-        selectedDepartment,
+        selectedMaterial,
+        selectedPlace,
+        selectedPerson,
+        userSearch,
         sortCriteria,
         sortOrder,
         principalMaker,
         type,
         datingPeriod,
-        place,
-        material,
         technique
       )
         .then((response) => {
           const artworksData = response[0];
           setArtworks(artworksData);
           setMaxRecords(response[1]);
-
-          if (selectedMuseum === "Cleveland Museum of Art") {
-            const filtered = hasImage ? artworksData.filter((artwork) => artwork.images.length > 0) : artworksData;
-            setFilteredArtworks(filtered);
-          }
           setIsLoading(false);
         })
         .catch((err) => {
@@ -88,39 +81,27 @@ const ArtworksRecords = ({
     pageNo,
     itemLimit,
     selectedMuseum,
-    selectedType,
-    selectedDepartment,
     sortCriteria,
     sortOrder,
     setMaxRecords,
     principalMaker,
     type,
     datingPeriod,
-    place,
-    material,
+    selectedPlace,
+    selectedMaterial,
+    selectedPerson,
     technique,
-    hasImage,
+    userSearch,
   ]);
   function handleMuseumChange(event) {
-    console.log("museum changed to: ", event.target.value)
     setSelectedMuseum(event.target.value);
-    setPageNo(0); // Reset pageNo when changing museum
-  }
-
-  function handleTypeChange(event) {
-    setSelectedType(event.target.value);
-    setPageNo(0);
-  }
-
-  function handleDepartmentChange(event) {
-    setSelectedDepartment(event.target.value);
     setPageNo(0);
   }
 
   function handleItemLimitChange(event) {
     const limit = Number(event.target.value);
     setItemLimit(limit);
-    setPageNo(0); // Reset pageNo when changing itemLimit
+    setPageNo(0);
   }
 
   function handleSortCriteriaChange(event) {
@@ -150,13 +131,24 @@ const ArtworksRecords = ({
   }
 
   function handlePlaceChange(event) {
-    setPlace(event.target.value);
+    setSelectedPlace(event.target.value);
     setSortCriteria("");
+    setSelectedPerson("")
+    setSelectedMaterial("")
   }
 
   function handleMaterialChange(event) {
-    setMaterial(event.target.value);
+    setSelectedMaterial(event.target.value);
     setSortCriteria("");
+    setSelectedPerson("")
+    setSelectedPlace("")
+  }
+
+  function handlePersonChange(event) {
+    setSelectedPerson(event.target.value);
+    setSortCriteria("");
+    setSelectedMaterial("")
+    setSelectedPlace("")
   }
 
   function handleTechniqueChange(event) {
@@ -164,20 +156,35 @@ const ArtworksRecords = ({
     setSortCriteria("");
   }
 
-  function handleHasImageChange(event) {
-    const value = event.target.value;
-    setHasImage(value);
+  function handleUserSearchChange(event) {
+    setTempUserSearch(event.target.value); // Update temporary search input
     setPageNo(0);
   }
+
+  function handleUserSearchUpdate() {
+    setUserSearch(tempUserSearch); // Update user search
+    setSelectedPerson("");
+    setSortCriteria("");
+    setSelectedMaterial("")
+    setSelectedPlace("")
+    setPageNo(0);
+  }
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleUserSearchUpdate(); // Handle Enter key press
+    }
+  };
 
   const renderSortOptions = () => {
     if (selectedMuseum === "Cleveland Museum of Art") {
       return (
         <>
           <option value="">None</option>
-          <option value="creation_date">Creation Date</option>
-          <option value="type">Type</option>
-          <option value="technique">Technique</option>
+          <option value="location">location</option>
+          <option value="artist">artist</option>
+          <option value="place">place</option>
+          <option value="date">date</option>
         </>
       );
     } else {
@@ -185,9 +192,9 @@ const ArtworksRecords = ({
         <>
           <option value="">None</option>
           <option value="relevance">Relevance</option>
-          <option value="objecttype">Object Type</option>
+          <option value="objecttype">Type</option>
           <option value="chronologic">Chronologic</option>
-          <option value="artist">Artist</option>
+          <option value="fields_populated">Populated Fields</option>
         </>
       );
     }
@@ -198,59 +205,58 @@ const ArtworksRecords = ({
       return (
         <>
           <div className="flex flex-col items-center w-auto">
-            <label htmlFor="typeSelect" className="block mb-1 text-centere">
-              Type:
+            <label htmlFor="materialSelect" className="block mb-1 text-centere">
+              Filter Material:
             </label>
             <select
-              id="typeSelect"
-              value={selectedType}
-              onChange={handleTypeChange}
+              id="materialSelect"
+              value={selectedMaterial}
+              onChange={handleMaterialChange}
               className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
             >
               <option value="">All</option>
-              {types.map((type, index) => (
-                <option key={index} value={type}>
-                  {type}
+              {museum1Materials.map((material, index) => (
+                <option key={index} value={material.code}>
+                  {material.materialName}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col items-center w-auto">
+            <label htmlFor="placeSelect" className="block mb-1 text-centere">
+              Filter Places:
+            </label>
+            <select
+              id="placeSelect"
+              value={selectedPlace}
+              onChange={handlePlaceChange}
+              className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
+            >
+              <option value="">All</option>
+              {museum1Places.map((place, index) => (
+                <option key={index} value={place.code}>
+                  {place.placeName}
                 </option>
               ))}
             </select>
           </div>
           <div className="flex flex-col items-center w-auto">
-            <label
-              htmlFor="departmentSelect"
-              className="block mb-1 text-center"
-            >
-              Department:
+            <label htmlFor="personSelect" className="block mb-1 text-center">
+              Filter Person:
             </label>
             <select
-              id="departmentSelect"
-              value={selectedDepartment}
-              onChange={handleDepartmentChange}
+              id="personSelect"
+              value={selectedPerson}
+              onChange={handlePersonChange}
               className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
             >
               <option value="">All</option>
-              {departments.map((department, index) => (
-                <option key={index} value={department}>
-                  {department}
+              {museum1People.map((person, index) => (
+                <option key={index} value={person}>
+                  {person}
                 </option>
               ))}
-            </select>
-          </div>
-          <div className="flex flex-col items-center w-auto">
-            <label
-              htmlFor="hasImageSelect"
-              className="block mb-1 text-center"
-            >
-              Records with images:
-            </label>
-            <select
-              id="hasImageSelect"
-              value={hasImage}
-              onChange={handleHasImageChange}
-              className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
-            >
-              <option value="">All</option>
-              <option value="true">With images only</option>
             </select>
           </div>
         </>
@@ -328,7 +334,7 @@ const ArtworksRecords = ({
               </label>
               <select
                 id="placeSelect"
-                value={place}
+                value={selectedPlace}
                 onChange={handlePlaceChange}
                 className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
               >
@@ -402,9 +408,32 @@ const ArtworksRecords = ({
     return <div>Error: {apiError.message}</div>;
   }
 
-
   return (
     <div className="max-w-screen-lg mx-auto">
+      <div className="flex flex-row items-center justify-center ml-8">
+        <label
+          htmlFor="userSearch"
+          className="block mb-1 text-center text-white"
+        >
+          Type Search:
+        </label>
+        <input
+          id="userSearch"
+          type="text"
+          value={tempUserSearch}
+          onChange={handleUserSearchChange}
+          onKeyDown={handleKeyPress}
+          className="px-4 py-2 m-2 border border-gray-300 rounded text-black mx-2"
+          maxLength={30}
+        />
+        <button
+          onClick={handleUserSearchUpdate}
+          className="m-2 px-4 py-2 border border-gray-300 rounded text-black bg-green-700 active:bg-blue-500 transition duration-150 ease-in-out"
+        >
+          Go
+        </button>
+      </div>
+
       <div className="flex flex-wrap justify-center gap-4">
         <div className="flex flex-col items-center w-auto">
           <label
@@ -465,6 +494,7 @@ const ArtworksRecords = ({
             {renderSortOptions()}
           </select>
         </div>
+
         <div className="flex flex-col items-center  w-auto">
           <label
             htmlFor="sortOrderSelect"
@@ -478,8 +508,8 @@ const ArtworksRecords = ({
             onChange={handleSortOrderChange}
             className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
           >
-            <option value="ascending">Ascending</option>
-            <option value="descending">Descending</option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
           </select>
         </div>
       </div>
@@ -489,8 +519,8 @@ const ArtworksRecords = ({
 
       {selectedMuseum === "Cleveland Museum of Art" && (
         <ul className="flex flex-wrap place-content-evenly pb-10">
-          {filteredArtworks.length > 0 ? (
-            filteredArtworks.map((clArtwork, index) => (
+          {artworks.length > 0 ? (
+            artworks.map((clArtwork, index) => (
               <ClArtworkCard
                 artwork={clArtwork}
                 key={clArtwork.accession_number + index.toString()}

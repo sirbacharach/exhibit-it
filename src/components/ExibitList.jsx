@@ -3,7 +3,7 @@ import { getSingleClArtwork, getSingleChicagoArtwork } from "./api";
 import ClArtworkCard from "./ClArtworkCard";
 import ChicagoArtworkCard from "./ChicagoArtworkCard";
 import { ListContext } from "./ListContext";
-import { types, departments } from "./Queries";
+import { museum1Materials, museum1Places, museum1People } from "./Queries";
 import { Link } from "react-router-dom";
 
 const FinalListArtworks = () => {
@@ -52,6 +52,7 @@ const FinalListArtworks = () => {
         setMaxRecords(filteredArtworks.length);
         applyFiltersAndSort(filteredArtworks);
         setIsEmpty(filteredArtworks.length === 0);
+        console.log(artworks)
       } catch (error) {
         console.error("Error fetching artworks:", error);
         setApiError(error);
@@ -61,11 +62,9 @@ const FinalListArtworks = () => {
     };
 
     fetchArtworks();
-
   }, [
     finalList,
     selectedType,
-    selectedDepartment,
     itemLimit,
     sortCriteria,
     sortOrder,
@@ -75,16 +74,16 @@ const FinalListArtworks = () => {
   const applyFiltersAndSort = (artworks) => {
     let filteredArtworks = artworks;
 
-    if (selectedType !== "") {
-      filteredArtworks = filteredArtworks.filter(
-        (artwork) => artwork.type === selectedType
-      );
-    }
-    if (selectedDepartment !== "") {
-      filteredArtworks = filteredArtworks.filter(
-        (artwork) => artwork.department === selectedDepartment
-      );
-    }
+    // if (selectedType !== "") {
+    //   filteredArtworks = filteredArtworks.filter(
+    //     (artwork) => artwork.type === selectedType
+    //   );
+    // }
+    // if (selectedDepartment !== "") {
+    //   filteredArtworks = filteredArtworks.filter(
+    //     (artwork) => artwork.department === selectedDepartment
+    //   );
+    // }
 
     if (sortCriteria) {
       filteredArtworks.sort((a, b) => {
@@ -103,7 +102,7 @@ const FinalListArtworks = () => {
 
   const handleTypeChange = (event) => setSelectedType(event.target.value);
 
-  const handleDepartmentChange = (event) => setSelectedDepartment(event.target.value);
+  // const handleDepartmentChange = (event) => setSelectedDepartment(event.target.value);
 
   const handleItemLimitChange = (event) => setItemLimit(Number(event.target.value));
 
@@ -155,7 +154,7 @@ const FinalListArtworks = () => {
       <div className="max-w-screen-lg mx-auto">
         <div className="flex flex-col gap-4 mb-4">
           <div className="flex flex-wrap justify-center gap-4">
-            <div className="flex flex-col items-center w-full sm:w-auto">
+            {/* <div className="flex flex-col items-center w-full sm:w-auto">
               <label
                 htmlFor="typeSelect"
                 className="block sm:inline mr-2 mb-1 sm:mb-0"
@@ -196,7 +195,7 @@ const FinalListArtworks = () => {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
             <div className="flex flex-col items-center w-full sm:w-auto">
               <label
                 htmlFor="itemLimitSelect"
@@ -268,7 +267,7 @@ const FinalListArtworks = () => {
             artwork.gallery === "Cleveland Museum of Art" ? (
               <ClArtworkCard
                 artwork={artwork}
-                key={artwork.athena_id}
+                key={artwork.systemNumber}
                 selectedMuseum={artwork.gallery}
                 needsConfirm={true}
                 needTempListButton={true}
