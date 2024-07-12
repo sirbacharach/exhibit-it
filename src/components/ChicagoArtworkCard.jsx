@@ -27,7 +27,7 @@ const ChicagoArtworkCard = ({
             <>
               <img
                 className={`w-auto ${isLoaded ? "block" : "hidden"} mb-2`}
-                src={artwork.webImage.url}
+                src={`${artwork.webImage.url}`}
                 onLoad={() => setIsLoaded(true)}
                 alt={artwork.title}
               />
