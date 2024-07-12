@@ -17,6 +17,8 @@ const SingleClArtwork = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    console.log("browser URL id: ", clartwork_id);
+    console.log("SingleArtwork Templist: ", tempList);
     getSingleClArtwork(clartwork_id)
       .then((response) => {
         setClArtwork(response);
@@ -29,15 +31,18 @@ const SingleClArtwork = () => {
   }, [clartwork_id]);
 
   const handleGoBack = () => {
-    window.history.back(); // Navigate back to the previous page
+    window.history.back();
   };
 
-  const isInTempList = tempList.some(
-    (item) => item.artworkId.toString() === clartwork_id
-  );
-  const isInFinalList = finalList.some(
-    (item) => item.artworkId.toString() === clartwork_id
-  );
+  const isInTempList =
+    tempList &&
+    Array.isArray(tempList) &&
+    tempList.some((item) => item[0]?.artworkId === clartwork_id);
+
+  const isInFinalList =
+    finalList &&
+    Array.isArray(finalList) &&
+    finalList[1]?.some((item) => item[0]?.artworkId === clartwork_id);
 
   if (isLoading) {
     return <p>Content Loading....</p>;
@@ -79,30 +84,39 @@ const SingleClArtwork = () => {
 
         <br />
         <h1 className="font-bold">
-          Title: {clArtwork?.titles[0]? clArtwork.titles[0].title : "no title available"}
+          Title:{" "}
+          {clArtwork?.titles[0]
+            ? clArtwork.titles[0].title
+            : "no title available"}
         </h1>
         {clArtwork?.artistMakerPerson?.length > 0 ? (
-  <p>
-    Artist: {clArtwork.artistMakerPerson.map((artist, index) => (
-      <span key={artist.name.text}>
-        {artist.name.text}{index < clArtwork.artistMakerPerson.length - 1 ? ' | ' : ''}
-      </span>
-    ))}
-  </p>
-) : (
-  <p>Artist: Unknown</p>
-)}
-<p>Id: {clArtwork.accessionNumber || "Id: Unavailable"}</p>
-<p>Type: {clArtwork.objectType || "Type: Unavailable"}</p>
-<p>
-  Materials and Techniques: {Array.isArray(clArtwork.materialsAndTechniques) && clArtwork.materialsAndTechniques.length > 0
-    ? clArtwork.materialsAndTechniques.join(', ')
-    : "Materials and Techniques: Unavailable"}
-</p>
-<br />
-<p>
-  {clArtwork.briefDescription ? clArtwork.briefDescription.replace(/<i>|<\/i>/g, '') : "Unavailable"}
-</p>
+          <p>
+            Artist:{" "}
+            {clArtwork.artistMakerPerson.map((artist, index) => (
+              <span key={artist.name.text}>
+                {artist.name.text}
+                {index < clArtwork.artistMakerPerson.length - 1 ? " | " : ""}
+              </span>
+            ))}
+          </p>
+        ) : (
+          <p>Artist: Unknown</p>
+        )}
+        <p>Id: {clArtwork.accessionNumber || "Id: Unavailable"}</p>
+        <p>Type: {clArtwork.objectType || "Type: Unavailable"}</p>
+        <p>
+          Materials and Techniques:{" "}
+          {Array.isArray(clArtwork.materialsAndTechniques) &&
+          clArtwork.materialsAndTechniques.length > 0
+            ? clArtwork.materialsAndTechniques.join(", ")
+            : "Materials and Techniques: Unavailable"}
+        </p>
+        <br />
+        <p>
+          {clArtwork.briefDescription
+            ? clArtwork.briefDescription.replace(/<i>|<\/i>/g, "")
+            : "Unavailable"}
+        </p>
 
         <br />
         <div className="flex justify-center place-items-end grow">
