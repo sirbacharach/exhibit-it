@@ -1,5 +1,4 @@
-import { useEffect, useState, useContext } from "react";
-import { getAllClArtworks } from "./api";
+import { useState, useContext } from "react";
 import ArtworksRecords from "./ArtworksRecords";
 import { Link } from "react-router-dom";
 import { ListContext } from "./ListContext";
@@ -8,7 +7,7 @@ const Artworks = () => {
   const [pageNo, setPageNo] = useState(0);
   const [itemLimit, setItemLimit] = useState(10);
   const [maxRecords, setMaxRecords] = useState(0);
-  const [searchCriteria, setSearchCriteria] = useState([])
+  const [searchCriteria, setSearchCriteria] = useState([]);
   const [apiError, setApiError] = useState("");
   const { tempList } = useContext(ListContext);
   const { finalList } = useContext(ListContext);
@@ -40,7 +39,7 @@ const Artworks = () => {
           setSearchCriteria={setSearchCriteria}
         />
       </div>
-      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
+      <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center text-md">
         <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full  max-w-screen-lg bg-titlebackground text-center flex justify-between">
           <div className="flex items-center text-left w-20 pl-2">
             List Items: {tempList.length}

@@ -7,11 +7,14 @@ const AddToExhibitButton = ({ artwork, selectedMuseum, needsConfirm }) => {
   const { finalList, setFinalList } = useContext(ListContext);
 
   useEffect(() => {
-    const isInList = finalList && Array.isArray(finalList) && finalList.some((item) =>
-      selectedMuseum === "Cleveland Museum of Art"
-        ? item[0].artworkId === artwork.systemNumber
-        : item[0].artworkId === artwork.objectNumber
-    );
+    const isInList =
+      finalList &&
+      Array.isArray(finalList) &&
+      finalList.some((item) =>
+        selectedMuseum === "Victoria and Albert Museum"
+          ? item[0].artworkId === artwork.systemNumber
+          : item[0].artworkId === artwork.objectNumber
+      );
     setIsInList(isInList);
   }, [finalList, artwork.systemNumber, artwork.objectNumber, selectedMuseum]);
 
@@ -22,7 +25,7 @@ const AddToExhibitButton = ({ artwork, selectedMuseum, needsConfirm }) => {
       } else {
         setFinalList((prevList) =>
           prevList.filter((item) =>
-            selectedMuseum === "Cleveland Museum of Art"
+            selectedMuseum === "Victoria and Albert Museum"
               ? item[0].artworkId !== artwork.systemNumber
               : item[0].artworkId !== artwork.objectNumber
           )
@@ -33,9 +36,10 @@ const AddToExhibitButton = ({ artwork, selectedMuseum, needsConfirm }) => {
         ...prevList,
         [
           {
-            artworkId: selectedMuseum === "Cleveland Museum of Art"
-              ? artwork.systemNumber
-              : artwork.objectNumber,
+            artworkId:
+              selectedMuseum === "Victoria and Albert Museum"
+                ? artwork.systemNumber
+                : artwork.objectNumber,
             gallery: selectedMuseum,
           },
           artwork, // Artwork object as item 1
@@ -48,7 +52,7 @@ const AddToExhibitButton = ({ artwork, selectedMuseum, needsConfirm }) => {
   const handleConfirmRemove = () => {
     setFinalList((prevList) =>
       prevList.filter((item) =>
-        selectedMuseum === "Cleveland Museum of Art"
+        selectedMuseum === "Victoria and Albert Museum"
           ? item[0].artworkId !== artwork.systemNumber
           : item[0].artworkId !== artwork.objectNumber
       )
