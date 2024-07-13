@@ -8,9 +8,7 @@ export const UserContextProvider = ({ children }) => {
   const [chicagoLoggedIn, setChicagoLoggedIn] = useState(false);
 
   return (
-    <UserContext.Provider
-      value={{ chicagoLoggedIn, setChicagoLoggedIn }}
-    >
+    <UserContext.Provider value={{ chicagoLoggedIn, setChicagoLoggedIn }}>
       {children}
     </UserContext.Provider>
   );

@@ -8,7 +8,7 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
 
   useEffect(() => {
     const isInList = tempList.some((item) =>
-      selectedMuseum === "Cleveland Museum of Art"
+      selectedMuseum === "Victoria and Albert Museum"
         ? item[0].artworkId === artwork.systemNumber
         : item[0].artworkId === artwork.objectNumber
     );
@@ -22,7 +22,7 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
       } else {
         setTempList((prevList) =>
           prevList.filter((item) =>
-            selectedMuseum === "Cleveland Museum of Art"
+            selectedMuseum === "Victoria and Albert Museum"
               ? item[0].artworkId !== artwork.systemNumber
               : item[0].artworkId !== artwork.objectNumber
           )
@@ -33,9 +33,10 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
         ...prevList,
         [
           {
-            artworkId: selectedMuseum === "Cleveland Museum of Art"
-              ? artwork.systemNumber
-              : artwork.objectNumber,
+            artworkId:
+              selectedMuseum === "Victoria and Albert Museum"
+                ? artwork.systemNumber
+                : artwork.objectNumber,
             gallery: selectedMuseum,
           },
           artwork, // Artwork array as item 1
@@ -48,7 +49,7 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
   const handleConfirmRemove = () => {
     setTempList((prevList) =>
       prevList.filter((item) =>
-        selectedMuseum === "Cleveland Museum of Art"
+        selectedMuseum === "Victoria and Albert Museum"
           ? item[0].artworkId !== artwork.systemNumber
           : item[0].artworkId !== artwork.objectNumber
       )

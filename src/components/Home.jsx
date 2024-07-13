@@ -59,19 +59,19 @@ const Home = () => {
           </p>
         </div>
       </div>
-        <div className="max-w-[94%] text-xs mx-auto mt-6 p-5 bg-titlebackground rounded-lg shadow-md border border-gray-400">
-          <div className="text-sm font-main font-normal text-left">
-            <p className="font-bold">Credits:</p>
-            <p className="pt-4 pb-2">
-              <a href="https://www.clevelandart.org/">
-                The Cleveland Museum of Art (API)
-              </a>
-            </p>
-            <p className="pt-2">
-              <a href="https://www.artic.edu/">The Art Institute of Chicago (API)</a>
-            </p>
-          </div>
+      <div className="max-w-[94%] text-xs mx-auto mt-6 p-5 bg-titlebackground rounded-lg shadow-md border border-gray-400">
+        <div className="text-sm font-main font-normal text-left">
+          <p className="font-bold">Credits:</p>
+          <p className="pt-4 pb-2">
+            <a href="https://www.vam.ac.uk/">
+              Victoria and Albert Museum (API)
+            </a>
+          </p>
+          <p className="pt-2">
+            <a href="https://www.rijksmuseum.nl/en/">Rijks Museum (API)</a>
+          </p>
         </div>
+      </div>
     </>
   );
 };

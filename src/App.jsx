@@ -2,7 +2,7 @@ import "./index.css";
 import Header from "./components/Header";
 import { Routes, Route } from "react-router-dom";
 import Artworks from "./components/Artworks";
-import SingleClArtwork from "./components/SingleClArtwork";
+import SingleClArtwork from "./components/SingleVAndAArtwork";
 import Error from "./components/Error";
 import { UserListProvider } from "./components/ListContext";
 import TempListArtworks from "./components/TempListArtworks";
@@ -11,8 +11,6 @@ import Home from "./components/Home";
 import SingleChicagoArtwork from "./components/SingleChicagoArtwork";
 import { ToastContainer } from "react-toastify";
 import { UserProvider } from "./Context/UserAuth";
-import LoginPage from "./components/LoginPage";
-// import "react-toastify/dist/ReactToastify.css"
 
 function App() {
   return (
@@ -22,10 +20,9 @@ function App() {
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<LoginPage />} />
             <Route path="/artworks" element={<Artworks />} />
             <Route
-              path="/artworks/clevelandartwork/:clartwork_id"
+              path="/artworks/v&aartwork/:clartwork_id"
               element={<SingleClArtwork />}
             />
             <Route

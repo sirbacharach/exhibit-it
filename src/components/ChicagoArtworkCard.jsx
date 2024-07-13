@@ -12,7 +12,8 @@ const ChicagoArtworkCard = ({
   needTempListButton,
   needExhibitButton,
 }) => {
-  const { tempList, setTempList, finalList, setFinalList } = useContext(ListContext);
+  const { tempList, setTempList, finalList, setFinalList } =
+    useContext(ListContext);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -21,8 +22,11 @@ const ChicagoArtworkCard = ({
 
   return (
     <li className="inner-container-colour article-card min-w-72 max-w-72 m-2 list-none content-between bg-titletextbackground p-3 drop-shadow-md rounded-xl flex flex-col">
-      <Link to={`/artworks/chicagoartwork/${artwork.objectNumber}`} style={{ textDecoration: "none" }}>
-        <div className="flex justify-center items-center">
+      <Link
+        to={`/artworks/chicagoartwork/${artwork.objectNumber}`}
+        style={{ textDecoration: "none" }}
+      >
+        <div className="flex justify-center items-cente">
           {artwork?.webImage?.url ? (
             <>
               <img
@@ -31,7 +35,13 @@ const ChicagoArtworkCard = ({
                 onLoad={() => setIsLoaded(true)}
                 alt={artwork.title}
               />
-              {!isLoaded && <img className="w-1/2 ml-auto mr-auto" src={PlaceholderImage} alt="Loading..." />}
+              {!isLoaded && (
+                <img
+                  className="w-1/2 ml-auto mr-auto"
+                  src={PlaceholderImage}
+                  alt="Loading..."
+                />
+              )}
             </>
           ) : (
             <p>No Image Available</p>
@@ -41,11 +51,34 @@ const ChicagoArtworkCard = ({
           {artwork?.title ? artwork.title : "No title available"}
         </h1>
         <p>Id: {artwork.objectNumber}</p>
-        <p>Creation Date: {artwork.dating?.presentingDate ? artwork.dating.presentingDate : "Unavailable"}</p>
-        <p>Artist: {artwork.principalOrFirstMaker ? artwork.principalOrFirstMaker : "Unavailable"}</p>
-        <p>Culture: {artwork.productionPlaces && artwork.productionPlaces.length > 0 ? artwork.productionPlaces[0] : "Unavailable"}</p>
-        <p>Type: {artwork.objectTypes ? artwork.objectTypes.join(", ") : "Unavailable"}</p>
-        <p>Technique: {artwork.techniques && artwork.techniques.length > 0 ? artwork.techniques.join(", ") : "Unavailable"}</p>
+        <p>
+          Creation Date:{" "}
+          {artwork.dating?.presentingDate
+            ? artwork.dating.presentingDate
+            : "Unavailable"}
+        </p>
+        <p>
+          Artist:{" "}
+          {artwork.principalOrFirstMaker
+            ? artwork.principalOrFirstMaker
+            : "Unavailable"}
+        </p>
+        <p>
+          Culture:{" "}
+          {artwork.productionPlaces && artwork.productionPlaces.length > 0
+            ? artwork.productionPlaces[0]
+            : "Unavailable"}
+        </p>
+        <p>
+          Type:{" "}
+          {artwork.objectTypes ? artwork.objectTypes.join(", ") : "Unavailable"}
+        </p>
+        <p>
+          Technique:{" "}
+          {artwork.techniques && artwork.techniques.length > 0
+            ? artwork.techniques.join(", ")
+            : "Unavailable"}
+        </p>
         <p>Gallery: {selectedMuseum}</p>
         <br />
       </Link>

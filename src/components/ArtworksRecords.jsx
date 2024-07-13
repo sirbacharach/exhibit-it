@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
-  getAllClArtworks,
+  getAllVAndAArtworks,
   getAllChicagoArtworks,
   getChicagoFacets,
 } from "./api";
-import ClArtworkCard from "./ClArtworkCard";
+import VAndAArtworkCard from "./VAndAArtworkCard";
 import ChicagoArtworkCard from "./ChicagoArtworkCard";
 import { museum1Materials, museum1Places, museum1People } from "./Queries";
 
@@ -21,7 +21,7 @@ const ArtworksRecords = ({
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
   const [selectedMuseum, setSelectedMuseum] = useState(
-    "Cleveland Museum of Art"
+    "Victoria and Albert Museum"
   );
   const [sortCriteria, setSortCriteria] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
@@ -45,8 +45,8 @@ const ArtworksRecords = ({
       });
     }
 
-    if (selectedMuseum === "Cleveland Museum of Art") {
-      fetchFunction = getAllClArtworks;
+    if (selectedMuseum === "Victoria and Albert Museum") {
+      fetchFunction = getAllVAndAArtworks;
     } else if (selectedMuseum === "Art Institute of Chicago") {
       fetchFunction = getAllChicagoArtworks;
     }
@@ -133,22 +133,22 @@ const ArtworksRecords = ({
   function handlePlaceChange(event) {
     setSelectedPlace(event.target.value);
     setSortCriteria("");
-    setSelectedPerson("")
-    setSelectedMaterial("")
+    setSelectedPerson("");
+    setSelectedMaterial("");
   }
 
   function handleMaterialChange(event) {
     setSelectedMaterial(event.target.value);
     setSortCriteria("");
-    setSelectedPerson("")
-    setSelectedPlace("")
+    setSelectedPerson("");
+    setSelectedPlace("");
   }
 
   function handlePersonChange(event) {
     setSelectedPerson(event.target.value);
     setSortCriteria("");
-    setSelectedMaterial("")
-    setSelectedPlace("")
+    setSelectedMaterial("");
+    setSelectedPlace("");
   }
 
   function handleTechniqueChange(event) {
@@ -165,8 +165,8 @@ const ArtworksRecords = ({
     setUserSearch(tempUserSearch); // Update user search
     setSelectedPerson("");
     setSortCriteria("");
-    setSelectedMaterial("")
-    setSelectedPlace("")
+    setSelectedMaterial("");
+    setSelectedPlace("");
     setPageNo(0);
   }
 
@@ -177,7 +177,7 @@ const ArtworksRecords = ({
   };
 
   const renderSortOptions = () => {
-    if (selectedMuseum === "Cleveland Museum of Art") {
+    if (selectedMuseum === "Victoria and Albert Museum") {
       return (
         <>
           <option value="">None</option>
@@ -201,18 +201,18 @@ const ArtworksRecords = ({
   };
 
   const renderMuseumSpecificFilters = () => {
-    if (selectedMuseum === "Cleveland Museum of Art") {
+    if (selectedMuseum === "Victoria and Albert Museum") {
       return (
         <>
-          <div className="flex flex-col items-center w-auto">
-            <label htmlFor="materialSelect" className="block mb-1 text-centere">
-              Filter Material:
+          <div className="flex flex-col items-center w-auto mx-1">
+            <label htmlFor="materialSelect" className="block text-centere">
+              Material:
             </label>
             <select
               id="materialSelect"
               value={selectedMaterial}
               onChange={handleMaterialChange}
-              className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
+              className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
             >
               <option value="">All</option>
               {museum1Materials.map((material, index) => (
@@ -223,15 +223,15 @@ const ArtworksRecords = ({
             </select>
           </div>
 
-          <div className="flex flex-col items-center w-auto">
-            <label htmlFor="placeSelect" className="block mb-1 text-centere">
-              Filter Places:
+          <div className="flex flex-col items-center w-auto mx-1">
+            <label htmlFor="placeSelect" className="block text-centere">
+              Places:
             </label>
             <select
               id="placeSelect"
               value={selectedPlace}
               onChange={handlePlaceChange}
-              className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
+              className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
             >
               <option value="">All</option>
               {museum1Places.map((place, index) => (
@@ -241,15 +241,15 @@ const ArtworksRecords = ({
               ))}
             </select>
           </div>
-          <div className="flex flex-col items-center w-auto">
-            <label htmlFor="personSelect" className="block mb-1 text-center">
-              Filter Person:
+          <div className="flex flex-col items-center w-auto mx-1">
+            <label htmlFor="personSelect" className="block text-center">
+              Person:
             </label>
             <select
               id="personSelect"
               value={selectedPerson}
               onChange={handlePersonChange}
-              className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
+              className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
             >
               <option value="">All</option>
               {museum1People.map((person, index) => (
@@ -268,7 +268,7 @@ const ArtworksRecords = ({
             <div className="flex flex-col items-center w-auto">
               <label
                 htmlFor="principalMakerSelect"
-                className="block mb-1 text-center"
+                className="block text-center"
               >
                 Principal Maker:
               </label>
@@ -289,7 +289,7 @@ const ArtworksRecords = ({
             <div className="flex flex-col items-center w-auto">
               <label
                 htmlFor="typeFilterSelect"
-                className="block mb-1 text-center"
+                className="block text-center"
               >
                 Type:
               </label>
@@ -310,7 +310,7 @@ const ArtworksRecords = ({
             <div className="flex flex-col items-center w-auto">
               <label
                 htmlFor="datingPeriodSelect"
-                className="block mb-1 text-center"
+                className="block text-center"
               >
                 Dating Period:
               </label>
@@ -349,7 +349,7 @@ const ArtworksRecords = ({
             <div className="flex flex-col items-center w-auto">
               <label
                 htmlFor="materialSelect"
-                className="block mb-1 text-center"
+                className="block text-center"
               >
                 Material:
               </label>
@@ -370,7 +370,7 @@ const ArtworksRecords = ({
             <div className="flex flex-col items-center w-auto">
               <label
                 htmlFor="techniqueSelect"
-                className="block mb-1 text-center"
+                className="block text-center"
               >
                 Technique:
               </label>
@@ -410,35 +410,39 @@ const ArtworksRecords = ({
 
   return (
     <div className="max-w-screen-lg mx-auto">
-      <div className="flex flex-row items-center justify-center ml-8">
-        <label
-          htmlFor="userSearch"
-          className="block mb-1 text-center text-white"
-        >
-          Type Search:
-        </label>
-        <input
-          id="userSearch"
-          type="text"
-          value={tempUserSearch}
-          onChange={handleUserSearchChange}
-          onKeyDown={handleKeyPress}
-          className="px-4 py-2 m-2 border border-gray-300 rounded text-black mx-2"
-          maxLength={30}
-        />
-        <button
-          onClick={handleUserSearchUpdate}
-          className="m-2 px-4 py-2 border border-gray-300 rounded text-black bg-green-700 active:bg-blue-500 transition duration-150 ease-in-out"
-        >
-          Go
-        </button>
-      </div>
+      <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
+        {selectedMuseum} Artworks
+      </h2>
+          <div className="flex flex-col h-full">
+      <div className="flex flex-row items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
+          <label htmlFor="userSearch" className="block text-center text-white">
+            Type Search:
+          </label>
+          <input
+            id="userSearch"
+            type="text"
+            value={tempUserSearch}
+            onChange={handleUserSearchChange}
+            onKeyDown={handleKeyPress}
+            className="px-2 py-0.5 border border-gray-300 rounded text-black mx-2"
+            maxLength={30}
+          />
+        </div>
+  <button
+    onClick={handleUserSearchUpdate}
+    className="mx-2 px-2 py-0.5 border border-gray-300 rounded end text-black bg-green-700 active:bg-blue-500 transition duration-150 ease-in-out mt-auto"
+  >
+    Go
+  </button>
+</div>
 
-      <div className="flex flex-wrap justify-center gap-4">
-        <div className="flex flex-col items-center w-auto">
+      </div>
+      <div className="flex flex-wrap justify-center">
+        <div className="flex flex-col items-center w-auto mx-1">
           <label
             htmlFor="museumSelect"
-            className="block mb-1 text-center text-white"
+            className="block text-center text-white"
           >
             Select Museum:
           </label>
@@ -446,10 +450,10 @@ const ArtworksRecords = ({
             id="museumSelect"
             value={selectedMuseum}
             onChange={handleMuseumChange}
-            className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
+            className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
           >
-            <option value="Cleveland Museum of Art">
-              Cleveland Museum of Art
+            <option value="Victoria and Albert Museum">
+              Victoria and Albert Museum
             </option>
             <option value="Art Institute of Chicago">
               Art Institute of Chicago
@@ -457,18 +461,18 @@ const ArtworksRecords = ({
           </select>
         </div>
         {renderMuseumSpecificFilters()}
-        <div className="flex flex-col items-center w-auto">
+        <div className="flex flex-col items-center w-auto mx-1">
           <label
             htmlFor="itemLimitSelect"
-            className="block mb-1 text-center text-white"
+            className="block text-center text-white"
           >
-            Max items/page:
+            Items/page:
           </label>
           <select
             id="itemLimitSelect"
             value={itemLimit}
             onChange={handleItemLimitChange}
-            className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
+            className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
           >
             <option value={5}>5</option>
             <option value={10}>10</option>
@@ -478,10 +482,10 @@ const ArtworksRecords = ({
             <option value={100}>100</option>
           </select>
         </div>
-        <div className="flex flex-col items-center  w-auto">
+        <div className="flex flex-col items-center w-auto mx-1">
           <label
             htmlFor="sortCriteriaSelect"
-            className="block mb-1 text-center text-white"
+            className="block text-center text-white"
           >
             Sort by:
           </label>
@@ -489,16 +493,16 @@ const ArtworksRecords = ({
             id="sortCriteriaSelect"
             value={sortCriteria}
             onChange={handleSortCriteriaChange}
-            className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
+            className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
           >
             {renderSortOptions()}
           </select>
         </div>
 
-        <div className="flex flex-col items-center  w-auto">
+        <div className="flex flex-col items-center w-auto mx-1">
           <label
             htmlFor="sortOrderSelect"
-            className="block mb-1 text-center text-white"
+            className="block text-center text-white"
           >
             Order:
           </label>
@@ -506,22 +510,19 @@ const ArtworksRecords = ({
             id="sortOrderSelect"
             value={sortOrder}
             onChange={handleSortOrderChange}
-            className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
+            className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
           >
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
           </select>
         </div>
       </div>
-      <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
-        {selectedMuseum} Artworks
-      </h2>
 
-      {selectedMuseum === "Cleveland Museum of Art" && (
-        <ul className="flex flex-wrap place-content-evenly pb-10">
+      {selectedMuseum === "Victoria and Albert Museum" && (
+        <ul className="flex flex-wrap place-content-evenly pb-10 pt-2">
           {artworks.length > 0 ? (
             artworks.map((clArtwork, index) => (
-              <ClArtworkCard
+              <VAndAArtworkCard
                 artwork={clArtwork}
                 key={clArtwork.systemNumber + index.toString()}
                 selectedMuseum={selectedMuseum}

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ListContext } from "./ListContext";
-import ClArtworkCard from "./ClArtworkCard";
+import ClArtworkCard from "./VAndAArtworkCard";
 import ChicagoArtworkCard from "./ChicagoArtworkCard";
 import { Link } from "react-router-dom";
 
@@ -71,8 +71,10 @@ const FinalListArtworks = () => {
     setFinalListToDisplay(filteredArtworks.slice(startIndex, endIndex));
   };
 
-  const handleItemLimitChange = (event) => setItemLimit(Number(event.target.value));
-  const handleSortCriteriaChange = (event) => setSortCriteria(event.target.value);
+  const handleItemLimitChange = (event) =>
+    setItemLimit(Number(event.target.value));
+  const handleSortCriteriaChange = (event) =>
+    setSortCriteria(event.target.value);
   const handleSortOrderChange = (event) => setSortOrder(event.target.value);
   const handlePreviousPage = () => {
     if (pageNo > 0) setPageNo(pageNo - 1);
@@ -88,9 +90,13 @@ const FinalListArtworks = () => {
 
   if (isLoading) {
     return (
-      <div className="loading-container">
-        <p className="light-font-colour" id="status-msg">Please wait...</p>
-        <p className="light-font-colour" id="status-msg">Artworks are loading...</p>
+      <div className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
+        <p className="light-font-colour" id="status-msg">
+          Please wait...
+        </p>
+        <p className="light-font-colour" id="status-msg">
+          Artworks are loading...
+        </p>
       </div>
     );
   }
@@ -98,7 +104,10 @@ const FinalListArtworks = () => {
   if (isEmpty) {
     return (
       <div className="flex justify-center">
-        <h2 className="font-bold font-headers text-2xl py-3" style={{ maxWidth: "50%", textAlign: "center" }}>
+        <h2
+          className="font-bold font-headers text-2xl py-3"
+          style={{ maxWidth: "50%", textAlign: "center" }}
+        >
           There are currently no items in your list.
         </h2>
       </div>
@@ -108,12 +117,14 @@ const FinalListArtworks = () => {
   return (
     <>
       <div className="max-w-screen-lg mx-auto">
-        <h2 className="text-center font-bold font-headers text-2xl pt-2 pb-1">Selected Artworks</h2>
+        <h2 className="text-center font-bold font-headers text-2xl pt-5 pb-3">
+          Your Exhibition
+        </h2>
 
         <div className="flex flex-wrap place-content-evenly pb-10">
           {finalList
-            .filter(item => item[0].gallery === "Cleveland Museum of Art")
-            .map(item => (
+            .filter((item) => item[0].gallery === "Victoria and Albert Museum")
+            .map((item) => (
               <ClArtworkCard
                 artwork={item[1]}
                 key={item[1].systemNumber}
@@ -127,8 +138,8 @@ const FinalListArtworks = () => {
 
         <div className="flex flex-wrap place-content-evenly pb-10">
           {finalList
-            .filter(item => item[0].gallery === "Art Institute of Chicago")
-            .map(item => (
+            .filter((item) => item[0].gallery === "Art Institute of Chicago")
+            .map((item) => (
               <ChicagoArtworkCard
                 artwork={item[1]}
                 key={item[1].objectNumber}
@@ -147,9 +158,13 @@ const FinalListArtworks = () => {
             List Items: {tempList.length}
           </div>
           <div className="flex items-center justify-center w-60">
-            <Link onClick={handlePreviousPage} className="mx-2">&lt;&lt;</Link>
+            <Link onClick={handlePreviousPage} className="mx-2">
+              &lt;&lt;
+            </Link>
             Page No: {pageNo + 1} of {Math.ceil(maxRecords / itemLimit)}
-            <Link onClick={handleNextPage} className="mx-2">&gt;&gt;</Link>
+            <Link onClick={handleNextPage} className="mx-2">
+              &gt;&gt;
+            </Link>
           </div>
           <div className="flex items-center justify-end text-right w-20 pr-2">
             Exhibition Items: {finalList.length}
