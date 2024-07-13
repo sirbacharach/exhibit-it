@@ -64,26 +64,26 @@ const AddToExhibitButton = ({ artwork, selectedMuseum, needsConfirm }) => {
     <>
       {showConfirm ? (
         <div className="confirm-remove">
-          <p className="bg-white p-1 pl-2 mb-2 rounded-lg">
+          <p className="bg-white p-1 px-4 m-2 rounded-lg text-black">
             Are you sure you want to remove this artwork from your temporary
             list?
           </p>
           <button
             onClick={handleConfirmRemove}
-            className="bg-red-700 hover:bg-red-900 font-bold py-2 px-4 rounded"
+            className="bg-red-700 hover:bg-red-900 font-bold py-2 px-4 rounded m-2"
           >
             Confirm
           </button>
           <button
             onClick={handleCancelRemove}
-            className="bg-gray-500 hover:bg-gray-700 font-bold py-2 px-4 rounded"
+            className="bg-gray-500 hover:bg-gray-700 font-bold py-2 px-4 rounded m-2"
           >
             Cancel
           </button>
         </div>
       ) : (
         <button
-          className={`font-bold py-2 px-4 rounded ${
+          className={`font-bold py-2 px-4 rounded m-2 ${
             isInList
               ? "bg-red-700 hover:bg-red-900"
               : "bg-blue-700 hover:bg-blue-900"

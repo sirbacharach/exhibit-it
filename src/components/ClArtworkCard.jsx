@@ -14,15 +14,15 @@ const ClArtworkCard = ({
 }) => {
   const { tempList } = useContext(ListContext);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [currentArtwork] = useState(artwork)
 
   useEffect(() => {
-console.log("artwork in ClArtworkCard ", artwork)
   }, [tempList]);
 
   return (
     <li className="inner-container-colour article-card min-w-72 max-w-72 m-2 list-none content-between bg-titletextbackground p-3 drop-shadow-md rounded-xl flex flex-col">
       <Link
-        to={`/artworks/clevelandartwork/${artwork.systemNumber}`}
+        to={`/artworks/clevelandartwork/${artwork.systemNumber}`} state={currentArtwork}
         style={{ textDecoration: "none" }}
       >
         {artwork?._images?._primary_thumbnail ? (

@@ -3,33 +3,42 @@ import { getSingleClArtwork } from "./api";
 import AddToListButton from "./AddToListButton";
 import AddToExhibitButton from "./AddToExhibitButton";
 import { ListContext } from "./ListContext";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Error from "./Error"; // Uncomment or import Error if not imported
 import PlaceholderImage from "../assets/img/throbber.gif";
 
 const SingleClArtwork = () => {
-  const { tempList, setTempList, finalList, setFinalList } =
-    useContext(ListContext);
+  const { tempList, setTempList, finalList, setFinalList } = useContext(ListContext);
   const [clArtwork, setClArtwork] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { clartwork_id } = useParams();
   const [apiError, setApiError] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const [recordDetails, setRecordDetails] = useState({ artworkId: "", gallery: "" });
+  const [currentArtwork, setCurrentArtwork] = useState(useLocation().state)
+  
   useEffect(() => {
-    console.log("browser URL id: ", clartwork_id);
-    console.log("SingleArtwork Templist: ", tempList);
     getSingleClArtwork(clartwork_id)
-      .then((response) => {
-        setClArtwork(response);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        setApiError(err);
-        setIsLoading(false);
-      });
+    .then((response) => {
+      setClArtwork(response);
+      setIsLoading(false);
+      return response
+    }).then((newArtwork)=>{
+      if (newArtwork) {
+        const newRecordDetails = {
+          artworkId: newArtwork.systemNumber || "placeholderId",
+          gallery: newArtwork.systemNumber ? "Cleveland Museum of Art" : "Art Institute of Chicago",
+        };
+        setRecordDetails(newRecordDetails);
+      }
+    })
+    .catch((err) => {
+      setApiError(err);
+      setIsLoading(false);
+    });
   }, [clartwork_id]);
-
+  
+   console.log("record details = ",recordDetails)
   const handleGoBack = () => {
     window.history.back();
   };
@@ -57,9 +66,7 @@ const SingleClArtwork = () => {
           <div className="flex justify-center items-center">
             <>
               <img
-                className={`w-auto ${
-                  isLoaded ? "block mx-auto" : "hidden"
-                } mb-2`}
+                className={`w-auto ${isLoaded ? "block mx-auto" : "hidden"} mb-2`}
                 src={`https://framemark.vam.ac.uk/collections/${clArtwork.images[0]}/full/full/0/default.jpg`}
                 alt={clArtwork._primaryTitle}
                 onLoad={() => setIsLoaded(true)}
@@ -76,18 +83,15 @@ const SingleClArtwork = () => {
           </div>
         ) : (
           <div className="text-center bg-titlebackground m-6 font-bold">
-            <br></br>
+            <br />
             <p>Image Unavailable</p>
-            <br></br>
+            <br />
           </div>
         )}
 
         <br />
         <h1 className="font-bold">
-          Title:{" "}
-          {clArtwork?.titles[0]
-            ? clArtwork.titles[0].title
-            : "no title available"}
+          Title: {clArtwork?.titles[0] ? clArtwork.titles[0].title : "no title available"}
         </h1>
         {clArtwork?.artistMakerPerson?.length > 0 ? (
           <p>
@@ -117,27 +121,24 @@ const SingleClArtwork = () => {
             ? clArtwork.briefDescription.replace(/<i>|<\/i>/g, "")
             : "Unavailable"}
         </p>
-
+        <div className="flex flex-col justify-end place-items-end grow items-center">
+        {(
+          <AddToListButton
+            artwork={currentArtwork}
+            selectedMuseum={recordDetails.gallery}
+            needsConfirm={true}
+          />
+        )}
+        {(
+          <AddToExhibitButton
+            artwork={currentArtwork}
+            selectedMuseum={recordDetails.gallery}
+            needsConfirm={true}
+          />
+        )}
+      </div>
         <br />
         <div className="flex justify-center place-items-end grow">
-          <div className="flex flex-col justify-end place-items-end grow items-center">
-            <div>
-              <AddToListButton
-                artwork={clArtwork}
-                selectedMuseum={"Cleveland Museum of Art"}
-                needsConfirm={true}
-              />
-            </div>
-            {isInTempList || isInFinalList ? (
-              <div>
-                <AddToExhibitButton
-                  artwork={clArtwork}
-                  selectedMuseum={"Cleveland Museum of Art"}
-                  needsConfirm={true}
-                />
-              </div>
-            ) : null}
-          </div>
           <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
             <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
               <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center flex justify-between">
