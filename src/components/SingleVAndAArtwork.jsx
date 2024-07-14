@@ -8,8 +8,7 @@ import Error from "./Error"; // Uncomment or import Error if not imported
 import PlaceholderImage from "../assets/img/throbber.gif";
 
 const SingleVAndAArtwork = () => {
-  const { tempList, setTempList, finalList, setFinalList } =
-    useContext(ListContext);
+  const { tempList, finalList } = useContext(ListContext);
   const [clArtwork, setClArtwork] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const { clartwork_id } = useParams();
@@ -19,9 +18,11 @@ const SingleVAndAArtwork = () => {
     artworkId: "",
     gallery: "",
   });
-  const [currentArtwork, setCurrentArtwork] = useState(useLocation().state);
+  const [currentArtwork] = useState(useLocation().state);
 
   useEffect(() => {
+    console.log(tempList)
+    document.documentElement.lang = "en"
     getSingleVAndAArtwork(clartwork_id)
       .then((response) => {
         setClArtwork(response);
@@ -29,13 +30,12 @@ const SingleVAndAArtwork = () => {
         return response;
       })
       .then((newArtwork) => {
-        console.log("SingleClArtwork", newArtwork);
         if (newArtwork) {
           const newRecordDetails = {
             artworkId: newArtwork.systemNumber || "placeholderId",
             gallery: newArtwork.systemNumber
               ? "Victoria and Albert Museum"
-              : "Art Institute of Chicago",
+              : "Rijks Museum",
           };
           setRecordDetails(newRecordDetails);
         }
@@ -44,7 +44,7 @@ const SingleVAndAArtwork = () => {
         setApiError(err);
         setIsLoading(false);
       });
-  }, [clartwork_id]);
+  }, [clartwork_id, tempList]);
 
   console.log("record details = ", recordDetails);
   const handleGoBack = () => {
@@ -125,7 +125,7 @@ const SingleVAndAArtwork = () => {
           Materials and Techniques:{" "}
           {clArtwork.materialsAndTechniques || "Unavailable"}
         </p>
-        <p>Gallery Name: {recordDetails.gallery || Unavailable}</p>
+        <p>Gallery Name: Victoria and Albert Museum</p>
         <br />
         <p>
           {clArtwork.briefDescription

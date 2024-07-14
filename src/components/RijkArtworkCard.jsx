@@ -5,7 +5,9 @@ import AddToListButton from "./AddToListButton";
 import PlaceholderImage from "../assets/img/throbber.gif";
 import AddToExhibitButton from "./AddToExhibitButton";
 
-const ChicagoArtworkCard = ({
+
+
+const RijkArtworkCard = ({
   artwork,
   selectedMuseum,
   needsConfirm,
@@ -15,23 +17,25 @@ const ChicagoArtworkCard = ({
   const { tempList, setTempList, finalList, setFinalList } =
     useContext(ListContext);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [resizedImage, setResizedImage] = useState(undefined);
 
   useEffect(() => {
-    // Side effect logic if needed
+    if (artwork?.webImage?.url)
+      setResizedImage(artwork.webImage.url.slice(0, -3) + "=w250");
+    document.documentElement.lang = "nl"
   }, [tempList]);
-
   return (
     <li className="inner-container-colour article-card min-w-72 max-w-72 m-2 list-none content-between bg-titletextbackground p-3 drop-shadow-md rounded-xl flex flex-col">
       <Link
-        to={`/artworks/chicagoartwork/${artwork.objectNumber}`}
+        to={`/artworks/Rijkartwork/${artwork.objectNumber}`}
         style={{ textDecoration: "none" }}
       >
         <div className="flex justify-center items-cente">
-          {artwork?.webImage?.url ? (
+          {resizedImage ? (
             <>
               <img
                 className={`w-auto ${isLoaded ? "block" : "hidden"} mb-2`}
-                src={`${artwork.webImage.url}`}
+                src={`${resizedImage}`}
                 onLoad={() => setIsLoaded(true)}
                 alt={artwork.title}
               />
@@ -50,12 +54,16 @@ const ChicagoArtworkCard = ({
         <h1 className="font-bold">
           {artwork?.title ? artwork.title : "No title available"}
         </h1>
-        <p>Id: {artwork.objectNumber}</p>
+        <p>Id: {artwork.id}</p>
         <p>
-          Creation Date:{" "}
-          {artwork.dating?.presentingDate
-            ? artwork.dating.presentingDate
-            : "Unavailable"}
+          {artwork?.longTitle
+            ? "Dated: " +
+              (artwork.longTitle.includes("ca.")
+                ? artwork.longTitle
+                    .substring(artwork.longTitle.indexOf("ca."))
+                    .trim()
+                : artwork.longTitle)
+            : "No title available"}
         </p>
         <p>
           Artist:{" "}
@@ -66,19 +74,14 @@ const ChicagoArtworkCard = ({
         <p>
           Culture:{" "}
           {artwork.productionPlaces && artwork.productionPlaces.length > 0
-            ? artwork.productionPlaces[0]
+            ? artwork.productionPlaces.map((place, index) => (
+                <span key={index}>
+                  {place}
+                  {index < artwork.productionPlaces.length - 1 ? ", " : ""}
+                </span>
+              ))
             : "Unavailable"}
-        </p>
-        <p>
-          Type:{" "}
-          {artwork.objectTypes ? artwork.objectTypes.join(", ") : "Unavailable"}
-        </p>
-        <p>
-          Technique:{" "}
-          {artwork.techniques && artwork.techniques.length > 0
-            ? artwork.techniques.join(", ")
-            : "Unavailable"}
-        </p>
+        </p>{" "}
         <p>Gallery: {selectedMuseum}</p>
         <br />
       </Link>
@@ -106,4 +109,4 @@ const ChicagoArtworkCard = ({
   );
 };
 
-export default memo(ChicagoArtworkCard);
+export default RijkArtworkCard;

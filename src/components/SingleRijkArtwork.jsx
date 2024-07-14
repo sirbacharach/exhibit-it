@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { getSingleChicagoArtwork } from "./api";
+import { getSingleRijkArtwork } from "./api";
 import AddToListButton from "./AddToListButton";
 import AddToExhibitButton from "./AddToExhibitButton";
 import { ListContext } from "./ListContext";
@@ -7,37 +7,54 @@ import { useParams } from "react-router-dom";
 import PlaceholderImage from "../assets/img/throbber.gif";
 import Error from "./Error"; // Uncomment or import Error if not imported
 
-const SingleChicagoArtwork = () => {
-  const { tempList, setTempList, finalList, setFinalList } =
-    useContext(ListContext);
-  const [chicagoArtwork, setChicagoArtwork] = useState({});
+const SingleRijkArtwork = () => {
+  const { tempList, finalList } = useContext(ListContext);
+  const [rijkArtwork, setRijkArtwork] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const { chicagoartwork_id } = useParams();
+  const { rijkartwork_id } = useParams();
   const [apiError, setApiError] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
+  const [recordDetails, setRecordDetails] = useState({
+    artworkId: "",
+    gallery: "",
+  });
 
   useEffect(() => {
-    getSingleChicagoArtwork(chicagoartwork_id)
+    console.log(rijkartwork_id)
+    document.documentElement.lang = "nl"
+    getSingleRijkArtwork(rijkartwork_id)
       .then((response) => {
-        setChicagoArtwork(response);
+        setRijkArtwork(response);
         setIsLoading(false);
+        return response
+      })
+      .then((newArtwork) => {
+        console.log(newArtwork)
+        if (newArtwork) {
+          const newRecordDetails = { artworkId: newArtwork.objectNumber || "placeholderId", gallery: newArtwork.objectNumber ? "Victoria and Albert Museum" : "Rijks Museum",
+          };
+          setRecordDetails(newRecordDetails);
+        }
       })
       .catch((err) => {
         setApiError(err);
         setIsLoading(false);
       });
-  }, [chicagoartwork_id]);
+  }, [rijkartwork_id, tempList]);
 
   const handleGoBack = () => {
-    window.history.back(); // Navigate back to the previous page
+    window.history.back();
   };
 
-  const isInTempList = tempList.some(
-    (item) => item.artworkId.toString() === chicagoartwork_id
-  );
-  const isInFinalList = finalList.some(
-    (item) => item.artworkId.toString() === chicagoartwork_id
-  );
+  const isInTempList =
+    tempList &&
+    Array.isArray(tempList) &&
+    tempList.some((item) => item[0]?.artworkId === rijkartwork_id);
+
+  const isInFinalList =
+    finalList &&
+    Array.isArray(finalList) &&
+    finalList[1]?.some((item) => item[0]?.artworkId === rijkartwork_id);
 
   if (isLoading) {
     return <p>Content Loading....</p>;
@@ -48,14 +65,14 @@ const SingleChicagoArtwork = () => {
   return (
     <>
       <div className="relative flex flex-col max-w-4xl mx-auto pb-10 pt-5 mb-4">
-        {chicagoArtwork?.webImage?.url ? (
+        {rijkArtwork?.webImage?.url ? (
           <div className="flex justify-center items-center">
             <div>
               <img
                 className={`w-auto ${isLoaded ? "block" : "hidden"} mb-4`}
-                src={chicagoArtwork.webImage.url}
+                src={rijkArtwork.webImage.url}
                 onLoad={() => setIsLoaded(true)}
-                alt={chicagoArtwork.title}
+                alt={rijkArtwork.title}
               />
               {!isLoaded && <div>Loading...</div>}
             </div>
@@ -72,38 +89,39 @@ const SingleChicagoArtwork = () => {
           <p>No Image Available</p>
         )}
         <h1 className="font-bold">
-          {chicagoArtwork?.title ? chicagoArtwork.title : "no title available"}
+          {rijkArtwork?.title ? rijkArtwork.title : "no title available"}
         </h1>
 
-        <p>Id: {chicagoArtwork.objectNumber}</p>
+        <p>Id: {rijkArtwork.objectNumber}</p>
 
-        {chicagoArtwork.dating?.presentingDate ? (
-          <p>Creation Date: {chicagoArtwork.dating.presentingDate}</p>
+        {rijkArtwork.dating?.presentingDate ? (
+          <p>Creation Date: {rijkArtwork.dating.presentingDate}</p>
         ) : (
           <p>Creation Date: Unavailable</p>
         )}
 
-        {chicagoArtwork.principalOrFirstMaker ? (
-          <p>Artist: {chicagoArtwork.principalOrFirstMaker}</p>
+        {rijkArtwork.principalOrFirstMaker ? (
+          <p>Artist: {rijkArtwork.principalOrFirstMaker}</p>
         ) : (
           <p>Artist: Unavailable</p>
         )}
 
-        {chicagoArtwork.productionPlaces &&
-        chicagoArtwork.productionPlaces.length > 0 ? (
-          <p>Culture: {chicagoArtwork.productionPlaces[0]}</p>
+        {rijkArtwork.productionPlaces &&
+        rijkArtwork.productionPlaces.length > 0 ? (
+          <p>Culture: {rijkArtwork.productionPlaces[0]}</p>
         ) : (
           <p>Culture: Unavailable</p>
         )}
 
-        {chicagoArtwork.objectTypes ? (
-          <p>Type: {chicagoArtwork.objectTypes}</p>
+        {rijkArtwork.objectTypes ? (
+          <p>Type: {rijkArtwork.objectTypes}</p>
         ) : (
           <p>Type: Unavailable</p>
         )}
-
-        {chicagoArtwork.description ? (
-          <p>Description: {chicagoArtwork.description}</p>
+        <p>Gallery Name: {recordDetails.gallery || Unavailable}</p>
+        <br />
+        {rijkArtwork.description ? (
+          <p>Description: {rijkArtwork.description}</p>
         ) : (
           <p>Description: Unavailable</p>
         )}
@@ -112,16 +130,16 @@ const SingleChicagoArtwork = () => {
           <div className="flex flex-col justify-end place-items-end grow items-center">
             <div>
               <AddToListButton
-                artwork={chicagoArtwork}
-                selectedMuseum={"Art Institute of Chicago"}
+                artwork={rijkArtwork}
+                selectedMuseum={"Rijks Museum"}
                 needsConfirm={true}
               />
             </div>
             {isInTempList || isInFinalList ? (
               <div>
                 <AddToExhibitButton
-                  artwork={chicagoArtwork}
-                  selectedMuseum={"Art Institute of Chicago"}
+                  artwork={rijkArtwork}
+                  selectedMuseum={"Rijks Museum"}
                   needsConfirm={true}
                 />
               </div>
@@ -148,4 +166,4 @@ const SingleChicagoArtwork = () => {
   );
 };
 
-export default SingleChicagoArtwork;
+export default SingleRijkArtwork;

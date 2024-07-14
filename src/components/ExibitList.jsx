@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ListContext } from "./ListContext";
 import ClArtworkCard from "./VAndAArtworkCard";
-import ChicagoArtworkCard from "./ChicagoArtworkCard";
+import RijkArtworkCard from "./RijkArtworkCard";
 import { Link } from "react-router-dom";
 
 const FinalListArtworks = () => {
@@ -17,6 +17,7 @@ const FinalListArtworks = () => {
   const [finalListToDisplay, setFinalListToDisplay] = useState([]);
 
   useEffect(() => {
+    document.documentElement.lang = "en"
     setIsLoading(true);
     setApiError(null);
 
@@ -48,8 +49,6 @@ const FinalListArtworks = () => {
     };
 
     fetchArtworks();
-    console.log("finalListToDisplay ", finalListToDisplay);
-    console.log("finalList ", finalList);
   }, [finalList, itemLimit, sortCriteria, sortOrder, pageNo]);
 
   const applyFiltersAndSort = (artworks) => {
@@ -138,9 +137,9 @@ const FinalListArtworks = () => {
 
         <div className="flex flex-wrap place-content-evenly pb-10">
           {finalList
-            .filter((item) => item[0].gallery === "Art Institute of Chicago")
+            .filter((item) => item[0].gallery === "Art Institute of Rijk")
             .map((item) => (
-              <ChicagoArtworkCard
+              <RijkArtworkCard
                 artwork={item[1]}
                 key={item[1].objectNumber}
                 selectedMuseum={item[0].gallery}
