@@ -62,8 +62,8 @@ const RijkArtworkCard = ({
                 ? artwork.longTitle
                     .substring(artwork.longTitle.indexOf("ca."))
                     .trim()
-                : artwork.longTitle)
-            : "No title available"}
+                : "No date available")
+            : "No date available"}
         </p>
         <p>
           Artist:{" "}

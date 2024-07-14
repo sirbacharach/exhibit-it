@@ -203,15 +203,15 @@ const ArtworksRecords = ({
     if (selectedMuseum === "Victoria and Albert Museum") {
       return (
         <>
-          <div className="flex flex-col items-center w-auto mx-1">
-            <label htmlFor="materialSelect" className="block text-centere">
+          <div className="flex flex-col items-center w-full sm:w-auto mx-1">
+            <label htmlFor="materialSelect" className="block text-center">
               Material:
             </label>
             <select
               id="materialSelect"
               value={selectedMaterial}
               onChange={handleMaterialChange}
-              className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
+              className="px-1 py-1 border border-gray-300 rounded w-full sm:w-auto text-black"
             >
               <option value="">All</option>
               {museum1Materials.map((material, index) => (
@@ -222,15 +222,15 @@ const ArtworksRecords = ({
             </select>
           </div>
 
-          <div className="flex flex-col items-center w-auto mx-1">
-            <label htmlFor="placeSelect" className="block text-centere">
+          <div className="flex flex-col items-center w-full sm:w-auto mx-1">
+            <label htmlFor="placeSelect" className="block text-center">
               Places:
             </label>
             <select
               id="placeSelect"
               value={selectedPlace}
               onChange={handlePlaceChange}
-              className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
+              className="px-1 py-1 border border-gray-300 rounded w-full sm:w-auto text-black"
             >
               <option value="">All</option>
               {museum1Places.map((place, index) => (
@@ -240,7 +240,8 @@ const ArtworksRecords = ({
               ))}
             </select>
           </div>
-          <div className="flex flex-col items-center w-auto mx-1">
+
+          <div className="flex flex-col items-center w-full sm:w-auto mx-1">
             <label htmlFor="personSelect" className="block text-center">
               Person:
             </label>
@@ -248,7 +249,7 @@ const ArtworksRecords = ({
               id="personSelect"
               value={selectedPerson}
               onChange={handlePersonChange}
-              className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
+              className="px-1 py-1 border border-gray-300 rounded w-full sm:w-auto text-black"
             >
               <option value="">All</option>
               {museum1People.map((person, index) => (
@@ -264,7 +265,7 @@ const ArtworksRecords = ({
       if (Array.isArray(searchCriteria) && searchCriteria.length > 0) {
         return (
           <>
-            <div className="flex flex-col items-center w-auto mx-1">
+            <div className="flex flex-col items-center w-full sm:w-auto mx-1">
               <label
                 htmlFor="principalMakerSelect"
                 className="block text-center"
@@ -275,7 +276,7 @@ const ArtworksRecords = ({
                 id="principalMakerSelect"
                 value={principalMaker}
                 onChange={handlePrincipalMakerChange}
-                className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
+                className="px-1 py-1 border border-gray-300 rounded w-full sm:w-auto text-black"
               >
                 <option value="">All</option>
                 {searchCriteria[0].facets.map((facet, index) => (
@@ -285,15 +286,16 @@ const ArtworksRecords = ({
                 ))}
               </select>
             </div>
-            <div className="flex flex-col items-center w-auto mx-1">
-              <label htmlFor="typeFilterSelect" className="block text-center">
+
+            <div className="flex flex-col items-center w-full sm:w-auto mx-1">
+              <label htmlFor="typeSelect" className="block text-center">
                 Type:
               </label>
               <select
-                id="typeFilterSelect"
+                id="typeSelect"
                 value={type}
                 onChange={handleTypeFilterChange}
-                className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
+                className="px-1 py-1 border border-gray-300 rounded w-full sm:w-auto text-black"
               >
                 <option value="">All</option>
                 {searchCriteria[1].facets.map((facet, index) => (
@@ -303,7 +305,8 @@ const ArtworksRecords = ({
                 ))}
               </select>
             </div>
-            <div className="flex flex-col items-center w-auto mx-1">
+
+            <div className="flex flex-col items-center w-full sm:w-auto mx-1">
               <label htmlFor="datingPeriodSelect" className="block text-center">
                 Dating Period:
               </label>
@@ -311,7 +314,7 @@ const ArtworksRecords = ({
                 id="datingPeriodSelect"
                 value={datingPeriod}
                 onChange={handleDatingPeriodChange}
-                className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
+                className="px-1 py-1 border border-gray-300 rounded w-full sm:w-auto text-black"
               >
                 <option value="">All</option>
                 {searchCriteria[2].facets.map((facet, index) => (
@@ -321,15 +324,16 @@ const ArtworksRecords = ({
                 ))}
               </select>
             </div>
-            <div className="flex flex-col items-center w-auto mx-1">
-              <label htmlFor="placeSelect" className="block text-center">
-                Place:
+
+            <div className="flex flex-col items-center w-full sm:w-auto mx-1">
+              <label htmlFor="techniqueSelect" className="block text-center">
+                Technique:
               </label>
               <select
-                id="placeSelect"
-                value={selectedPlace}
-                onChange={handlePlaceChange}
-                className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
+                id="techniqueSelect"
+                value={technique}
+                onChange={handleTechniqueChange}
+                className="px-1 py-1 border border-gray-300 rounded w-full sm:w-auto text-black"
               >
                 <option value="">All</option>
                 {searchCriteria[3].facets.map((facet, index) => (
@@ -339,48 +343,14 @@ const ArtworksRecords = ({
                 ))}
               </select>
             </div>
-            <div className="flex flex-col items-center w-auto mx-1">
-              <label htmlFor="materialSelect" className="block text-center">
-                Material:
-              </label>
-              <select
-                id="materialSelect"
-                value={selectedMaterial}
-                onChange={handleMaterialChange}
-                className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
-              >
-                <option value="">All</option>
-                {searchCriteria[4].facets.map((facet, index) => (
-                  <option key={index} value={facet.key}>
-                    {facet.key}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col items-center w-auto mx-1">
-              <label htmlFor="techniqueSelect" className="block text-center">
-                Technique:
-              </label>
-              <select
-                id="techniqueSelect"
-                value={technique}
-                onChange={handleTechniqueChange}
-                className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
-              >
-                <option value="">All</option>
-                {searchCriteria[5].facets.map((facet, index) => (
-                  <option key={index} value={facet.key}>
-                    {facet.key}
-                  </option>
-                ))}
-              </select>
-            </div>
           </>
         );
+      } else {
+        return <p>No search criteria found.</p>;
       }
-      return null;
     }
   };
+
 
   if (isLoading) {
     return (
@@ -400,6 +370,7 @@ const ArtworksRecords = ({
       <h2 className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
         {selectedMuseum} Artworks
       </h2>
+      {selectedMuseum === "Rijks Museum" ? <p className="text-center font-bold text-green-200">(Please use your browser's translator if you would like to see this page in English)</p> : null}
         <div className="flex flex-col items-center w-auto mx-1">
           <label
             htmlFor="museumSelect"
@@ -411,20 +382,20 @@ const ArtworksRecords = ({
             id="museumSelect"
             value={selectedMuseum}
             onChange={handleMuseumChange}
-            className="px-1 py-1 border border-gray-300 rounded w-auto text-black"
+            className="px-1 py-1 border border-gray-300 rounded w-full xs:w-auto text-black"
           >
-            <option value="Victoria and Albert Museum">
+            <option value="Victoria and Albert Museum" className="text-center">
               Victoria and Albert Museum
             </option>
-            <option value="Rijks Museum">
+            <option value="Rijks Museum" className="text-center">
               Rijks Museum
             </option>
           </select>
         </div>
       <div className="flex flex-wrap justify-center">
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full w-full sm:w-auto mx-1">
         <div className="flex flex-row items-center justify-center">
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center w-full sm:w-auto mr-1">
             <label
               htmlFor="userSearch"
               className="block text-center text-white"
@@ -437,13 +408,13 @@ const ArtworksRecords = ({
               value={tempUserSearch}
               onChange={handleUserSearchChange}
               onKeyDown={handleKeyPress}
-              className="px-2 py-0.5 border border-gray-300 rounded text-black ml-2"
+              className="px-2 py-0.5 border border-gray-300 rounded w-full sm:w-auto text-black"
               maxLength={30}
             />
           </div>
           <button
             onClick={handleUserSearchUpdate}
-            className="ml-1 mr-2 px-2 py-0.5 border border-gray-300 rounded end text-white font-bold bg-blue-700 active:bg-blue-500  ease-in-out mt-auto"
+            className="px-2 py-0.5 border border-gray-300 rounded end text-white font-bold bg-blue-700 active:bg-blue-500  ease-in-out mt-auto"
           >
             Go
           </button>
