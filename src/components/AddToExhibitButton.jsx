@@ -89,8 +89,8 @@ const AddToExhibitButton = ({ artwork, selectedMuseum, needsConfirm }) => {
         <button
           className={`font-bold py-2 px-4 rounded m-2 ${
             isInList
-              ? "bg-red-700 hover:bg-red-900"
-              : "bg-blue-700 hover:bg-blue-900"
+              ? "bg-orange-800 hover:bg-orange-900"
+              : "bg-yellow-400 hover:bg-yellow-600 text-black"
           }`}
           onClick={handleToggle}
         >
