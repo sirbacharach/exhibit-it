@@ -1,20 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ListContext } from "./ListContext";
-import ClArtworkCard from "./VAndAArtworkCard";
+import VAndAArtworkCard from "./VAndAArtworkCard";
 import RijkArtworkCard from "./RijkArtworkCard";
-import { Link } from "react-router-dom";
 
-const FinalListArtworks = () => {
+const ExibitList = () => {
   const { tempList, finalList } = useContext(ListContext);
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false);
   const [itemLimit, setItemLimit] = useState(10);
-  const [sortCriteria, setSortCriteria] = useState("");
-  const [sortOrder, setSortOrder] = useState("ascending");
+  const [sortCriteria] = useState("");
+  const [sortOrder] = useState("ascending");
   const [pageNo, setPageNo] = useState(0);
   const [maxRecords, setMaxRecords] = useState(0);
-  const [finalListToDisplay, setFinalListToDisplay] = useState([]);
+  const [finalListListToDisplay, setFinalListToDisplay] = useState([]);
 
   useEffect(() => {
     document.documentElement.lang = "en"
@@ -31,7 +30,7 @@ const FinalListArtworks = () => {
 
       const artworks = finalList.map((item) => {
         if (!item || !item[0] || !item[1]) {
-          return null; // Handle case where item or required properties are undefined
+          return null;
         }
 
         const { artworkId, gallery } = item[0];
@@ -42,9 +41,8 @@ const FinalListArtworks = () => {
 
       const filteredArtworks = artworks.filter((artwork) => artwork !== null);
       setMaxRecords(filteredArtworks.length);
-      // applyFiltersAndSort(filteredArtworks);
       setIsEmpty(filteredArtworks.length === 0);
-
+      applyFiltersAndSort(filteredArtworks);
       setIsLoading(false);
     };
 
@@ -70,11 +68,35 @@ const FinalListArtworks = () => {
     setFinalListToDisplay(filteredArtworks.slice(startIndex, endIndex));
   };
 
-  const handleItemLimitChange = (event) =>
+  const renderSortOptions = () => {
+    if (selectedMuseum === "Victoria and Albert Museum") {
+      return (
+        <>
+          <option value="">None</option>
+          <option value="location">location</option>
+          <option value="artist">artist</option>
+          <option value="place">place</option>
+          <option value="date">date</option>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <option value="">None</option>
+          <option value="relevance">Relevance</option>
+          <option value="objecttype">Type</option>
+          <option value="chronologic">Chronologic</option>
+          <option value="fields_populated">Populated Fields</option>
+        </>
+      );
+    }
+  };
+
+  const handleItemLimitChange = (event) => {
+    setPageNo(0);
     setItemLimit(Number(event.target.value));
-  const handleSortCriteriaChange = (event) =>
-    setSortCriteria(event.target.value);
-  const handleSortOrderChange = (event) => setSortOrder(event.target.value);
+  };
+
   const handlePreviousPage = () => {
     if (pageNo > 0) setPageNo(pageNo - 1);
   };
@@ -117,34 +139,56 @@ const FinalListArtworks = () => {
     <>
       <div className="max-w-screen-lg mx-auto">
         <h2 className="text-center font-bold font-headers text-2xl pt-5 pb-3">
-          Your Exhibition
+          Your Exhibition List
         </h2>
-
+        <div className="flex flex-wrap justify-center gap-4 mb-3">
+          <div className="flex flex-col items-center w-auto">
+            <label
+              htmlFor="itemLimitSelect"
+              className="block mb-1 text-center text-white"
+            >
+              Max items/page:
+            </label>
+            <select
+              id="itemLimitSelect"
+              value={itemLimit}
+              onChange={handleItemLimitChange}
+              className="px-2 py-1 border border-gray-300 rounded w-auto text-black"
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={40}>40</option>
+              <option value={80}>80</option>
+              <option value={100}>100</option>
+            </select>
+          </div>
+        </div>
         <div className="flex flex-wrap place-content-evenly pb-10">
-          {finalList
-            .filter((item) => item[0].gallery === "Victoria and Albert Museum")
+          {finalListListToDisplay
+            .filter((item) => item.gallery === "Victoria and Albert Museum")
             .map((item) => (
-              <ClArtworkCard
-                artwork={item[1]}
-                key={item[1].systemNumber}
-                selectedMuseum={item[0].gallery}
+              <VAndAArtworkCard
+                artwork={item}
+                key={item.systemNumber}
+                selectedMuseum={item.gallery}
                 needsConfirm={true}
-                needTempListButton={true}
+                needTempListButton={false}
                 needExhibitButton={true}
               />
             ))}
         </div>
 
         <div className="flex flex-wrap place-content-evenly pb-10">
-          {finalList
-            .filter((item) => item[0].gallery === "Art Institute of Rijk")
+          {finalListListToDisplay
+            .filter((item) => item.gallery === "Rijks Museum")
             .map((item) => (
               <RijkArtworkCard
-                artwork={item[1]}
-                key={item[1].objectNumber}
-                selectedMuseum={item[0].gallery}
+                artwork={item}
+                key={item.objectNumber}
+                selectedMuseum={item.gallery}
                 needsConfirm={true}
-                needTempListButton={true}
+                needTempListButton={false}
                 needExhibitButton={true}
               />
             ))}
@@ -154,16 +198,16 @@ const FinalListArtworks = () => {
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-screen-lg bg-titlebackground text-center">
         <div className="flex items-center justify-between p-2">
           <div className="flex items-center text-left w-20 pl-2">
-            List Items: {tempList.length}
+            List Items: {finalList.length}
           </div>
           <div className="flex items-center justify-center w-60">
-            <Link onClick={handlePreviousPage} className="mx-2">
+            <button onClick={handlePreviousPage} className="mx-2">
               &lt;&lt;
-            </Link>
+            </button>
             Page No: {pageNo + 1} of {Math.ceil(maxRecords / itemLimit)}
-            <Link onClick={handleNextPage} className="mx-2">
+            <button onClick={handleNextPage} className="mx-2">
               &gt;&gt;
-            </Link>
+            </button>
           </div>
           <div className="flex items-center justify-end text-right w-20 pr-2">
             Exhibition Items: {finalList.length}
@@ -174,4 +218,4 @@ const FinalListArtworks = () => {
   );
 };
 
-export default FinalListArtworks;
+export default ExibitList;
