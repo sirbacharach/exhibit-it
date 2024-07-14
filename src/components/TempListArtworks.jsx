@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ListContext } from "./ListContext";
 import VAndAArtworkCard from "./VAndAArtworkCard";
-import ChicagoArtworkCard from "./ChicagoArtworkCard";
-import { Link } from "react-router-dom";
+import RijkArtworkCard from "./RijkArtworkCard";
 
 const TempListArtworks = () => {
   const { tempList, finalList } = useContext(ListContext);
@@ -10,13 +9,14 @@ const TempListArtworks = () => {
   const [apiError, setApiError] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false);
   const [itemLimit, setItemLimit] = useState(10);
-  const [sortCriteria, setSortCriteria] = useState("");
-  const [sortOrder, setSortOrder] = useState("ascending");
+  const [sortCriteria] = useState("");
+  const [sortOrder] = useState("ascending");
   const [pageNo, setPageNo] = useState(0);
   const [maxRecords, setMaxRecords] = useState(0);
   const [tempListToDisplay, setTempListToDisplay] = useState([]);
 
   useEffect(() => {
+    document.documentElement.lang = "en"
     setIsLoading(true);
     setApiError(null);
 
@@ -30,7 +30,7 @@ const TempListArtworks = () => {
 
       const artworks = tempList.map((item) => {
         if (!item || !item[0] || !item[1]) {
-          return null; // Handle case where item or required properties are undefined
+          return null;
         }
 
         const { artworkId, gallery } = item[0];
@@ -181,9 +181,9 @@ const TempListArtworks = () => {
 
         <div className="flex flex-wrap place-content-evenly pb-10">
           {tempListToDisplay
-            .filter((item) => item.gallery === "Art Institute of Chicago")
+            .filter((item) => item.gallery === "Rijks Museum")
             .map((item) => (
-              <ChicagoArtworkCard
+              <RijkArtworkCard
                 artwork={item}
                 key={item.objectNumber}
                 selectedMuseum={item.gallery}

@@ -1,4 +1,7 @@
 const Home = () => {
+
+  document.documentElement.lang = "en"
+
   return (
     <>
       <div className="text-center mt-6  font-bold text-3xl pt-4 pb-2 max-w-[94%] mx-auto shadow-lg border border-gray-300 bg-titlebackground p-4 rounded-lg">
@@ -12,9 +15,9 @@ const Home = () => {
             sources. First browse the artwork, add your favourites to a
             temporary list, then finally, carefully select the items you want to
             exhibit from your temporary list. You can add and remove artwork
-            from both the temporary list and the exhibit. Deleting artwork from
-            either your temporary list or your exhibit, will not delete from the
-            other, so you can arrange them however you'd like.
+            from both the temporary list and the exhibition. Deleting artwork from
+            either your temporary list or your exhibition, will not delete from the
+            other, so you can arrange the two lists independently.
           </p>
         </div>
       </div>
@@ -30,25 +33,26 @@ const Home = () => {
             <br />
             The galleries tab allows you to browse and select artwork to add to
             your temporary list. You can also click on an artwork to see it in
-            more detail with additional information.
+            a higher resolution with additional information.
           </p>
           <p className="mb-4">
             <span className="font-bold">2. A Single Artwork</span>
             <br />
-            From here you can view additional information and a more detailed
+            When you click on an artwork, you are pressented with a Single Artwork.
+            From here you can view additional information and a higher resolution
             image. You can add or remove the artwork to your collections. You'll
             notice that if you click the 'Add to List' button, you then can add
             it to your exhibit if you choose to do so.
           </p>
           <p className="mb-4">
-            <span className="font-bold">3. Your temporary list</span>
+            <span className="font-bold">3. Your Temporary List tab</span>
             <br />
             Here is where you will view your temporary list, you can click on
             artworks to view them in more detail, you can delete it from your
-            temporary list and you can add or remove it from your exhibit.
+            temporary list and you can add or remove it from your exhibition.
           </p>
           <p className="mb-4">
-            <span className="font-bold">4. Your Exhibition</span>
+            <span className="font-bold">4. Your Exhibition tab</span>
             <br />
             This is your final selection of artwork for your exhibition, from
             this screen you can inspect artwork in more detail by clicking on
@@ -62,13 +66,14 @@ const Home = () => {
       <div className="max-w-[94%] text-xs mx-auto mt-6 p-5 bg-titlebackground rounded-lg shadow-md border border-gray-400">
         <div className="text-sm font-main font-normal text-left">
           <p className="font-bold">Credits:</p>
-          <p className="pt-4 pb-2">
+          <p>All artwork information and images are retrieved from the following two public APIs</p>
+          <p className="pt-4 pb-2 text-yellow-300 hover:text-yellow-100">
             <a href="https://www.vam.ac.uk/">
               Victoria and Albert Museum (API)
             </a>
           </p>
-          <p className="pt-2">
-            <a href="https://www.rijksmuseum.nl/en/">Rijks Museum (API)</a>
+          <p className="pt-2 text-yellow-300 hover:text-yellow-100">
+            <a href="https://www.rijksmuseum.nl/en/" >Rijks Museum (API)</a>
           </p>
         </div>
       </div>

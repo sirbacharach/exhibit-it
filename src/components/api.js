@@ -4,7 +4,7 @@ const vAndAApi = axios.create({
   baseURL: "https://api.vam.ac.uk/v2",
 });
 
-const chicagoApi = axios.create({
+const RijkApi = axios.create({
   baseURL: "https://www.rijksmuseum.nl/api/nl",
 });
 
@@ -24,23 +24,14 @@ const getAllVAndAArtworks = async (
   technique
 ) => {
   const skip = itemLimit * pageNo;
-  let searchStr = "";
-  let materialStr = "";
-  let placeStr = "";
-  let personStr = "";
-  let orderBy = "";
-  let orderSort = "";
-  if (sortCriteria) {
-    orderBy = `&order_by=${sortCriteria}`;
-    orderSort = `&order_sort=${sortOrder}`;
-  }
-  if (sortOrder) orderSort = `&order_sort=${sortOrder}`;
-
-  if (selectedMaterial)
-    materialStr = `&q_material_technique=${selectedMaterial}`;
-  if (selectedPlace) placeStr = `&q_place_name=${selectedPlace}`;
-  if (selectedPerson) personStr = `&q_place_name=${selectedPerson}`;
-  if (userSearch) searchStr = `&kw_object_type=${userSearch}`;
+  let searchStr = userSearch ? `&kw_object_type=${userSearch}` : "";
+  let materialStr = selectedMaterial
+    ? `&q_material_technique=${selectedMaterial}`
+    : "";
+  let placeStr = selectedPlace ? `&q_place_name=${selectedPlace}` : "";
+  let personStr = selectedPerson ? `&q_place_name=${selectedPerson}` : "";
+  let orderBy = sortCriteria ? `&order_by=${sortCriteria}` : "";
+  let orderSort = sortOrder ? `&order_sort=${sortOrder}` : "";
 
   try {
     const response = await vAndAApi.get(
@@ -70,94 +61,85 @@ const getSingleVAndAArtwork = async (artworkId) => {
   }
 };
 
-const getAllChicagoArtworks = async (
+const getAllRijkArtworks = async (
   pageNo,
   itemLimit,
+  selectedMaterial,
+  selectedPlace,
+  selectedPerson,
+  userSearch,
   sortCriteria,
   sortOrder,
   principalMaker,
   type,
   datingPeriod,
-  place,
-  material,
   technique
 ) => {
-  let sort = "";
-  if (sortCriteria === "relevance") {
-    sort = "&s=relevance";
-  } else if (sortCriteria === "objecttype") {
-    sort = "&s=objecttype";
-  } else if (sortCriteria === "chronologic") {
-    if (sortOrder === "ascending") {
-      sort = "&s=chronologic";
-    } else {
-      sort = "&s=achronologic";
-    }
-  } else if (sortCriteria === "artist") {
-    if (sortOrder === "ascending") {
-      sort = "&s=artist";
-    } else {
-      sort = "&s=artistdesc";
-    }
-  }
+  
+  // Deals with sorting
+  const sortMap = {
+    chronologic: sortOrder === "asc" ? "&s=chronologic" : "&s=achronologic",
+    artist: sortOrder === "asc" ? "&s=artist" : "&s=artistdesc",
+  };
+  let sort = sortMap[sortCriteria] || "";
 
   let makerString = principalMaker
     ? `&involvedMaker=${principalMaker.split(" ").join("+")}`
     : "";
   let typeString = type ? `&type=${type.split(" ").join("+")}` : "";
   let periodString = datingPeriod ? `&f.dating.period=${datingPeriod}` : "";
-  let placeString = place ? `&place=${place.split(" ").join("+")}` : "";
-  let materialString = material
-    ? `&material=${material.split(" ").join("+")}`
+  let placeString = selectedPlace
+    ? `&place=${selectedPlace.split(" ").join("+")}`
+    : "";
+  let materialString = selectedMaterial
+    ? `&material=${selectedMaterial.split(" ").join("+")}`
     : "";
   let techniqueString = technique
     ? `&technique=${technique.split(" ").join("+")}`
     : "";
+  let searchString = userSearch ? `&q=${userSearch}` : ""; // Add missing semicolon here
 
   try {
-    const response = await chicagoApi.get(
+    const response = await RijkApi.get(
       `/collection?key=25T7NCOQ&imgonly=true&ps=${itemLimit}&p=${
         pageNo + 1
-      }&culture=en${sort}${makerString}${typeString}${periodString}${placeString}${materialString}${techniqueString}`
+      }&culture=en${sort}${makerString}${typeString}${periodString}${placeString}${materialString}${techniqueString}${searchString}`
     );
-    const artObjects = response.data.artObjects;
-    const promises = artObjects.map((artwork) =>
-      getSingleChicagoArtwork(artwork.objectNumber)
-    );
-
-    const singleArtworks = await Promise.all(promises);
-    return [singleArtworks, response.data.count];
+    return [response.data.artObjects, response.data.count];
   } catch (error) {
-    console.error("Error fetching Chicago artworks:", error);
+    console.error("Error fetching Rijk artworks:", error);
     throw error;
   }
 };
 
-// GET SINGLE ChicagoArtwork
-const getSingleChicagoArtwork = async (chicagoartwork_id) => {
+
+// GET SINGLE RijkArtwork
+const getSingleRijkArtwork = async (rijkartwork_id) => {
+  console.log(rijkartwork_id)
   try {
-    const response = await chicagoApi.get(
-      `/collection/${chicagoartwork_id}?key=25T7NCOQ`
+    const response = await RijkApi.get(
+      `/collection/${rijkartwork_id}?key=25T7NCOQ`
     );
+    console.log(response.data)
     return response.data.artObject;
   } catch (error) {
     console.error(
-      `Error fetching Chicago artwork ${chicagoartwork_id}:`,
+      `Error fetching Rijk artwork ${rijkartwork_id}:`,
       error
     );
     throw error;
   }
 };
 
-// GET Chicago facets.
-const getChicagoFacets = async () => {
+// GET Rijk facets.
+const getRijkFacets = async () => {
   try {
-    const response = await chicagoApi.get(
+    const response = await RijkApi.get(
       `https://www.rijksmuseum.nl/api/nl/collection?key=25T7NCOQ&ps1&p=1`
     );
     return response.data.facets;
   } catch (error) {
-    console.error("Error fetching Chicago facets:", error);
+    console.error("Error fetching Rijk facets:", error);
     throw error;
   }
 };
@@ -165,7 +147,7 @@ const getChicagoFacets = async () => {
 export {
   getAllVAndAArtworks,
   getSingleVAndAArtwork,
-  getAllChicagoArtworks,
-  getSingleChicagoArtwork,
-  getChicagoFacets,
+  getAllRijkArtworks,
+  getSingleRijkArtwork,
+  getRijkFacets,
 };
