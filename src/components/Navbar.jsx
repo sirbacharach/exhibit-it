@@ -12,7 +12,7 @@ const navlinks = [
     link: "/artworks",
   },
   {
-    title: "Your temporary list",
+    title: "Your Temporary List",
     link: "/artworks/artworkslist",
   },
   {
