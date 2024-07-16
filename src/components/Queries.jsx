@@ -6,9 +6,7 @@ export const museum1Materials = [
   { materialName: "Gold", code: "AAT11021" },
   { materialName: "Silver", code: "AAT11029" },
   { materialName: "Bronze", code: "AAT10957" },
-  { materialName: "Plastic", code: "AAT14570" },
-  { technique: "Photography", code: "AAT54225" },
-  { technique: "Lithography", code: "AAT53271" },
+  { materialName: "Plastic", code: "AAT14570" }
 ];
 
 export const museum1Places = [

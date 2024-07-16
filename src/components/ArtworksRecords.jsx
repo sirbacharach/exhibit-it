@@ -362,7 +362,7 @@ const ArtworksRecords = ({
   }
 
   if (apiError) {
-    return <div>Error: {apiError.message}</div>;
+    return <Error message={apiError.message} />;
   }
 
   return (
