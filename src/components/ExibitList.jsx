@@ -97,7 +97,7 @@ const ExhibitList = () => {
 
   const handleSaveToFile = async () => {
     const filename = prompt("Enter a filename for your artwork lists:", "artwork_lists.zip");
-    if (!filename) return; // Exit if the user cancels or doesn't provide a name
+    if (!filename) return;
 
     const zip = new JSZip();
     zip.file("finalList.json", JSON.stringify(finalList));
@@ -105,6 +105,8 @@ const ExhibitList = () => {
     
     const content = await zip.generateAsync({ type: "blob" });
     saveAs(content, filename.endsWith('.zip') ? filename : `${filename}.zip`);
+    
+    alert("Exhibition successfully saved");
   };
 
   const handleLoadFromFile = async (event) => {
@@ -116,12 +118,11 @@ const ExhibitList = () => {
       const data = await zip.loadAsync(file);
       
       const finalListData = await data.file("finalList.json").async("text");
-      const tempListData = await data.file("tempList.json").async("text");
       
       setFinalList(JSON.parse(finalListData));
-      setTempList(JSON.parse(tempListData));
       localStorage.setItem("finalList", finalListData);
-      localStorage.setItem("tempList", tempListData);
+      
+      alert("Exhibition successfully loaded");
     } catch (error) {
       alert("Error loading file.");
       console.error("File loading error:", error);
@@ -162,13 +163,13 @@ const ExhibitList = () => {
               className="hidden"
               id="loadFileInput"
             />
+          </div>
             <button
               onClick={() => document.getElementById('loadFileInput').click()}
-              className="flex-1 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             >
               Load from File
             </button>
-          </div>
         </div>
       </>
     );

@@ -89,7 +89,7 @@ const TempListArtworks = () => {
   const handlePreviousPage = () => {
     if (pageNo > 0) setPageNo(pageNo - 1);
   };
-  
+
   const handleNextPage = () => {
     const totalPages = Math.ceil(maxRecords / itemLimit);
     if (pageNo < totalPages - 1) setPageNo(pageNo + 1);
@@ -105,6 +105,8 @@ const TempListArtworks = () => {
     
     const content = await zip.generateAsync({ type: "blob" });
     saveAs(content, filename.endsWith('.zip') ? filename : `${filename}.zip`);
+    
+    alert("Temporary List successfully saved");
   };
 
   const handleLoadFromFile = async (event) => {
@@ -114,14 +116,11 @@ const TempListArtworks = () => {
     try {
       const zip = new JSZip();
       const data = await zip.loadAsync(file);
-      
-      const finalListData = await data.file("finalList.json").async("text");
       const tempListData = await data.file("tempList.json").async("text");
-      
-      setFinalList(JSON.parse(finalListData));
       setTempList(JSON.parse(tempListData));
-      localStorage.setItem("finalList", finalListData);
       localStorage.setItem("tempList", tempListData);
+      
+      alert("Temporary List loaded");
     } catch (error) {
       alert("Error loading file.");
       console.error("File loading error:", error);
@@ -162,13 +161,13 @@ const TempListArtworks = () => {
               className="hidden"
               id="loadFileInput"
             />
+          </div>
             <button
               onClick={() => document.getElementById('loadFileInput').click()}
               className="flex-1 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             >
               Load from File
             </button>
-          </div>
         </div>
       </>
     );
