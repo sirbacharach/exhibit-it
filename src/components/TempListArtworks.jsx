@@ -177,7 +177,7 @@ const TempListArtworks = () => {
   return (
     <>
       <div className="max-w-screen-lg mx-auto">
-        <h2 className="text-center font-bold font-headers text-2xl pt-5 pb-3">
+        <h2 className="text-center font-bold font-headers text-3xl pt-5 pb-3">
           Your Temporary List
         </h2>
         <div className="flex flex-wrap justify-center gap-4 mb-3">
