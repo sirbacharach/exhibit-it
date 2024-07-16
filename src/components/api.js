@@ -18,10 +18,6 @@ const getAllVAndAArtworks = async (
   userSearch,
   sortCriteria,
   sortOrder,
-  principalMaker,
-  type,
-  datingPeriod,
-  technique
 ) => {
   const skip = itemLimit * pageNo;
   let searchStr = userSearch ? `&kw_object_type=${userSearch}` : "";

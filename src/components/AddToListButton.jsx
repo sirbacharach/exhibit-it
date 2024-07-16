@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ListContext } from "./ListContext";
 
-const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
+const AddToListButton = ({ artwork, selectedMuseum }) => {
   const [isInList, setIsInList] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const { tempList, setTempList } = useContext(ListContext);
@@ -15,45 +15,45 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
     setIsInList(isInList);
   }, [tempList, artwork.systemNumber, artwork.objectNumber, selectedMuseum]);
 
+  const saveToLocalStorage = (list) => {
+    localStorage.setItem("tempList", JSON.stringify(list));
+  };
+
   const handleToggle = () => {
-    if (isInList) {
-      if (needsConfirm) {
-        setShowConfirm(true);
-      } else {
-        setTempList((prevList) =>
-          prevList.filter((item) =>
-            selectedMuseum === "Victoria and Albert Museum"
-              ? item[0].artworkId !== artwork.systemNumber
-              : item[0].artworkId !== artwork.objectNumber
-          )
-        );
-      }
-    } else {
-      setTempList((prevList) => [
-        ...prevList,
-        [
-          {
-            artworkId:
-              selectedMuseum === "Victoria and Albert Museum"
-                ? artwork.systemNumber
-                : artwork.objectNumber,
-            gallery: selectedMuseum,
-          },
-          artwork, // Artwork array as item 1
-        ],
-      ]);
-    }
+    const updatedList = isInList
+      ? tempList.filter((item) =>
+          selectedMuseum === "Victoria and Albert Museum"
+            ? item[0].artworkId !== artwork.systemNumber
+            : item[0].artworkId !== artwork.objectNumber
+        )
+      : [
+          ...tempList,
+          [
+            {
+              artworkId:
+                selectedMuseum === "Victoria and Albert Museum"
+                  ? artwork.systemNumber
+                  : artwork.objectNumber,
+              gallery: selectedMuseum,
+            },
+            artwork,
+          ],
+        ];
+
+    setTempList(updatedList);
+    saveToLocalStorage(updatedList);
     setIsInList(!isInList); // Toggle state
   };
 
   const handleConfirmRemove = () => {
-    setTempList((prevList) =>
-      prevList.filter((item) =>
-        selectedMuseum === "Victoria and Albert Museum"
-          ? item[0].artworkId !== artwork.systemNumber
-          : item[0].artworkId !== artwork.objectNumber
-      )
+    const updatedList = tempList.filter((item) =>
+      selectedMuseum === "Victoria and Albert Museum"
+        ? item[0].artworkId !== artwork.systemNumber
+        : item[0].artworkId !== artwork.objectNumber
     );
+
+    setTempList(updatedList);
+    saveToLocalStorage(updatedList);
     setShowConfirm(false);
   };
 

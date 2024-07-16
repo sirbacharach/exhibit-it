@@ -18,22 +18,26 @@ const AddToExhibitButton = ({ artwork, selectedMuseum, needsConfirm }) => {
     setIsInList(isInList);
   }, [finalList, artwork.systemNumber, artwork.objectNumber, selectedMuseum]);
 
+  const saveToLocalStorage = (list) => {
+    localStorage.setItem("finalList", JSON.stringify(list));
+  };
+
   const handleToggle = () => {
     if (isInList) {
       if (needsConfirm) {
         setShowConfirm(true);
       } else {
-        setFinalList((prevList) =>
-          prevList.filter((item) =>
-            selectedMuseum === "Victoria and Albert Museum"
-              ? item[0].artworkId !== artwork.systemNumber
-              : item[0].artworkId !== artwork.objectNumber
-          )
+        const updatedList = finalList.filter((item) =>
+          selectedMuseum === "Victoria and Albert Museum"
+            ? item[0].artworkId !== artwork.systemNumber
+            : item[0].artworkId !== artwork.objectNumber
         );
+        setFinalList(updatedList);
+        saveToLocalStorage(updatedList);
       }
     } else {
-      setFinalList((prevList) => [
-        ...prevList,
+      const updatedList = [
+        ...finalList,
         [
           {
             artworkId:
@@ -42,21 +46,23 @@ const AddToExhibitButton = ({ artwork, selectedMuseum, needsConfirm }) => {
                 : artwork.objectNumber,
             gallery: selectedMuseum,
           },
-          artwork, // Artwork object as item 1
+          artwork,
         ],
-      ]);
+      ];
+      setFinalList(updatedList);
+      saveToLocalStorage(updatedList);
     }
     setIsInList(!isInList); // Toggle state
   };
 
   const handleConfirmRemove = () => {
-    setFinalList((prevList) =>
-      prevList.filter((item) =>
-        selectedMuseum === "Victoria and Albert Museum"
-          ? item[0].artworkId !== artwork.systemNumber
-          : item[0].artworkId !== artwork.objectNumber
-      )
+    const updatedList = finalList.filter((item) =>
+      selectedMuseum === "Victoria and Albert Museum"
+        ? item[0].artworkId !== artwork.systemNumber
+        : item[0].artworkId !== artwork.objectNumber
     );
+    setFinalList(updatedList);
+    saveToLocalStorage(updatedList);
     setShowConfirm(false);
   };
 

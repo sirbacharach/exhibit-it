@@ -2,9 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { ListContext } from "./ListContext";
 import VAndAArtworkCard from "./VAndAArtworkCard";
 import RijkArtworkCard from "./RijkArtworkCard";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 
 const TempListArtworks = () => {
-  const { tempList, finalList } = useContext(ListContext);
+  const { tempList, setTempList, finalList, setFinalList } = useContext(ListContext);
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false);
@@ -16,7 +18,18 @@ const TempListArtworks = () => {
   const [tempListToDisplay, setTempListToDisplay] = useState([]);
 
   useEffect(() => {
-    document.documentElement.lang = "en"
+    const storedFinalList = localStorage.getItem("finalList");
+    const storedTempList = localStorage.getItem("tempList");
+    if (storedFinalList) {
+      setFinalList(JSON.parse(storedFinalList));
+    }
+    if (storedTempList) {
+      setTempList(JSON.parse(storedTempList));
+    }
+  }, [setFinalList, setTempList]);
+
+  useEffect(() => {
+    document.documentElement.lang = "en";
     setIsLoading(true);
     setApiError(null);
 
@@ -68,30 +81,6 @@ const TempListArtworks = () => {
     setTempListToDisplay(filteredArtworks.slice(startIndex, endIndex));
   };
 
-  const renderSortOptions = () => {
-    if (selectedMuseum === "Victoria and Albert Museum") {
-      return (
-        <>
-          <option value="">None</option>
-          <option value="location">location</option>
-          <option value="artist">artist</option>
-          <option value="place">place</option>
-          <option value="date">date</option>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <option value="">None</option>
-          <option value="relevance">Relevance</option>
-          <option value="objecttype">Type</option>
-          <option value="chronologic">Chronologic</option>
-          <option value="fields_populated">Populated Fields</option>
-        </>
-      );
-    }
-  };
-
   const handleItemLimitChange = (event) => {
     setPageNo(0);
     setItemLimit(Number(event.target.value));
@@ -100,9 +89,43 @@ const TempListArtworks = () => {
   const handlePreviousPage = () => {
     if (pageNo > 0) setPageNo(pageNo - 1);
   };
+  
   const handleNextPage = () => {
     const totalPages = Math.ceil(maxRecords / itemLimit);
     if (pageNo < totalPages - 1) setPageNo(pageNo + 1);
+  };
+
+  const handleSaveToFile = async () => {
+    const filename = prompt("Enter a filename for your artwork lists:", "artwork_lists.zip");
+    if (!filename) return; // Exit if the user cancels or doesn't provide a name
+
+    const zip = new JSZip();
+    zip.file("finalList.json", JSON.stringify(finalList));
+    zip.file("tempList.json", JSON.stringify(tempList));
+    
+    const content = await zip.generateAsync({ type: "blob" });
+    saveAs(content, filename.endsWith('.zip') ? filename : `${filename}.zip`);
+  };
+
+  const handleLoadFromFile = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const zip = new JSZip();
+      const data = await zip.loadAsync(file);
+      
+      const finalListData = await data.file("finalList.json").async("text");
+      const tempListData = await data.file("tempList.json").async("text");
+      
+      setFinalList(JSON.parse(finalListData));
+      setTempList(JSON.parse(tempListData));
+      localStorage.setItem("finalList", finalListData);
+      localStorage.setItem("tempList", tempListData);
+    } catch (error) {
+      alert("Error loading file.");
+      console.error("File loading error:", error);
+    }
   };
 
   if (apiError) {
@@ -124,14 +147,30 @@ const TempListArtworks = () => {
 
   if (isEmpty) {
     return (
-      <div className="flex justify-center">
-        <h2
-          className="font-bold font-headers text-2xl py-3"
-          style={{ maxWidth: "50%", textAlign: "center" }}
-        >
-          There are currently no items in your list.
-        </h2>
-      </div>
+      <>
+        <div className="flex justify-center">
+          <h2 className="font-bold font-headers text-2xl py-3" style={{ maxWidth: "50%", textAlign: "center" }}>
+            There are currently no items in your list.
+          </h2>
+        </div>
+        <div className="flex flex-col items-center w-auto">
+          <div className="flex w-full">
+            <input
+              type="file"
+              accept=".zip"
+              onChange={handleLoadFromFile}
+              className="hidden"
+              id="loadFileInput"
+            />
+            <button
+              onClick={() => document.getElementById('loadFileInput').click()}
+              className="flex-1 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Load from File
+            </button>
+          </div>
+        </div>
+      </>
     );
   }
 
@@ -162,6 +201,31 @@ const TempListArtworks = () => {
               <option value={80}>80</option>
               <option value={100}>100</option>
             </select>
+          </div>
+          <div className="flex flex-col items-center w-auto">
+            <div className="flex w-full mb-2">
+              <button
+                onClick={handleSaveToFile}
+                className="flex-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Save to File
+              </button>
+            </div>
+            <div className="flex w-full">
+              <input
+                type="file"
+                accept=".zip"
+                onChange={handleLoadFromFile}
+                className="hidden"
+                id="loadFileInput"
+              />
+              <button
+                onClick={() => document.getElementById('loadFileInput').click()}
+                className="flex-1 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              >
+                Load from File
+              </button>
+            </div>
           </div>
         </div>
         <div className="flex flex-wrap place-content-evenly pb-10">

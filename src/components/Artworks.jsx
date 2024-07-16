@@ -8,7 +8,7 @@ const Artworks = () => {
   const [itemLimit, setItemLimit] = useState(10);
   const [maxRecords, setMaxRecords] = useState(0);
   const [searchCriteria, setSearchCriteria] = useState([]);
-  const [apiError, setApiError] = useState("");
+  const [apiError] = useState("");
   const { tempList } = useContext(ListContext);
   const { finalList } = useContext(ListContext);
 
