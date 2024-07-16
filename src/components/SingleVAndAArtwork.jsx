@@ -21,6 +21,7 @@ const SingleVAndAArtwork = () => {
   const [currentArtwork] = useState(useLocation().state);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     console.log(tempList)
     document.documentElement.lang = "en"
     getSingleVAndAArtwork(clartwork_id)

@@ -18,6 +18,7 @@ const ExhibitList = () => {
   const [finalListToDisplay, setFinalListToDisplay] = useState([]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const storedFinalList = localStorage.getItem("finalList");
     const storedTempList = localStorage.getItem("tempList");
     if (storedFinalList) {

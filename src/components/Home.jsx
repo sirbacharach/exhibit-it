@@ -1,6 +1,10 @@
-const Home = () => {
+import { useEffect } from "react";
 
-  document.documentElement.lang = "en"
+const Home = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.lang = "en";
+  });
 
   return (
     <>
@@ -15,9 +19,9 @@ const Home = () => {
             sources. First browse the artwork, add your favourites to a
             temporary list, then finally, carefully select the items you want to
             exhibit from your temporary list. You can add and remove artwork
-            from both the temporary list and the exhibition. Deleting artwork from
-            either your temporary list or your exhibition, will not delete from the
-            other, so you can arrange the two lists independently.
+            from both the temporary list and the exhibition. Deleting artwork
+            from either your temporary list or your exhibition, will not delete
+            from the other, so you can arrange the two lists independently.
           </p>
         </div>
       </div>
@@ -32,17 +36,17 @@ const Home = () => {
             <span className="font-bold">1. Gallery tab</span>
             <br />
             The galleries tab allows you to browse and select artwork to add to
-            your temporary list. You can also click on an artwork to see it in
-            a higher resolution with additional information.
+            your temporary list. You can also click on an artwork to see it in a
+            higher resolution with additional information.
           </p>
           <p className="mb-4">
             <span className="font-bold">2. A Single Artwork</span>
             <br />
-            When you click on an artwork, you are pressented with a Single Artwork.
-            From here you can view additional information and a higher resolution
-            image. You can add or remove the artwork to your collections. You'll
-            notice that if you click the 'Add to List' button, you then can add
-            it to your exhibit if you choose to do so.
+            When you click on an artwork, you are pressented with a Single
+            Artwork. From here you can view additional information and a higher
+            resolution image. You can add or remove the artwork to your
+            collections. You'll notice that if you click the 'Add to List'
+            button, you then can add it to your exhibit if you choose to do so.
           </p>
           <p className="mb-4">
             <span className="font-bold">3. Your Temporary List tab</span>
@@ -66,14 +70,17 @@ const Home = () => {
       <div className="max-w-[94%] text-xs mx-auto mt-6 p-5 bg-titlebackground rounded-lg shadow-md border border-gray-400">
         <div className="text-sm font-main font-normal text-left">
           <p className="font-bold">Credits:</p>
-          <p>All artwork information and images are retrieved from the following two public APIs</p>
+          <p>
+            All artwork information and images are retrieved from the following
+            two public APIs
+          </p>
           <p className="pt-4 pb-2 text-yellow-300 hover:text-yellow-100">
             <a href="https://www.vam.ac.uk/">
               Victoria and Albert Museum (API)
             </a>
           </p>
           <p className="pt-2 text-yellow-300 hover:text-yellow-100">
-            <a href="https://www.rijksmuseum.nl/en/" >Rijks Museum (API)</a>
+            <a href="https://www.rijksmuseum.nl/en/">Rijks Museum (API)</a>
           </p>
         </div>
       </div>

@@ -18,6 +18,7 @@ const TempListArtworks = () => {
   const [tempListToDisplay, setTempListToDisplay] = useState([]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const storedFinalList = localStorage.getItem("finalList");
     const storedTempList = localStorage.getItem("tempList");
     if (storedFinalList) {

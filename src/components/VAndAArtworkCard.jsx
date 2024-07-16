@@ -16,7 +16,10 @@ const ClArtworkCard = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentArtwork] = useState(artwork);
 
-  useEffect(() => {document.documentElement.lang = "en"}, [tempList]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.lang = "en"
+  }, [tempList]);
 
   return (
     <li className="inner-container-colour article-card min-w-72 max-w-72 m-2 list-none content-between bg-titletextbackground p-03drop-shadow-md rounded-xl flex flex-col">

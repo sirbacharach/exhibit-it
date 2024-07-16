@@ -20,6 +20,7 @@ const SingleRijkArtwork = () => {
   });
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     console.log(rijkartwork_id)
     document.documentElement.lang = "nl"
     getSingleRijkArtwork(rijkartwork_id)
