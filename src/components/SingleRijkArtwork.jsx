@@ -6,6 +6,7 @@ import { ListContext } from "./ListContext";
 import { useParams } from "react-router-dom";
 import PlaceholderImage from "../assets/img/throbber.gif";
 import Error from "./Error"; // Uncomment or import Error if not imported
+import { Helmet } from "react-helmet-async";
 
 const SingleRijkArtwork = () => {
   const { tempList, finalList } = useContext(ListContext);
@@ -21,18 +22,22 @@ const SingleRijkArtwork = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log(rijkartwork_id)
-    document.documentElement.lang = "nl"
+    console.log(rijkartwork_id);
+    document.documentElement.lang = "nl";
     getSingleRijkArtwork(rijkartwork_id)
       .then((response) => {
         setRijkArtwork(response);
         setIsLoading(false);
-        return response
+        return response;
       })
       .then((newArtwork) => {
-        console.log(newArtwork)
+        console.log(newArtwork);
         if (newArtwork) {
-          const newRecordDetails = { artworkId: newArtwork.objectNumber || "placeholderId", gallery: newArtwork.objectNumber ? "Victoria and Albert Museum" : "Rijks Museum",
+          const newRecordDetails = {
+            artworkId: newArtwork.objectNumber || "placeholderId",
+            gallery: newArtwork.objectNumber
+              ? "Victoria and Albert Museum"
+              : "Rijks Museum",
           };
           setRecordDetails(newRecordDetails);
         }
@@ -65,6 +70,13 @@ const SingleRijkArtwork = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Single Rijk's Museum artwork</title>
+        <meta
+          name="Single Rijk's museum artwork"
+          content="View a Rijk's Museum artwork in greater detail"
+        />
+      </Helmet>
       <div className="relative flex flex-col max-w-4xl mx-auto pb-10 pt-5 mb-4">
         {rijkArtwork?.webImage?.url ? (
           <div className="flex justify-center items-center">

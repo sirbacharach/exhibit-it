@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import ArtworksRecords from "./ArtworksRecords";
 import { Link } from "react-router-dom";
 import { ListContext } from "./ListContext";
+import { Helmet } from "react-helmet-async";
 
 const Artworks = () => {
   const [pageNo, setPageNo] = useState(0);
@@ -28,6 +29,13 @@ const Artworks = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Gallery</title>
+        <meta
+          name="Exhibit-it"
+          content="Browse, search and filter artworks so that you can add them to your temporary list."
+        />
+      </Helmet>
       <div className="min-w-full max-w-screen-lg mx-auto relative">
         <ArtworksRecords
           pageNo={pageNo}

@@ -6,7 +6,8 @@ import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
 const ExhibitList = () => {
-  const { tempList, setTempList, finalList, setFinalList } = useContext(ListContext);
+  const { tempList, setTempList, finalList, setFinalList } =
+    useContext(ListContext);
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false);
@@ -101,16 +102,19 @@ const ExhibitList = () => {
   };
 
   const handleSaveToFile = async () => {
-    const filename = prompt("Enter a filename for your artwork lists:", "artwork_lists.zip");
+    const filename = prompt(
+      "Enter a filename for your artwork lists:",
+      "artwork_lists.zip"
+    );
     if (!filename) return;
 
     const zip = new JSZip();
     zip.file("finalList.json", JSON.stringify(finalList));
     zip.file("tempList.json", JSON.stringify(tempList));
-    
+
     const content = await zip.generateAsync({ type: "blob" });
-    saveAs(content, filename.endsWith('.zip') ? filename : `${filename}.zip`);
-    
+    saveAs(content, filename.endsWith(".zip") ? filename : `${filename}.zip`);
+
     alert("Exhibition successfully saved");
   };
 
@@ -121,12 +125,12 @@ const ExhibitList = () => {
     try {
       const zip = new JSZip();
       const data = await zip.loadAsync(file);
-      
+
       const finalListData = await data.file("finalList.json").async("text");
-      
+
       setFinalList(JSON.parse(finalListData));
       localStorage.setItem("finalList", finalListData);
-      
+
       alert("Exhibition successfully loaded");
     } catch (error) {
       alert("Error loading file.");
@@ -140,22 +144,42 @@ const ExhibitList = () => {
 
   if (isLoading) {
     return (
-      <div className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
-        <p className="light-font-colour" id="status-msg">
-          Please wait...
-        </p>
-        <p className="light-font-colour" id="status-msg">
-          Artworks are loading...
-        </p>
-      </div>
+      <>
+        {" "}
+        <Helmet>
+          <title>Your Exhibition List</title>
+          <meta
+            name="Your Exhibition List"
+            content="View Your Your Exhibition List, remove unwanted items from Exhibition or Temporary Lists."
+          />
+        </Helmet>
+        <div className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
+          <p className="light-font-colour" id="status-msg">
+            Please wait...
+          </p>
+          <p className="light-font-colour" id="status-msg">
+            Artworks are loading...
+          </p>
+        </div>
+      </>
     );
   }
 
   if (isEmpty) {
     return (
       <>
+        <Helmet>
+          <title>Your Exhibition List</title>
+          <meta
+            name="Your Exhibition List"
+            content="View Your Your Exhibition List, remove unwanted items from Exhibition or Temporary Lists."
+          />
+        </Helmet>
         <div className="flex justify-center">
-          <h2 className="font-bold font-headers text-2xl py-3" style={{ maxWidth: "50%", textAlign: "center" }}>
+          <h2
+            className="font-bold font-headers text-2xl py-3"
+            style={{ maxWidth: "50%", textAlign: "center" }}
+          >
             There are currently no items in your list.
           </h2>
         </div>
@@ -169,12 +193,12 @@ const ExhibitList = () => {
               id="loadFileInput"
             />
           </div>
-            <button
-              onClick={() => document.getElementById('loadFileInput').click()}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Load from File
-            </button>
+          <button
+            onClick={() => document.getElementById("loadFileInput").click()}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Load from File
+          </button>
         </div>
       </>
     );
@@ -182,6 +206,13 @@ const ExhibitList = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Your Exhibition List</title>
+        <meta
+          name="Your Exhibition List"
+          content="View Your Your Exhibition List, remove unwanted items from Exhibition or Temporary Lists."
+        />
+      </Helmet>
       <div className="max-w-screen-lg mx-auto">
         <h2 className="text-center font-bold font-headers text-3xl pt-5 pb-3">
           Your Exhibition List
@@ -226,7 +257,7 @@ const ExhibitList = () => {
                 id="loadFileInput"
               />
               <button
-                onClick={() => document.getElementById('loadFileInput').click()}
+                onClick={() => document.getElementById("loadFileInput").click()}
                 className="flex-1 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               >
                 Load from File

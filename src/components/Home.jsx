@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
   useEffect(() => {
@@ -8,6 +9,13 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Home Page</title>
+        <meta
+          name="Exhibit-it"
+          content="Art curator web app using info from two popular museums"
+        />
+      </Helmet>
       <div className="text-center mt-6  font-bold text-3xl pt-4 pb-2 max-w-[94%] mx-auto shadow-lg border border-gray-300 bg-titlebackground p-4 rounded-lg">
         <h1 className="py-3">Welcome to Exhib-it!</h1>
       </div>

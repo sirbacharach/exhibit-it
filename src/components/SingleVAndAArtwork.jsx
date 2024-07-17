@@ -6,6 +6,7 @@ import { ListContext } from "./ListContext";
 import { useLocation, useParams } from "react-router-dom";
 import Error from "./Error"; // Uncomment or import Error if not imported
 import PlaceholderImage from "../assets/img/throbber.gif";
+import { Helmet } from "react-helmet-async";
 
 const SingleVAndAArtwork = () => {
   const { tempList, finalList } = useContext(ListContext);
@@ -70,6 +71,13 @@ const SingleVAndAArtwork = () => {
 
   return (
     <>
+     <Helmet>
+        <title>Single Victoria and Alber Museum artwork</title>
+        <meta
+          name="Single Victoria and Alber Museum artwork"
+          content="View a Victoria and Albert Museum artwork in greater detail"
+        />
+      </Helmet>
       <div className="relative flex flex-col max-w-4xl mx-auto pb-10 pt-5 mb-4">
         {clArtwork?.images[0] ? (
           <div className="flex justify-center items-center">

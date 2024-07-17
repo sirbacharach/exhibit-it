@@ -4,9 +4,11 @@ import VAndAArtworkCard from "./VAndAArtworkCard";
 import RijkArtworkCard from "./RijkArtworkCard";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { Helmet } from "react-helmet-async";
 
 const TempListArtworks = () => {
-  const { tempList, setTempList, finalList, setFinalList } = useContext(ListContext);
+  const { tempList, setTempList, finalList, setFinalList } =
+    useContext(ListContext);
   const [isLoading, setIsLoading] = useState(true);
   const [apiError, setApiError] = useState(null);
   const [isEmpty, setIsEmpty] = useState(false);
@@ -17,7 +19,6 @@ const TempListArtworks = () => {
   const [maxRecords, setMaxRecords] = useState(0);
   const [tempListToDisplay, setTempListToDisplay] = useState([]);
   const isFirstOpen = useRef(true);
-
 
   useEffect(() => {
     if (isFirstOpen.current) {
@@ -102,16 +103,19 @@ const TempListArtworks = () => {
   };
 
   const handleSaveToFile = async () => {
-    const filename = prompt("Enter a filename for your artwork lists:", "artwork_lists.zip");
+    const filename = prompt(
+      "Enter a filename for your artwork lists:",
+      "artwork_lists.zip"
+    );
     if (!filename) return; // Exit if the user cancels or doesn't provide a name
 
     const zip = new JSZip();
     zip.file("finalList.json", JSON.stringify(finalList));
     zip.file("tempList.json", JSON.stringify(tempList));
-    
+
     const content = await zip.generateAsync({ type: "blob" });
-    saveAs(content, filename.endsWith('.zip') ? filename : `${filename}.zip`);
-    
+    saveAs(content, filename.endsWith(".zip") ? filename : `${filename}.zip`);
+
     alert("Temporary List successfully saved");
   };
 
@@ -125,7 +129,7 @@ const TempListArtworks = () => {
       const tempListData = await data.file("tempList.json").async("text");
       setTempList(JSON.parse(tempListData));
       localStorage.setItem("tempList", tempListData);
-      
+
       alert("Temporary List loaded");
     } catch (error) {
       alert("Error loading file.");
@@ -139,22 +143,41 @@ const TempListArtworks = () => {
 
   if (isLoading) {
     return (
-      <div className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
-        <p className="light-font-colour" id="status-msg">
-          Please wait...
-        </p>
-        <p className="light-font-colour" id="status-msg">
-          Artworks are loading...
-        </p>
-      </div>
+      <>
+        <Helmet>
+          <title>Your Temporary List</title>
+          <meta
+            name="Your Temporary List"
+            content="View Your Temporary List, remove unwanted items or add items to your exhibition."
+          />
+        </Helmet>
+        <div className="text-center text-white font-bold font-headers text-2xl pt-2 pb-1">
+          <p className="light-font-colour" id="status-msg">
+            Please wait...
+          </p>
+          <p className="light-font-colour" id="status-msg">
+            Artworks are loading...
+          </p>
+        </div>
+      </>
     );
   }
 
   if (isEmpty) {
     return (
       <>
+        <Helmet>
+          <title>Your Temporary List</title>
+          <meta
+            name="Your Temporary List"
+            content="View Your Temporary List, remove unwanted items or add items to your exhibition."
+          />
+        </Helmet>
         <div className="flex justify-center">
-          <h2 className="font-bold font-headers text-2xl py-3" style={{ maxWidth: "50%", textAlign: "center" }}>
+          <h2
+            className="font-bold font-headers text-2xl py-3"
+            style={{ maxWidth: "50%", textAlign: "center" }}
+          >
             There are currently no items in your list.
           </h2>
         </div>
@@ -168,12 +191,12 @@ const TempListArtworks = () => {
               id="loadFileInput"
             />
           </div>
-            <button
-              onClick={() => document.getElementById('loadFileInput').click()}
-              className="flex-1 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Load from File
-            </button>
+          <button
+            onClick={() => document.getElementById("loadFileInput").click()}
+            className="flex-1 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Load from File
+          </button>
         </div>
       </>
     );
@@ -181,6 +204,13 @@ const TempListArtworks = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Your Temporary List</title>
+        <meta
+          name="Your Temporary List"
+          content="View Your Temporary List, remove unwanted items or add items to your exhibition."
+        />
+      </Helmet>
       <div className="max-w-screen-lg mx-auto">
         <h2 className="text-center font-bold font-headers text-3xl pt-5 pb-3">
           Your Temporary List
@@ -225,7 +255,7 @@ const TempListArtworks = () => {
                 id="loadFileInput"
               />
               <button
-                onClick={() => document.getElementById('loadFileInput').click()}
+                onClick={() => document.getElementById("loadFileInput").click()}
                 className="flex-1 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               >
                 Load from File
