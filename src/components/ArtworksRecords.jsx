@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   getAllVAndAArtworks,
   getAllRijkArtworks,
@@ -32,10 +32,15 @@ const ArtworksRecords = ({
   const [selectedMaterial, setSelectedMaterial] = useState("");
   const [selectedPerson, setSelectedPerson] = useState("");
   const [technique, setTechnique] = useState("");
-  const [userSearch, setUserSearch] = useState(""); // New state for user search
-  const [tempUserSearch, setTempUserSearch] = useState(""); // New state for temporary search input
+  const [userSearch, setUserSearch] = useState("");
+  const [tempUserSearch, setTempUserSearch] = useState("");
+  const isFirstOpen = useRef(true);
 
   useEffect(() => {
+    if (isFirstOpen.current) {
+      window.scrollTo(0, 0);
+      isFirstOpen.current = false;
+    }
     document.documentElement.lang = "en"
     setIsLoading(true);
     let fetchFunction;

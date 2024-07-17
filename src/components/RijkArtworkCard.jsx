@@ -20,7 +20,6 @@ const RijkArtworkCard = ({
   const [resizedImage, setResizedImage] = useState(undefined);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     if (artwork?.webImage?.url)
       setResizedImage(artwork.webImage.url.slice(0, -3) + "=w250");
     document.documentElement.lang = "nl"

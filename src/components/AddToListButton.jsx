@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ListContext } from "./ListContext";
 
-const AddToListButton = ({ artwork, selectedMuseum }) => {
+const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
   const [isInList, setIsInList] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const { tempList, setTempList } = useContext(ListContext);

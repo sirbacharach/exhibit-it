@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { ListContext } from "./ListContext";
 import VAndAArtworkCard from "./VAndAArtworkCard";
 import RijkArtworkCard from "./RijkArtworkCard";
@@ -16,9 +16,13 @@ const ExhibitList = () => {
   const [pageNo, setPageNo] = useState(0);
   const [maxRecords, setMaxRecords] = useState(0);
   const [finalListToDisplay, setFinalListToDisplay] = useState([]);
+  const isFirstOpen = useRef(true);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (isFirstOpen.current) {
+      window.scrollTo(0, 0);
+      isFirstOpen.current = false;
+    }
     const storedFinalList = localStorage.getItem("finalList");
     const storedTempList = localStorage.getItem("tempList");
     if (storedFinalList) {
