@@ -243,7 +243,7 @@ const ExhibitList = () => {
                 key={item.systemNumber}
                 selectedMuseum={item.gallery}
                 needsConfirm={true}
-                needTempListButton={false}
+                needTempListButton={true}
                 needExhibitButton={true}
               />
             ))}
@@ -258,7 +258,7 @@ const ExhibitList = () => {
                 key={item.objectNumber}
                 selectedMuseum={item.gallery}
                 needsConfirm={true}
-                needTempListButton={false}
+                needTempListButton={true}
                 needExhibitButton={true}
               />
             ))}

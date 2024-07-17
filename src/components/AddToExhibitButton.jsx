@@ -52,7 +52,7 @@ const AddToExhibitButton = ({ artwork, selectedMuseum, needsConfirm }) => {
       setFinalList(updatedList);
       saveToLocalStorage(updatedList);
     }
-    setIsInList(!isInList); // Toggle state
+    setIsInList(!isInList);
   };
 
   const handleConfirmRemove = () => {

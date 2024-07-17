@@ -7,11 +7,14 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
   const { tempList, setTempList } = useContext(ListContext);
 
   useEffect(() => {
-    const isInList = tempList.some((item) =>
-      selectedMuseum === "Victoria and Albert Museum"
-        ? item[0].artworkId === artwork.systemNumber
-        : item[0].artworkId === artwork.objectNumber
-    );
+    const isInList =
+      tempList &&
+      Array.isArray(tempList) &&
+      tempList.some((item) =>
+        selectedMuseum === "Victoria and Albert Museum"
+          ? item[0].artworkId === artwork.systemNumber
+          : item[0].artworkId === artwork.objectNumber
+      );
     setIsInList(isInList);
   }, [tempList, artwork.systemNumber, artwork.objectNumber, selectedMuseum]);
 
@@ -20,29 +23,36 @@ const AddToListButton = ({ artwork, selectedMuseum, needsConfirm }) => {
   };
 
   const handleToggle = () => {
-    const updatedList = isInList
-      ? tempList.filter((item) =>
+    if (isInList) {
+      if (needsConfirm) {
+        setShowConfirm(true);
+      } else {
+        const updatedList = tempList.filter((item) =>
           selectedMuseum === "Victoria and Albert Museum"
             ? item[0].artworkId !== artwork.systemNumber
             : item[0].artworkId !== artwork.objectNumber
-        )
-      : [
-          ...tempList,
-          [
-            {
-              artworkId:
-                selectedMuseum === "Victoria and Albert Museum"
-                  ? artwork.systemNumber
-                  : artwork.objectNumber,
-              gallery: selectedMuseum,
-            },
-            artwork,
-          ],
-        ];
-
-    setTempList(updatedList);
-    saveToLocalStorage(updatedList);
-    setIsInList(!isInList); // Toggle state
+        );
+        setTempList(updatedList);
+        saveToLocalStorage(updatedList);
+      }
+    } else {
+      const updatedList = [
+        ...tempList,
+        [
+          {
+            artworkId:
+              selectedMuseum === "Victoria and Albert Museum"
+                ? artwork.systemNumber
+                : artwork.objectNumber,
+            gallery: selectedMuseum,
+          },
+          artwork,
+        ],
+      ];
+      setTempList(updatedList);
+      saveToLocalStorage(updatedList);
+    }
+    setIsInList(!isInList);
   };
 
   const handleConfirmRemove = () => {
