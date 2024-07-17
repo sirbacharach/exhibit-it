@@ -4,6 +4,7 @@ import VAndAArtworkCard from "./VAndAArtworkCard";
 import RijkArtworkCard from "./RijkArtworkCard";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { Helmet } from "react-helmet-async";
 
 const ExhibitList = () => {
   const { tempList, setTempList, finalList, setFinalList } =
