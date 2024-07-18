@@ -4,7 +4,9 @@ const vAndAApi = axios.create({
   baseURL: 'https://api.vam.ac.uk/v2',
 });
 
-const rijkApiKey = process.env.REACT_APP_RIJK_API_KEY;
+console.log(process.env)
+
+const rijkApiKey = process.env.VITE_REACT_APP_RIJK_API_KEY;
 
 const RijkApi = axios.create({
   baseURL: 'https://www.rijksmuseum.nl/api/nl',
