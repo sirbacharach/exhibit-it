@@ -1,5 +1,10 @@
 # Running "Exhibit-it" React App
 
+## Netlify Version:
+   https://exhibitit.netlify.app/
+
+## Running Locally:
+
 ## Environment Requirements:
 
 To run the "Exhibit-it" React app locally, ensure you have the following environment set up:
@@ -14,11 +19,15 @@ To run the "Exhibit-it" React app locally, ensure you have the following environ
 2. **Package Manager:**
    - npm is used as the package manager to install dependencies and run scripts.
 
+3. **Rijk's Museum API key**
+   - obtain an API key from Rijks Museum Website. Register for a Rijksstudio account. You will be given a
+   key instantly upon request, which you can find at the advanced settings of your Rijksstudio account.
+
 ## Installation Steps:
 
 ### 1. Clone the Repository:
 
-   Clone the Git repository of "exhibit-it" to your local machine:
+   Clone the Git repository of "Exhibit-it" to your local machine:
    ```bash
    git clone https://github.com/sirbacharach/exhibit-it.git
    cd exhibit-it
@@ -28,11 +37,24 @@ To run the "Exhibit-it" React app locally, ensure you have the following environ
 ```bash
 npm install
 ```
-### 3. Run the Development Server:
+
+### 3. Create .env file then add your key:
+create a .env file in the root directory as follows:
+```bash
+touch .env
+```
+
+Edit the file with your preferred text editor and add the following information replacing "your_key" with your actual Rijk's Museum API key that you prepared earlier:
+```bash
+VITE_RIJK_API_KEY=your_key
+```
+Save your changes to the .env file.
+
+### 4. Run the Development Server:
 ```bash
 npm run dev
 ```
-### 4. Accessing the App:
+### 5. Accessing the App:
 
 Open your web browser and navigate to http://localhost:3000 (or whichever address is specified in the command prompt) to view and interact with the "Exhibit-it" React app.
 
