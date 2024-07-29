@@ -80,7 +80,7 @@ const getAllRijkArtworks = async (
   let placeString = selectedPlace ? `&place=${selectedPlace.split(' ').join('+')}` : '';
   let materialString = selectedMaterial ? `&material=${selectedMaterial.split(' ').join('+')}` : '';
   let techniqueString = technique ? `&technique=${technique.split(' ').join('+')}` : '';
-  let searchString = userSearch ? `&q=${userSearch}` : ''; // Add missing semicolon here
+  let searchString = userSearch ? `&q=${userSearch}` : '';
 
   try {
     const response = await RijkApi.get(

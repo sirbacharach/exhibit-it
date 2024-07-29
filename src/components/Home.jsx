@@ -43,18 +43,18 @@ const Home = () => {
           <p className="mb-4">
             <span className="font-bold">1. Gallery tab</span>
             <br />
-            The galleries tab allows you to browse and select artwork to add to
-            your temporary list. You can also click on an artwork to see it in a
-            higher resolution with additional information.
+            The galleries tab allows you to browse, filter and use keyword
+            searches to select artwork to add to your temporary list. You can
+            also click on an artwork to see it in a higher resolution with
+            additional information.
           </p>
           <p className="mb-4">
             <span className="font-bold">2. A Single Artwork</span>
             <br />
             When you click on an artwork, you are pressented with a Single
             Artwork. From here you can view additional information and a higher
-            resolution image. You can add or remove the artwork to your
-            collections. You'll notice that if you click the 'Add to List'
-            button, you then can add it to your exhibit if you choose to do so.
+            resolution image. Here you can add or remove the artwork to and from
+            Your Temporary List and Your Exhibition.
           </p>
           <p className="mb-4">
             <span className="font-bold">3. Your Temporary List tab</span>
@@ -70,8 +70,33 @@ const Home = () => {
             this screen you can inspect artwork in more detail by clicking on
             one of them, and you can add and remove it both from your exhibition
             or your temporary list. These two lists are independent of each
-            other, so deleting it from your exhibition will not delete it from
-            your temporary list.
+            other, so deleting an artwork from your exhibition will not delete
+            it from your temporary list and vice versa.
+          </p>
+          <p className="mb-4">
+            <span className="font-bold">5. Saving and Loading</span>
+            <br />
+            You may notice that on Your Temporary List and Your Exhibition List
+            screens, there are Load and Save buttons. If you choose to "Save to
+            File", you will be prompted to enter a file name. The file will be
+            saved in your default "Downloads" folder, which may depend upon the
+            device you are using. You can then send this file onto a friend or
+            colleague, for them to then "Load from File". When saving, both the
+            Temporary and Exhibition lists will be saved in the same file. When
+            the file is loaded, you should ensure that you load the file from
+            the desired page.
+            </p>
+            <p>For example, if you want to load the Exhibition
+            List from the file, ensure you click the "Load from File" button on
+            the Your Exhibition List page. In this example, any artworks you had
+            selected in Your Exhibition List would be overwritten by those in
+            the file, but Your Temporary List would not be affected.
+            Alternately, if you load the file from Your Temporary List page, it
+            will only load the Temporary List from the file overwriting any you
+            had in this list and will not affect Your Exhibition List. Remember,
+            both Your Temporary List and Your Exhibtiion List can be over
+            written when loading a file, so if you'd like to keep your own
+            exhibition, remember to save your lists.
           </p>
         </div>
       </div>
