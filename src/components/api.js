@@ -53,6 +53,7 @@ const getSingleVAndAArtwork = async (artworkId) => {
   }
 };
 
+// GET ALL RijkArtwork
 const getAllRijkArtworks = async (
   pageNo,
   itemLimit,
@@ -111,7 +112,7 @@ const getSingleRijkArtwork = async (rijkartwork_id) => {
 // GET Rijk facets.
 const getRijkFacets = async () => {
   try {
-    const response = await RijkApi.get(`https://www.rijksmuseum.nl/api/nl/collection?key=25T7NCOQ&ps1&p=1`);
+    const response = await RijkApi.get(`https://www.rijksmuseum.nl/api/nl/collection?key=${rijkApiKey}&ps1&p=1`);
     return response.data.facets;
   } catch (error) {
     console.error('Error fetching Rijk facets:', error);
